@@ -7,7 +7,7 @@ CREATE USER 'stock'@'localhost' IDENTIFIED BY '***';
 
 CREATE DATABASE `stock-beheer`;
 
-CREATE TABLE `stock-beheer`.`Bestelling` (`id` INT NOT NULL AUTO_INCREMENT, `aanmaak` DateTime NOT NULL,`winkelId` INT NOT NULL,`aantal` INT NOT NULL,`totaleKostPrijsExclBtw` double NOT NULL,`url` VARCHAR(50) NOT NULL,`leverTijd` Int NOT NULL,`leveringsAdres` VARCHAR(45) NOT NULL,`omschrijving` VARCHAR(100),`artikelNr` VARCHAR(45) NOT NULL,`projectId` Int NOT NULL,`rqNummer` BIGINT,`bestellingDoorFDGeplaatst` Date,`bestellingOntvangen` Date, `opmerking` VARCHAR(100), PRIMARY KEY(`id`), UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+CREATE TABLE `stock-beheer`.`Bestelling` (`id` INT NOT NULL AUTO_INCREMENT, `aanmaak` DateTime NOT NULL,`winkelId` INT NOT NULL,`aantal` INT NOT NULL,`totaleKostPrijsExclBtw` double NOT NULL,`url` VARCHAR(50) NOT NULL,`leverTijd` Int NOT NULL,`leveringsAdres` VARCHAR(45) NOT NULL,`omschrijving` VARCHAR(100),`artikelNr` VARCHAR(45) NOT NULL,`projectId` Int NOT NULL,`rqNummer` BIGINT,`bestellingDoorFDGeplaatst` Date,`verwachteAankomst` Date,`bestellingOntvangen` Date, `opmerking` VARCHAR(100), PRIMARY KEY(`id`), UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
 CREATE TABLE `stock-beheer`.`Project` (`id` INT NOT NULL AUTO_INCREMENT , `naam` VARCHAR(30) NOT NULL, `datum` DATE, PRIMARY KEY(`id`), UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 

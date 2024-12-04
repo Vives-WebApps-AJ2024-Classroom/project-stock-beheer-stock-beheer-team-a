@@ -15,6 +15,7 @@ Bestelling:
 | projectId                 | int(11)      | NO   |     | NULL    |                |
 | rqNummer                  | bigint(20)   | YES  |     | NULL    |                |
 | bestellingDoorFDGeplaatst | date         | YES  |     | NULL    |                |
+| verwachteAankomst         | date         | YES  |     | NULL    |                |
 | bestellingOntvangen       | date         | YES  |     | NULL    |                |
 | opmerking                 | varchar(100) | YES  |     | NULL    |                |
 +---------------------------+--------------+------+-----+---------+----------------+
@@ -45,7 +46,7 @@ Gebruiker:
 | voornaam   | varchar(30) | NO   |     | NULL    |                |
 | achternaam | varchar(30) | NO   |     | NULL    |                |
 | email      | varchar(45) | NO   |     | NULL    |                |
-| niveau     | int(11)     | NO   |     | NULL    |                |
+| niveau     | int(11)     | NO   |     | NULL    |                | //0: admin, 1: coach, 2: student
 | projectId  | int(11)     | YES  |     | NULL    |                |
 +------------+-------------+------+-----+---------+----------------+
 
