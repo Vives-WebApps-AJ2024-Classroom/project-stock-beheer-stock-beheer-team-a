@@ -4,9 +4,10 @@ Bestelling:
 +---------------------------+--------------+------+-----+---------+----------------+
 | id                        | int(11)      | NO   | PRI | NULL    | auto_increment |
 | aanmaak                   | datetime     | NO   |     | NULL    |                |
-| winkelId                  | int(11)      | NO   |     | NULL    |                |
+| winkelId                  | int(11)      | YES  |     | NULL    |                |
+| winkelEnkelString         | varchar(30)  | YES  |     | NULL    |                | //voor als de winkel niet in de standaard lijst staat
 | aantal                    | int(11)      | NO   |     | NULL    |                |
-| totaleKostPrijsExclBtw    | double       | NO   |     | NULL    |                |
+| totaleKostPrijsExclBtw    | int(11)      | NO   |     | NULL    |                | //in cent, /100 = werkelijk bedrag in euro's
 | url                       | varchar(50)  | NO   |     | NULL    |                |
 | leverTijd                 | int(11)      | NO   |     | NULL    |                |
 | leveringsAdres            | varchar(45)  | NO   |     | NULL    |                |
@@ -17,26 +18,29 @@ Bestelling:
 | bestellingDoorFDGeplaatst | date         | YES  |     | NULL    |                |
 | verwachteAankomst         | date         | YES  |     | NULL    |                |
 | bestellingOntvangen       | date         | YES  |     | NULL    |                |
+| werkelijkBetaald          | int(11)      | YES  |     | NULL    |                | //in cent, /100 = werkelijk bedrag in euro's
 | opmerking                 | varchar(100) | YES  |     | NULL    |                |
 +---------------------------+--------------+------+-----+---------+----------------+
 
 Project
-+-------+-------------+------+-----+---------+----------------+
-| Field | Type        | Null | Key | Default | Extra          |
-+-------+-------------+------+-----+---------+----------------+
-| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
-| naam  | varchar(30) | NO   |     | NULL    |                |
-| datum | date        | YES  |     | NULL    |                |
-+-------+-------------+------+-----+---------+----------------+
++--------------------+-------------+------+-----+---------+----------------+
+| Field              | Type        | Null | Key | Default | Extra          |
++--------------------+-------------+------+-----+---------+----------------+
+| id                 | int(11)     | NO   | PRI | NULL    | auto_increment |
+| naam               | varchar(30) | NO   |     | NULL    |                |
+| datum              | date        | YES  |     | NULL    |                |
+| spendeerbaarBedrag | int(11)     | NO   |     | NULL    |                | //in cent, /100 = werkelijk bedrag in euro's
++--------------------+-------------+------+-----+---------+----------------+
 
 Winkel:
-+-------+-------------+------+-----+---------+----------------+
-| Field | Type        | Null | Key | Default | Extra          |
-+-------+-------------+------+-----+---------+----------------+
-| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
-| naam  | varchar(30) | NO   |     | NULL    |                |
-| url   | varchar(45) | YES  |     | NULL    |                |
-+-------+-------------+------+-----+---------+----------------+
++---------------+-------------+------+-----+---------+----------------+
+| Field         | Type        | Null | Key | Default | Extra          |
++---------------+-------------+------+-----+---------+----------------+
+| id            | int(11)     | NO   | PRI | NULL    | auto_increment |
+| naam          | varchar(30) | NO   |     | NULL    |                |
+| url           | varchar(45) | YES  |     | NULL    |                |
+| specializatie | varchar(60) | YES  |     | NULL    |                |
++---------------+-------------+------+-----+---------+----------------+
 
 Gebruiker:
 +------------+-------------+------+-----+---------+----------------+

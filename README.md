@@ -1,6 +1,6 @@
 # Documentatie voor contributers
-Wachtwoord en gebruikers id worden gebruikt als authenticatie tot de backend. Deze worden dus bijgehouden in een 'react staat'(mag niet in de url staan), er staat een voorbeeld over hoe je dit gebruikt.<br>
-Voor parameters die je vooraf nodig hebt voor je pagina mag je zelf specifiëren of het via een staat of via een url parameter is dat je ze gebruikt.
+Wachtwoord en gebruikers id worden gebruikt als authenticatie tot de backend. Ze worden opgeslagen in session storage.<br>
+Voor parameters die je vooraf nodig hebt voor je pagina mag je zelf specifiëren of het via een staat of via een url parameter is dat je ze gebruikt.<br>
 <br>
 <br>
 <br>
