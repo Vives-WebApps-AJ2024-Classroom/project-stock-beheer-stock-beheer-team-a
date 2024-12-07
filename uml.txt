@@ -46,8 +46,9 @@ Gebruiker:
 | voornaam   | varchar(30) | NO   |     | NULL    |                |
 | achternaam | varchar(30) | NO   |     | NULL    |                |
 | email      | varchar(45) | NO   |     | NULL    |                |
-| niveau     | int(11)     | NO   |     | NULL    |                | //0: admin, 1: coach, 2: student
+| niveau     | int(11)     | NO   |     | NULL    |                |//0: admin, 1: coach, 2: student
 | projectId  | int(11)     | YES  |     | NULL    |                |
+| wachtwoord | varchar(30) | NO   |     | NULL    |                |
 +------------+-------------+------+-----+---------+----------------+
 
 LogAanpassing:
