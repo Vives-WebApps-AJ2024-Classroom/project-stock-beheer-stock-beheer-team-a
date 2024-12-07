@@ -1,9 +1,6 @@
-export const Example = ({gebruikerStaat}) => {
+export const Example = () => {
   
-    gebruikerStaat.setUNaam("ERMA")
     return (
-    
-    <h1>HALLO {gebruikerStaat.uNaam}</h1>
-
+      <h1>HALLO Wereld</h1>
   )  
 }
