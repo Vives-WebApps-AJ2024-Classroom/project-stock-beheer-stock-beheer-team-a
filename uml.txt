@@ -15,6 +15,7 @@ Bestelling:
 | artikelNr                 | varchar(45)  | NO   |     | NULL    |                |
 | projectId                 | int(11)      | NO   |     | NULL    |                |
 | rqNummer                  | bigint(20)   | YES  |     | NULL    |                |
+| goedgekeurdDoorCoach      | tinyint(1)   | NO   |     | NULL    |                |
 | bestellingDoorFDGeplaatst | date         | YES  |     | NULL    |                |
 | verwachteAankomst         | date         | YES  |     | NULL    |                |
 | bestellingOntvangen       | date         | YES  |     | NULL    |                |
