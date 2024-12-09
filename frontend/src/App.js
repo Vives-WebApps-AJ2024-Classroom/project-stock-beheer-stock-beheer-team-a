@@ -9,7 +9,7 @@ const App = () => {
   return (
 <Router>
     <nav>
-        <Link to="/bestelling">Bestelling plaatsen</Link> | <Link to="/groeps-overzicht">Overzicht</Link> | <Link to="/winkels">Winkels</Link> | <button onClick={()=> {setUser(0)}}>Login Als Admin</button> | <button onClick={()=> {setUser(1)}}>Login Als Coach</button> | <button onClick={()=> {setUser(2)}}>Login Als Student</button> | <button onClick={()=> {setUser(-1)}}>Loguit</button>
+        <Link to="/bestelling">Bestelling plaatsen</Link> | <Link to="/project/1">Overzicht</Link> | <Link to="/winkels">Winkels</Link> | <button onClick={()=> {setUser(0)}}>Login Als Admin</button> | <button onClick={()=> {setUser(1)}}>Login Als Coach</button> | <button onClick={()=> {setUser(2)}}>Login Als Student</button> | <button onClick={()=> {setUser(-1)}}>Loguit</button>
     </nav>
     <Routes>
         <Route path="/" element={<Example/>} />

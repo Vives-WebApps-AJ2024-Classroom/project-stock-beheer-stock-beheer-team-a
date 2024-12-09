@@ -5,7 +5,7 @@ Bestelling:
 | id                        | int(11)      | NO   | PRI | NULL    | auto_increment |
 | aanmaak                   | datetime     | NO   |     | NULL    |                |
 | winkelId                  | int(11)      | YES  |     | NULL    |                |
-| winkelEnkelString         | varchar(30)  | YES  |     | NULL    |                | //voor als de winkel niet in de standaard lijst staat
+| winkelEnkelString         | varchar(30)  | NO   |     | NULL    |                | //voor als de winkel niet in de standaard lijst staat
 | aantal                    | int(11)      | NO   |     | NULL    |                |
 | totaleKostPrijsExclBtw    | int(11)      | NO   |     | NULL    |                | //in cent, /100 = werkelijk bedrag in euro's
 | url                       | varchar(50)  | NO   |     | NULL    |                |

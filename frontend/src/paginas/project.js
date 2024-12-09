@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { useParams } from 'react-router-dom';
 
 export const Project = () => {
   let returne = []
@@ -12,19 +12,24 @@ export const Project = () => {
   }catch{
     document.location = "/login"
   }
+  let toegang = true //Ongemachtigde gebruikers buitenschoppen.
+  if(userArr[3] == 2){
+    toegang = false
+    gebruikers.forEach((users)=>{
+      if(users.id == userArr[2])
+        toegang = true
+    })
+  }
+  if(!toegang || (userArr[3] == 1 && Coach.id != userArr[2]))
+    document.location = "/geenToegang"
 
   const { projectId } = useParams();
-  console.log("project id:",projectId);
-  const [nw, setnw] = useState("")
-  const [nwurl, setnwurl] = useState("")
-  const [nwspec, setnwspec] = useState("")
-  
-  const bestellingen = [
+  const bestel = [
     {
       "id": 1,
       "aanmaak": "2024-12-01 10:30:00",
       "winkelId": 12,
-      "winkelEnkelString": null,
+      "winkelEnkelString": "bal",
       "aantal": 5,
       "totaleKostPrijsExclBtw": 12500,
       "url": "https://voorbeeld.com/artikel/1",
@@ -40,7 +45,6 @@ export const Project = () => {
       "werkelijkBetaald": 12550,
       "opmerking": "Snelle levering gevraagd",
       "goedgekeurdDoorCoach": true,
-      "winkelNaam": "bal" //deze wordt ingevoegd door een right join ofz
     },
     {
       "id": 2,
@@ -62,13 +66,12 @@ export const Project = () => {
       "werkelijkBetaald": null,
       "opmerking": "Betaal bij levering",
       "goedgekeurdDoorCoach": false,
-      "winkelNaam": "Kleine buurtwinkel" //deze wordt ingevoegd door een right join ofz
     },
     {
       "id": 3,
       "aanmaak": "2024-12-03 09:00:00",
       "winkelId": 15,
-      "winkelEnkelString": null,
+      "winkelEnkelString": "bol",
       "aantal": 10,
       "totaleKostPrijsExclBtw": 5000,
       "url": "https://voorbeeld.com/artikel/3",
@@ -84,7 +87,6 @@ export const Project = () => {
       "werkelijkBetaald": 5000,
       "opmerking": "Levering op tijd essentieel",
       "goedgekeurdDoorCoach": true,
-      "winkelNaam": "bol" //deze wordt ingevoegd door een right join
     }
   ]//getBestellingen(project)
   const gebruikers = [
@@ -107,7 +109,6 @@ export const Project = () => {
       "wachtwoord": "sterkWachtwoord456"
     }
   ]//getUsers(project)
-  
   const Coach = {
     "id": 3,
     "voornaam": "Emma",
@@ -118,55 +119,50 @@ export const Project = () => {
     "wachtwoord": "veiligWachtwoord789"
   }//getCoach(project)
 
-  let toegang = false //Ongemachtigde gebruikers buitenschoppen.
-  if(userArr[3] == 0){
-    for(users in gebruikers){
-      if(users.id == userArr[2])
-        toegang = true
-    }
+  const [bestellingen, setBestellingen] = useState(bestel)
+  //extras: 
+  //-als je coach of admin bent kan je goedkeuren.
+  //-als je admin bent of het is nog niet goedgekeurd kan je verwijderen.
+  returne.push(<p>Bestellingen:</p>)
+  returne.push(<tr><th>Omschrijving</th><th>Betaald/kostprijs<br/>(excl. btw)</th><th>Ontvangen/goedgekeurd</th><th>Aantal</th><th>URL</th><th>Winkel</th><th>Bewerkingen</th></tr>)
+  const delBestelling = (id) => {
+    setBestellingen(bestellingen.filter(a =>
+      a.id !== id
+    ))
   }
-  if(!toegang || (userArr[3] == 1 && Coach.id != userArr[2]))
-    document.location = "/geenToegang"
-
-  tabItems = []
-  returne.push(<p>Bestellingen:</p><table></table>)
-  for(item in bestellingen){
-    tabItems.push(
-    <tr>
-      <td>{item.omschrijving}</td>
-      <td>{item.werkelijkBetaald || item.totaleKostPrijsExclBtw}</td>
-      <td>{item.bestellingOntvangen || item.goedgekeurdDoorCoach? "goedgekeurd": "niet goedgekeurd"}</td>
-      <td>{item.aantal}</td>
-      <td>{item.bestellingOntvangen || "niet ontvangen"}</td>
-      <td><a href={item.url}>link</a></td>
-      <td>{item.winkelNaam}</td>
-      <td></td>
-    </tr>)
-  }
-
-  if(userArr[3] == 0){//code voor de admin
-    for (let i = 0; i < winkels.length; i++) {
-      returne.push(<div key={i}><p><a href={winkels[i].url}>{winkels[i].naam}</a></p><p>{winkels[i].specializatie}</p> <button>Verwijder</button></div>);
+  const TabelRij = ({item, verwijderGebr, goedkeurGebr}) => {
+    let ex = []
+    if(goedkeurGebr){
+      ex.push(<button disabled={item.goedgekeurdDoorCoach} >Keur goed</button>)
     }
-    returne.push(
-    <div>
-      <label>Winkel Naam:</label>
-      <input value={nw} onChange={(e) => {setnw(e.target.value)}}></input><br/>
-      <label>Winkel Url:</label>
-      <input value={nwurl} onChange={(e) => {setnwurl(e.target.value)}}></input><br/>
-      <label>Winkel Specializatie:</label>
-      <input value={nwspec} onChange={(e) => {setnwspec(e.target.value)}}></input><br/>
-      <button>Maak winkel aan</button>
-    </div>)
-  }else{
-    for (let i = 0; i < winkels.length; i++) {
-      returne.push(<div key={i}><p><a href={winkels[i].url}>{winkels[i].naam}</a></p><p>{winkels[i].specializatie}</p></div>);
+    if(!item.goedgekeurdDoorCoach || verwijderGebr){
+      ex.push(<button onClick={()=>{delBestelling(item.id)}}>Verwijder</button>)
     }
+  
+    return(
+      <tr>
+        <td>{item.omschrijving}</td>
+        <td>{item.werkelijkBetaald/100 || item.totaleKostPrijsExclBtw/100}</td>
+        <td>{item.bestellingOntvangen || (item.goedgekeurdDoorCoach ? "goedgekeurd": "niet goedgekeurd")}</td>
+        <td>{item.aantal}</td>
+        <td><a href={item.url}>link</a></td>
+        <td>{item.winkelEnkelString}</td>
+        <td><button>Meer info</button></td>
+        {ex}
+      </tr>
+    )
   }
-
+  returne.push(
+    bestellingen.map(item => (
+      <TabelRij item={item} verwijderGebr={userArr[3]==0} goedkeurGebr={userArr[3] in [0,1] }></TabelRij>
+    ))
+  )
+ 
   return (
     <>
       {returne}
     </>
-  )  
+  )
+
 }
+

@@ -1,0 +1,5 @@
+get:
+/getBestellingen/projectId
+/getStudenten/projectId
+/getCoach/projectId
+/winkels
