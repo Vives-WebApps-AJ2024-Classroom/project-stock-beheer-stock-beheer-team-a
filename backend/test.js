@@ -132,8 +132,8 @@ const runTests = () => {
               () => {
                 console.log("Maak Winkel test passed");
                 // Update the UID and PW to match the coach's credentials
-                const coachUID = "john.doe@example.com"; // Replace with the correct UID
-                const coachPW = "correctPW"; // Replace with the correct password
+                const coachUID = "william.R@example.com"; // Replace with the correct UID
+                const coachPW = "secretpassword"; // Replace with the correct password
                 const bestellingId = 1; // Replace with the correct bestelling ID
                 testPutRequest(
                   `/api/keurGoed/${bestellingId}/${coachUID}/${coachPW}`,
