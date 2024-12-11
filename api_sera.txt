@@ -1,0 +1,3 @@
+post:
+/maakWinkel/Naam/Specializatie/UID/PW
+    body: url   //Url in de url wordt wat moeilijk.
