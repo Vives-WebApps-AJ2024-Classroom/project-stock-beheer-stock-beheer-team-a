@@ -20,7 +20,7 @@ const App = () => {
   return (
     <Router>
       <nav>
-        <Link to="/bestelling/1" >Bestelling plaatsen</Link> | 
+        <Link to="/bestelling/1">Bestelling plaatsen </Link> | 
         <Link to="/project/1" >Overzicht</Link> | 
         <Link to="/winkels">Winkels</Link> | 
         <button
