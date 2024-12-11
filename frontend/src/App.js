@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { CheckUserLS } from "./page-tools";
 import {
   BrowserRouter as Router,
   Route,
@@ -15,13 +16,13 @@ import { BestellingPlaatsen } from "./paginas/bestelling_plaatsen";
 
 const App = () => {
   let userArr = CheckUserLS()
+  let ProjectId = 1//getProjectByUser()
   return (
     <Router>
       <nav>
-        <Link to="/bestelling">Bestelling plaatsen</Link> | 
-        <Link to="/project/1">Overzicht</Link> | 
+        <Link to="/bestelling/1" >Bestelling plaatsen</Link> | 
+        <Link to="/project/1" >Overzicht</Link> | 
         <Link to="/winkels">Winkels</Link> | 
-        <Link to="/bestelling/1">Winkels</Link> | 
         <button
           onClick={() => {
             setUser(0);
