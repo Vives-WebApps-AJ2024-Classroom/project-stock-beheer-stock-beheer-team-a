@@ -1,17 +1,9 @@
 import React, { useState } from "react";
 import { useParams } from 'react-router-dom';
+import {CheckUserLS} from '../page-tools'
 
 export const Project = () => {
-  let returne = []
-  let userArr //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
-  try{
-    userArr = JSON.parse(sessionStorage.getItem("user"))
-    if(userArr.length != 4){
-      throw new Error("Session storage niet in juiste fomaat.")
-    }
-  }catch{
-    document.location = "/login"
-  }
+  let userArr = CheckUserLS() //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
   
   const bestel = [
     {
@@ -126,7 +118,6 @@ export const Project = () => {
   //extras: 
   //-als je coach of admin bent kan je goedkeuren.
   //-als je admin bent of het is nog niet goedgekeurd kan je verwijderen.
-  returne.push(<p>Bestellingen:</p>)
   let tstuf = []
   tstuf.push(<tr><th>Omschrijving</th><th>Betaald/kostprijs<br/>(excl. btw)</th><th>Ontvangen/goedgekeurd</th><th>Aantal</th><th>URL</th><th>Winkel</th><th>Bewerkingen</th></tr>)
   const delBestelling = (id) => {
@@ -171,7 +162,7 @@ export const Project = () => {
     bestellingen.map((item, index) => {
       if(index != 0 && bestellingen[index-1].id == item.id){
 
-        return <><tr> <td>Aanmaak: {item.aanmaak}</td><td> lever tijd: {item.leverTijd}</td><td> lever adres: {item.leveringsAdres}</td><td> artikel nr: {item.artikelNr}</td><td> rq nr: {item.rqNummer}</td><td> Bestelling door financ dienst geplaatst: {item.bestellingDoorFDGeplaatst}</td><td> verwachte aankomst: {item.verwachteAankomst}</td></tr><tr><td> bestelling ontvangen: {item.bestellingOntvangen}</td><td> opmerking: {item.opmerking} </td></tr></>
+        return <><tr> <td>Aanmaak: {item.aanmaak}</td><td> lever tijd: {item.leverTijd}</td><td> lever adres: {item.leveringsAdres}</td><td> artikel nr: {item.artikelNr}</td><td> rq nr: {item.rqNummer}</td><td> Bestelling door financ dienst geplaatst: {item.bestellingDoorFDGeplaatst}</td><td> verwachte aankomst: {item.verwachteAankomst}</td></tr><tr><td> bestelling ontvangen: {item.bestellingOntvangen}</td><td> opmerking: {item.opmerking} </td><td><button onClick={()=>{document.location = /bestelling/+item.id}}>Aanpassen</button></td></tr></>
       }else{
         return <TabelRij item={item} verwijderGebr={userArr[3]==0} goedkeurGebr={userArr[3] in [0,1]} index={index}></TabelRij>
       }})
@@ -179,10 +170,16 @@ export const Project = () => {
  
   return (
     <>
-      {returne}
+      <p>Bestellingen:</p>
       <table>
         {tstuf}
       </table>
+      <p>Leden:</p>
+      <ul>
+        {gebruikers.concat(Coach).map(user => {
+          return <li>{user.voornaam} {user.achternaam}: {user.niveau==1? "Coach":"Student"}</li>
+        })}
+      </ul>
     </>
   )
 

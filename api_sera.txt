@@ -5,3 +5,6 @@ post:
 put:
 /keurGoed/bestellingId/UID/PW
     //check zeker dat de uid de coach van het project van deze besetelling is.
+
+get:
+/getProject/:UID

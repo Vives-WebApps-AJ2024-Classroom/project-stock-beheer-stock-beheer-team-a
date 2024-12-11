@@ -14,36 +14,38 @@ import { GeenToegang } from "./paginas/GeenToegang";
 import { BestellingPlaatsen } from "./paginas/bestelling_plaatsen";
 
 const App = () => {
+  let userArr = CheckUserLS()
   return (
     <Router>
       <nav>
-        <Link to="/bestelling">Bestelling plaatsen</Link> |{" "}
-        <Link to="/project/1">Overzicht</Link> |{" "}
-        <Link to="/winkels">Winkels</Link> |{" "}
+        <Link to="/bestelling">Bestelling plaatsen</Link> | 
+        <Link to="/project/1">Overzicht</Link> | 
+        <Link to="/winkels">Winkels</Link> | 
+        <Link to="/bestelling/1">Winkels</Link> | 
         <button
           onClick={() => {
             setUser(0);
           }}
         >
           Login Als Admin
-        </button>{" "}
-        |{" "}
+        </button> 
+        | 
         <button
           onClick={() => {
             setUser(1);
           }}
         >
           Login Als Coach
-        </button>{" "}
-        |{" "}
+        </button> 
+        | 
         <button
           onClick={() => {
             setUser(2);
           }}
         >
           Login Als Student
-        </button>{" "}
-        |{" "}
+        </button> 
+        | 
         <button
           onClick={() => {
             setUser(-1);
