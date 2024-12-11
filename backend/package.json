@@ -11,5 +11,12 @@
   "devDependencies": {
     "eslint": "^9.16.0",
     "eslint-plugin-react": "^7.37.2"
+  },
+  "dependencies": {
+    "chai": "^5.1.2",
+    "express": "^4.21.2",
+    "mocha": "^11.0.1",
+    "mysql2": "^3.11.5",
+    "supertest": "^7.0.0"
   }
 }
