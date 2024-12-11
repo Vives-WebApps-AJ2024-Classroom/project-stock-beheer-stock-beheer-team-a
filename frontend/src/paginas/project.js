@@ -3,7 +3,10 @@ import { useParams } from 'react-router-dom';
 import {CheckUserLS} from '../page-tools'
 
 export const Project = () => {
-  let userArr = CheckUserLS() //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
+  let userArr 
+  if(window.location.pathname != "/login"){
+    userArr = CheckUserLS() //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
+  } 
   
   const bestel = [
     {
@@ -70,7 +73,14 @@ export const Project = () => {
       "goedgekeurdDoorCoach": true,
     }
   ]//getBestellingen(project)
-  const gebruikers = [
+  let gebruikers;
+  fetch('http://localhost:3001/api/getBestellingen/1')
+  .then(response => response.json()).then(
+    data => gebruikers = data
+  )
+  .catch(error => console.error(error));
+  console.log(gebruikers)
+  /*[
     {
       "id": 1,
       "voornaam": "Sofie",
@@ -88,8 +98,8 @@ export const Project = () => {
       "niveau": 2,
       "projectId": 1,
       "wachtwoord": "sterkWachtwoord456"
-    }
-  ]//getUsers(project)
+    }*/
+  //]//getUsers(project)
   const Coach = {
     "id": 3,
     "voornaam": "Emma",

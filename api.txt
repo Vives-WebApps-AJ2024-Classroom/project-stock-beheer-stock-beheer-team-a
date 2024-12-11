@@ -1,5 +1,17 @@
 get:
-/getBestellingen/projectId
+/getBestellingen/projectId✅
 /getStudenten/projectId
 /getCoach/projectId
-/winkels
+/winkels✅
+/getProject/:UID
+
+post:
+/maakWinkel/Naam/Specializatie/UID/PW✅
+    body: url   //Url in de url wordt wat moeilijk.
+
+put:
+/keurGoed/bestellingId/UID/PW //check zeker dat de uid de coach van het project van deze besetelling is.✅
+
+crud:
+/gebruikers✅
+
