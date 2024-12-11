@@ -11,3 +11,24 @@ exports.getWinkels = (req, res) => {
     res.json(results);
   });
 };
+
+exports.maakWinkel = (req, res) => {
+  const { naam, specializatie, uid, pw } = req.params;
+  const { url } = req.body;
+
+  // Validate the input
+  if (!naam || !specializatie || !uid || !pw || !url) {
+    return res.status(400).send("All fields are required");
+  }
+
+  const query =
+    "INSERT INTO Winkel (naam, url, specializatie) VALUES (?, ?, ?)";
+  db.query(query, [naam, url, specializatie], (err, results) => {
+    if (err) {
+      console.error("Error creating winkel:", err);
+      res.status(500).send("Error creating winkel");
+      return;
+    }
+    res.status(201).send("Winkel created successfully");
+  });
+};
