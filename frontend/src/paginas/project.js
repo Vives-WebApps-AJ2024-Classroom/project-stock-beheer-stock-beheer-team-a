@@ -28,10 +28,10 @@ export const Project = () => {
       "artikelNr": "ART12345",
       "projectId": 1,
       "rqNummer": 9876543210,
-      "bestellingDoorFDGeplaatst": "2024-11-30",
-      "verwachteAankomst": "2024-12-04",
-      "bestellingOntvangen": "2024-12-05",
-      "werkelijkBetaald": 12550,
+      "bestellingDoorFDGeplaatst": null,
+      "verwachteAankomst": null,
+      "bestellingOntvangen": null,
+      "werkelijkBetaald": null,
       "opmerking": "Snelle levering gevraagd",
       "goedgekeurdDoorCoach": true,
     },
@@ -154,7 +154,6 @@ export const Project = () => {
     if(!item.goedgekeurdDoorCoach || verwijderGebr){
       ex.push(<button onClick={()=>{delBestelling(item.id)}}>Verwijder</button>)
     }
-  
     return(
       <tr>
         <td>{item.omschrijving}</td>
@@ -171,7 +170,8 @@ export const Project = () => {
   tstuf.push(
     bestellingen.map((item, index) => {
       if(index != 0 && bestellingen[index-1].id == item.id){
-        return <tr>riiing ring ring</tr>
+
+        return <><tr> <td>Aanmaak: {item.aanmaak}</td><td> lever tijd: {item.leverTijd}</td><td> lever adres: {item.leveringsAdres}</td><td> artikel nr: {item.artikelNr}</td><td> rq nr: {item.rqNummer}</td><td> Bestelling door financ dienst geplaatst: {item.bestellingDoorFDGeplaatst}</td><td> verwachte aankomst: {item.verwachteAankomst}</td></tr><tr><td> bestelling ontvangen: {item.bestellingOntvangen}</td><td> opmerking: {item.opmerking} </td></tr></>
       }else{
         return <TabelRij item={item} verwijderGebr={userArr[3]==0} goedkeurGebr={userArr[3] in [0,1]} index={index}></TabelRij>
       }})
