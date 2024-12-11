@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from 'react-router-dom';
-import {CheckUserLS} from '../page-tools'
+import {CheckUserLS, getData} from '../page-tools'
 
 export const Project = () => {
   let userArr 
@@ -8,7 +8,7 @@ export const Project = () => {
     userArr = CheckUserLS() //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
   } 
   
-  const bestel = [
+  const bestel = getData("http://localhost:3001/api/getBestellingen/1");[
     {
       "id": 1,
       "aanmaak": "2024-12-01 10:30:00",
@@ -73,14 +73,7 @@ export const Project = () => {
       "goedgekeurdDoorCoach": true,
     }
   ]//getBestellingen(project)
-  let gebruikers;
-  fetch('http://localhost:3001/api/getBestellingen/1')
-  .then(response => response.json()).then(
-    data => gebruikers = data
-  )
-  .catch(error => console.error(error));
-  console.log(gebruikers)
-  /*[
+  let gebruikers = [
     {
       "id": 1,
       "voornaam": "Sofie",
@@ -98,7 +91,7 @@ export const Project = () => {
       "niveau": 2,
       "projectId": 1,
       "wachtwoord": "sterkWachtwoord456"
-    }*/
+    }]
   //]//getUsers(project)
   const Coach = {
     "id": 3,

@@ -1,3 +1,5 @@
+!!let op!! Datums in volgend formaat: yyyy-mm-dd
+
 get:
 /getBestellingen/projectId✅
 /getStudenten/projectId
@@ -8,10 +10,21 @@ get:
 post:
 /maakWinkel/Naam/Specializatie/UID/PW✅
     body: url   //Url in de url wordt wat moeilijk.
+/maakBestelling/:projID/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr/:geplaatstDoor
+    winkelId = "null": De winkel zat niet in de lijst.
+    body: url   //Url in de url wordt wat moeilijk.
 
 put:
 /keurGoed/bestellingId/UID/PW //check zeker dat de uid de coach van het project van deze besetelling is.✅
+/pasBestellingAanRestricted/:bestellingsId/:gebruikersId/:wachtwoord/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr
+    winkelId = "null": De winkel zat niet in de lijst.
+    body: url   //Url in de url wordt wat moeilijk.
+    Kan enkel gedaan worden door leden van het team en als het nog niet op "goedgekeurd" stond.
+/pasBestellingAan/:bestellingsId/:gebruikersId/:wachtwoord/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr/:geplaatstDoor/:rqNummer/:goedgekeurd/:doorFDGeplaatst/:verwachteAankomst/:bestellingOntvangen/:werkelijkBetaald/:opmerking
+    winkelId = "null": De winkel zat niet in de lijst.
+    body: url   //Url in de url wordt wat moeilijk.
+    Enkel voor de Administrator
 
 crud:
-/gebruikers✅
+/gebruikers (heeft voor aanpassende functies wachtwoord en gebruikersId van een Administrator of de gebruiker zelf nodig)
 
