@@ -3,7 +3,7 @@
 - Een globale menu balk in react zoals we gezien hebben in de les, met ook nog de ingelogde gebruikersnaam erop.
 Paginas(allemaal met minimale styling):
 - Login pagina
-- Bestellings pagina: Waar de leerlingen kunnen bestellingen plaatsen, de coach kan goedkeuren, en de admin kan bestelling en ontvanging registreren.
+- Bestellings pagina: Waar de leerlingen kunnen bestellingen plaatsen, de coach kan goedkeuren, en de admin kan bestelling en ontvanging registreren.✅
 - Querry pagina
 - Overzicht pagina team (hoeveel geld nog over, alle bestelligen, leerlingen, mogelijkheid goedkeuring bestelling voor de coach, als je wilt mag je grafieken en diagrammen invoegen)
 - Groep indelings pagina: waar administrators studenten in een team kunnen steken, en groepen aanmaken.
