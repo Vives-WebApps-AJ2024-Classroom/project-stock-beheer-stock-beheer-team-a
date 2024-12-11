@@ -12,18 +12,7 @@ export const Project = () => {
   }catch{
     document.location = "/login"
   }
-  let toegang = true //Ongemachtigde gebruikers buitenschoppen.
-  if(userArr[3] == 2){
-    toegang = false
-    gebruikers.forEach((users)=>{
-      if(users.id == userArr[2])
-        toegang = true
-    })
-  }
-  if(!toegang || (userArr[3] == 1 && Coach.id != userArr[2]))
-    document.location = "/geenToegang"
-
-  const { projectId } = useParams();
+  
   const bestel = [
     {
       "id": 1,
@@ -118,19 +107,46 @@ export const Project = () => {
     "projectId": 1,
     "wachtwoord": "veiligWachtwoord789"
   }//getCoach(project)
+  
+  let toegang = true //Ongemachtigde gebruikers buitenschoppen.
+  if(userArr[3] == 2){
+    toegang = false
+    gebruikers.forEach((users)=>{
+      if(users.id == userArr[2])
+        toegang = true
+    })
+  }
+  if(!toegang || (userArr[3] == 1 && Coach.id != userArr[2]))
+    document.location = "/geenToegang"
+
+  const { projectId } = useParams();
+
 
   const [bestellingen, setBestellingen] = useState(bestel)
   //extras: 
   //-als je coach of admin bent kan je goedkeuren.
   //-als je admin bent of het is nog niet goedgekeurd kan je verwijderen.
   returne.push(<p>Bestellingen:</p>)
-  returne.push(<tr><th>Omschrijving</th><th>Betaald/kostprijs<br/>(excl. btw)</th><th>Ontvangen/goedgekeurd</th><th>Aantal</th><th>URL</th><th>Winkel</th><th>Bewerkingen</th></tr>)
+  let tstuf = []
+  tstuf.push(<tr><th>Omschrijving</th><th>Betaald/kostprijs<br/>(excl. btw)</th><th>Ontvangen/goedgekeurd</th><th>Aantal</th><th>URL</th><th>Winkel</th><th>Bewerkingen</th></tr>)
   const delBestelling = (id) => {
     setBestellingen(bestellingen.filter(a =>
       a.id !== id
     ))
   }
-  const TabelRij = ({item, verwijderGebr, goedkeurGebr}) => {
+  const voegInfoToe = (index, infoObje) => {
+    if(bestellingen[index+1] && infoObje.id == bestellingen[index+1].id){
+      setBestellingen(
+        bestellingen.filter((_, indx) => indx !== index+1)
+      );
+    }else{
+      setBestellingen([... bestellingen.slice(0, index+1),
+        infoObje,
+        ... bestellingen.slice(index+1)
+      ])
+    }
+  }
+  const TabelRij = ({item, verwijderGebr, goedkeurGebr, index}) => {
     let ex = []
     if(goedkeurGebr){
       ex.push(<button disabled={item.goedgekeurdDoorCoach} >Keur goed</button>)
@@ -147,20 +163,26 @@ export const Project = () => {
         <td>{item.aantal}</td>
         <td><a href={item.url}>link</a></td>
         <td>{item.winkelEnkelString}</td>
-        <td><button>Meer info</button></td>
+        <td><button onClick={() => {voegInfoToe(index, item)}}>Meer info</button></td>
         {ex}
       </tr>
     )
   }
-  returne.push(
-    bestellingen.map(item => (
-      <TabelRij item={item} verwijderGebr={userArr[3]==0} goedkeurGebr={userArr[3] in [0,1] }></TabelRij>
-    ))
+  tstuf.push(
+    bestellingen.map((item, index) => {
+      if(index != 0 && bestellingen[index-1].id == item.id){
+        return <tr>riiing ring ring</tr>
+      }else{
+        return <TabelRij item={item} verwijderGebr={userArr[3]==0} goedkeurGebr={userArr[3] in [0,1]} index={index}></TabelRij>
+      }})
   )
  
   return (
     <>
       {returne}
+      <table>
+        {tstuf}
+      </table>
     </>
   )
 
