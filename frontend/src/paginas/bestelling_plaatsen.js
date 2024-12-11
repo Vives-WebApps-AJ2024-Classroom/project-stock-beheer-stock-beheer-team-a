@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { winkels } from "./winkels"; // Import the winkels array
 
 // component voor bestellingen te plaatsen
 export const BestellingPlaatsen = () => {
   const [formData, setFormData] = useState({
     naam: "",
-    winkels: "",
+    Winkel: "",
     link: "",
     productcode: "",
     kostprijs: "",
@@ -13,6 +14,7 @@ export const BestellingPlaatsen = () => {
   });
 
   const [projectGroup, setProjectGroup] = useState("");
+  const [availableWinkels, setAvailableWinkels] = useState([]);
 
   useEffect(() => {
     let userArr; // Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
@@ -25,6 +27,9 @@ export const BestellingPlaatsen = () => {
     } catch {
       document.location = "/login";
     }
+
+    // Fetch winkels data
+    setAvailableWinkels(winkels);
   }, []);
 
   const handleChange = (e) => {
@@ -65,19 +70,22 @@ export const BestellingPlaatsen = () => {
           />
         </div>
         <div>
+          <label>Winkel:</label>
+          <select name="Winkel" value={formData.Winkel} onChange={handleChange}>
+            <option value="">Selecteer winkel</option>
+            {availableWinkels.map((winkel) => (
+              <option key={winkel.id} value={winkel.naam}>
+                {winkel.naam}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
           <label>Link:</label>
           <input
             type="text"
             name="link"
             value={formData.link}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>Winkels:</label>
-          <select
-            name="winkels"
-            value={formData.winkels}
             onChange={handleChange}
           />
         </div>
