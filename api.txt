@@ -1,21 +1,21 @@
 !!let op!! Datums in volgend formaat: yyyy-mm-dd
 
 get:
-/getBestellingen/projectId✅
-/getStudenten/projectId
-/getCoach/projectId
+/getBestellingen/:projectId✅
+/getStudenten/:projectId
+/getCoach/:projectId
 /winkels✅
 /getProject/:UID
 
 post:
-/maakWinkel/Naam/Specializatie/UID/PW✅
+/maakWinkel/:Naam/:Specializatie/:UID/:PW✅
     body: url   //Url in de url wordt wat moeilijk.
 /maakBestelling/:projID/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr/:geplaatstDoor
     winkelId = "null": De winkel zat niet in de lijst.
     body: url   //Url in de url wordt wat moeilijk.
 
 put:
-/keurGoed/bestellingId/UID/PW //check zeker dat de uid de coach van het project van deze besetelling is.✅
+/keurGoed/:bestellingId/:UID/:PW //check zeker dat de uid de coach van het project van deze besetelling is.✅
 /pasBestellingAanRestricted/:bestellingsId/:gebruikersId/:wachtwoord/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr
     winkelId = "null": De winkel zat niet in de lijst.
     body: url   //Url in de url wordt wat moeilijk.
@@ -25,6 +25,17 @@ put:
     body: url   //Url in de url wordt wat moeilijk.
     Enkel voor de Administrator
 
+delete:
+/delBestelling/:bestellingId/:uid/:pw        //kan enkel door leerlingen&coach als het nog niet goedgekeurd is of door de admin
+
 crud:
 /gebruikers (heeft voor aanpassende functies wachtwoord en gebruikersId van een Administrator of de gebruiker zelf nodig)
 
+
+routes van de frontend:
+/                                   Home met mss menu
+/login                              Mag aangepast worden
+/project/:pid                       pid = project id
+/winkels
+/geenToegang
+/bestelling/:pid(/:bid)             bid: bestellings id, als dit er is dan wordt het de bestelling aanpassen i.p.v. een nieuwe maken.

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import {CheckUserLS, getData, apiURL} from '../page-tools'
-import tool from "../page-tools"
 
 export const Project =  () => {
   let userArr 
@@ -132,7 +131,9 @@ export const Project =  () => {
   //-als je admin bent of het is nog niet goedgekeurd kan je verwijderen.
   let tstuf = []
   tstuf.push(<tr><th>Omschrijving</th><th>Betaald/kostprijs<br/>(excl. btw)</th><th>Ontvangen/goedgekeurd</th><th>Aantal</th><th>URL</th><th>Winkel</th><th>Bewerkingen</th></tr>)
-  const delBestelling = (id) => {
+  const delBestelling = async (id) => {
+    await getData(apiURL + `/delBestelling/${id}/${userArr[2]}/${userArr[1]}`)
+    console.log("VOEG NOG ERROR DETECTIE IN DE RESPONSE TOE HIER!")
     setBestellingen(bestellingen.filter(a =>
       a.id !== id
     ))

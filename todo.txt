@@ -3,11 +3,12 @@
 - Een globale menu balk in react zoals we gezien hebben in de les, met ook nog de ingelogde gebruikersnaam erop.
 Paginas(allemaal met minimale styling):
 - Login pagina
-- Bestellings pagina: Waar de leerlingen kunnen bestellingen plaatsen en aanpassen, en de admin kan bestelling en ontvanging registreren.✅
+- Bestellings pagina: Waar de leerlingen kunnen bestellingen plaatsen en aanpassen, en de admin kan bestelling en ontvanging registreren.
 - Querry pagina
 - Overzicht pagina team (hoeveel geld nog over, alle bestelligen, leerlingen, mogelijkheid goedkeuring bestelling voor de coach, als je wilt mag je grafieken en diagrammen invoegen)
 - Groep indelings pagina: waar administrators studenten in een team kunnen steken, en groepen aanmaken.
 - Log pagina waar men data van een bepaald tijdsberijk uit de log pagina haalt.
 - Winkel pagina, waar men de links van de toegelaten winkels vind. ✅
+- Home pagina met mischien een menu (basis)
 
 - Hierna is 1 persoon verantwoordelijk voor de styling op alle paginas en hij zorgt dat het consistent is, en past html code aan waar nodig (bv. elementen in een div zetten).
