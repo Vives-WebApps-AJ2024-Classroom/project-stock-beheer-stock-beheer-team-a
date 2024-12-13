@@ -1,3 +1,5 @@
+export const apiURL = "http://localhost:3001/api/"
+
 export let CheckUserLS = () => {
   let userArr //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
   try{
@@ -17,11 +19,16 @@ export let getData = async (url, body=null, method="get") => {
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
       }
-
-      const json = await response.json();
-      return json;
+      if(response.headers.get("content-type").indexOf("application/json") !== -1){
+        return await response.json();
+      }else{
+        return await response.text();
+      }
+      
   } catch (error) {
     console.error(error.message);
     return null;
   }
 }
+
+export default [apiURL, CheckUserLS, getData]

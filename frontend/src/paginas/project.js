@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
-import {CheckUserLS, getData} from '../page-tools'
+import {CheckUserLS, getData, apiURL} from '../page-tools'
+import tool from "../page-tools"
 
 export const Project =  () => {
   let userArr 
@@ -148,13 +149,13 @@ export const Project =  () => {
       ])
     }
   }
-  const keurGoed = async() => {
-    console.log(await getData("http://127.0.0.1:3001"))
+  const keurGoed = async (item) => {
+    console.log(await getData(apiURL+`keurGoed/${item.id}/${userArr[2]}/${userArr[1]}/`,null,"PUT"))
   }
   const TabelRij = ({item, verwijderGebr, goedkeurGebr, index}) => {
     let ex = []
     if(goedkeurGebr){
-      ex.push(<button disabled={item.goedgekeurdDoorCoach} onClick={()=>{keurGoed()}}>Keur goed</button>)
+      ex.push(<button disabled={item.goedgekeurdDoorCoach} onClick={()=>{keurGoed(item)}}>Keur goed</button>)
     }
     if(!item.goedgekeurdDoorCoach || verwijderGebr){
       ex.push(<button onClick={()=>{delBestelling(item.id)}}>Verwijder</button>)
