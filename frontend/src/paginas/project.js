@@ -8,7 +8,7 @@ export const Project = () => {
     userArr = CheckUserLS() //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
   } 
   
-  const bestel = getData("http://localhost:3001/api/getBestellingen/1");[
+  const bestel = getData("http://localhost:3001/api/getBestellingen/1") || [
     {
       "id": 1,
       "aanmaak": "2024-12-01 10:30:00",
@@ -139,6 +139,9 @@ export const Project = () => {
         ... bestellingen.slice(index+1)
       ])
     }
+  }
+  const keurGoed = ({item}) => {
+    console.log(getData("google.com"));
   }
   const TabelRij = ({item, verwijderGebr, goedkeurGebr, index}) => {
     let ex = []

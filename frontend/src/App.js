@@ -15,7 +15,11 @@ import { GeenToegang } from "./paginas/GeenToegang";
 import { BestellingPlaatsen } from "./paginas/bestelling_plaatsen";
 
 const App = () => {
-  let userArr = CheckUserLS()
+  console.log(window.location.pathname)
+  if(window.location.pathname!=="/login"){
+    let userArr = CheckUserLS()
+  }
+    
   let ProjectId = 1//getProjectByUser()
   return (
     <Router>

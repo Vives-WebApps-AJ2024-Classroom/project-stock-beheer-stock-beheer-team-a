@@ -11,7 +11,7 @@ export const CheckUserLS = () => {
   return userArr
 }
 
-async function getData(url, body=null, method="get") {
+export async function getData(url, body=null, method="get") {
     try {
       const response = await fetch(url,{method: method, body: body})
       if (!response.ok) {
