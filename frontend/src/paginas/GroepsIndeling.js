@@ -116,16 +116,19 @@ export const GroepsIndeling = () => {
     return( 
     <>
       <p>Hier kan je Selecteren welke gebruiker er in welk team zit, na selectie wordt het automatisch opgeslagen naar de server.</p>
-      <select size={gebruikerz.length +1} onChange={(e)=> {setUGeselecteerd(gebruikerz.filter(a => a.id == e.target.value)[0]); setPGeselecteerd((uGeselecteerd || {"id":-1}).projectId)}}>
-        <option value={-1}> </option>
+      <select size={gebruikerz.length +1} onChange={(e)=> {
+        let damdidadidam = gebruikerz.filter(a => a.id == e.target.value)[0] || {"id":-1,"projectId":-1}
+        setUGeselecteerd(damdidadidam);
+        setPGeselecteerd(damdidadidam.projectId || -1)}}>
+        <option value={-1}></option>
         {gebruikerz.map(gebr =>
-          <option value={gebr.id}>{gebr.voornaam + " " + gebr.achternaam}</option>
+          <option key={gebr.id} value={gebr.id}>{gebr.voornaam + " " + gebr.achternaam}</option>
         )}
       </select>
-      <select value={pGeselecteerd} size={projecteen.length +1} onChange={(e)=> {Opslaan((projecteen.filter(a => a.id == e.target.value)[0] || {"id":-1}).id)}}>
-        <option value={-1}> </option>
+      <select value={pGeselecteerd} size={projecteen.length +1} onChange={(e)=> {Opslaan((projecteen.filter(a => a.id == e.target.value)[0] || {"id":-1}).id); setPGeselecteerd(e.target.value)}}>
+        <option value={-1}>(geen team)</option>
         {projecteen.map(proj =>
-          <option value={proj.id}>{proj.naam}</option>
+          <option key={proj.id} value={proj.id}>{proj.naam}</option>
         )}
       </select>
     </>
