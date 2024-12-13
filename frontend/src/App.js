@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { CheckUserLS } from "./page-tools";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Link,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import {BrowserRouter as Router,Route,Routes, Link, useNavigate, useParams,} from "react-router-dom";
 import { Example } from "./paginas/example";
 import { Winkels } from "./paginas/winkels";
 import { Project } from "./paginas/project";
 import { GeenToegang } from "./paginas/GeenToegang";
 import { BestellingPlaatsen } from "./paginas/bestelling_plaatsen";
+import { GroepsIndeling } from "./paginas/GroepsIndeling";
 
 const App = () => {
   console.log(window.location.pathname)
@@ -27,6 +21,7 @@ const App = () => {
         <Link to="/bestelling/1">Bestelling plaatsen </Link> | 
         <Link to="/project/1" >Overzicht</Link> | 
         <Link to="/winkels">Winkels</Link> | 
+        <Link to="/groepsIndeling">groepsIndeling</Link> | 
         <button
           onClick={() => {
             setUser(0);
@@ -65,6 +60,7 @@ const App = () => {
         <Route path="/project/:projectId" element={<Project />} />
         <Route path="/geenToegang" element={<GeenToegang />} />
         <Route path="/bestelling/:projectId" element={<BestellingPlaatsen />} />
+        <Route path="/groepsIndeling" element={<GroepsIndeling />} />
       </Routes>
     </Router>
   );

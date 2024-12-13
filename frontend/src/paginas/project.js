@@ -3,10 +3,7 @@ import { useParams } from 'react-router-dom';
 import {CheckUserLS, getData, apiURL} from '../page-tools'
 
 export const Project =  () => {
-  let userArr 
-  if(window.location.pathname != "/login"){
-    userArr = CheckUserLS() //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
-  } 
+  let userArr = CheckUserLS() //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
 
   const [leden, setLeden] = useState([])
   const { projectId } = useParams();

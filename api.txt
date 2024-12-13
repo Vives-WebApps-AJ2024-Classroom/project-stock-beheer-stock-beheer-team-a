@@ -6,6 +6,7 @@ get:
 /getCoach/:projectId
 /winkels✅
 /getProject/:UID
+/getProjecten
 
 post:
 /maakWinkel/:Naam/:Specializatie/:UID/:PW✅
@@ -24,6 +25,7 @@ put:
     winkelId = "null": De winkel zat niet in de lijst.
     body: url   //Url in de url wordt wat moeilijk.
     Enkel voor de Administrator
+/steekGebruikerInProject/:uid/:pid/:adminid/:pw     //als pid gelijk is aan -1 dan mag je het project van de gebruiker op null zetten.
 
 delete:
 /delBestelling/:bestellingId/:uid/:pw        //kan enkel door leerlingen&coach als het nog niet goedgekeurd is of door de admin
