@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const port = 3001;
+const cors = require("cors")
 
 const bestellingRoutes = require("./routes/bestellingRoutes");
 const gebruikerRoutes = require("./routes/gebruikerRoutes");
@@ -8,6 +9,7 @@ const winkelRoutes = require("./routes/winkelRoutes");
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.use(cors())
 
 // Define a route for the root URL
 app.get("/", (req, res) => {

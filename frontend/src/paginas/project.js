@@ -1,123 +1,131 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import {CheckUserLS, getData} from '../page-tools'
 
-export const Project = () => {
+export const Project =  () => {
   let userArr 
   if(window.location.pathname != "/login"){
     userArr = CheckUserLS() //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
   } 
-  
-  const bestel = getData("http://localhost:3001/api/getBestellingen/1") || [
-    {
-      "id": 1,
-      "aanmaak": "2024-12-01 10:30:00",
-      "winkelId": 12,
-      "winkelEnkelString": "bal",
-      "aantal": 5,
-      "totaleKostPrijsExclBtw": 12500,
-      "url": "https://voorbeeld.com/artikel/1",
-      "leverTijd": 3,
-      "leveringsAdres": "Straatnaam 123, 1000 Brussel",
-      "omschrijving": "Laptop voor kantoor",
-      "artikelNr": "ART12345",
-      "projectId": 1,
-      "rqNummer": 9876543210,
-      "bestellingDoorFDGeplaatst": null,
-      "verwachteAankomst": null,
-      "bestellingOntvangen": null,
-      "werkelijkBetaald": null,
-      "opmerking": "Snelle levering gevraagd",
-      "goedgekeurdDoorCoach": true,
-    },
-    {
-      "id": 2,
-      "aanmaak": "2024-12-02 14:15:00",
-      "winkelId": null,
-      "winkelEnkelString": "Kleine buurtwinkel",
-      "aantal": 2,
-      "totaleKostPrijsExclBtw": 8000,
-      "url": "https://voorbeeld.com/artikel/2",
-      "leverTijd": 7,
-      "leveringsAdres": "Kerkstraat 45, 2000 Antwerpen",
-      "omschrijving": "Bureau lamp",
-      "artikelNr": "ART67890",
-      "projectId": 1,
-      "rqNummer": null,
-      "bestellingDoorFDGeplaatst": "2024-12-01",
-      "verwachteAankomst": "2024-12-08",
-      "bestellingOntvangen": null,
-      "werkelijkBetaald": null,
-      "opmerking": "Betaal bij levering",
-      "goedgekeurdDoorCoach": false,
-    },
-    {
-      "id": 3,
-      "aanmaak": "2024-12-03 09:00:00",
-      "winkelId": 15,
-      "winkelEnkelString": "bol",
-      "aantal": 10,
-      "totaleKostPrijsExclBtw": 5000,
-      "url": "https://voorbeeld.com/artikel/3",
-      "leverTijd": 5,
-      "leveringsAdres": "Hoofdstraat 78, 3000 Leuven",
-      "omschrijving": "Notitieboekjes",
-      "artikelNr": "ART98765",
-      "projectId": 1,
-      "rqNummer": 1234567890,
-      "bestellingDoorFDGeplaatst": "2024-12-02",
-      "verwachteAankomst": "2024-12-07",
-      "bestellingOntvangen": "2024-12-08",
-      "werkelijkBetaald": 5000,
-      "opmerking": "Levering op tijd essentieel",
-      "goedgekeurdDoorCoach": true,
-    }
-  ]//getBestellingen(project)
-  let gebruikers = [
-    {
-      "id": 1,
-      "voornaam": "Sofie",
-      "achternaam": "Janssens",
-      "email": "sofie.janssens@student.example.com",
-      "niveau": 2,
-      "projectId": 1,
-      "wachtwoord": "wachtwoord123"
-    },
-    {
-      "id": 2,
-      "voornaam": "Liam",
-      "achternaam": "De Smet",
-      "email": "liam.desmet@student.example.com",
-      "niveau": 2,
-      "projectId": 1,
-      "wachtwoord": "sterkWachtwoord456"
-    }]
-  //]//getUsers(project)
-  const Coach = {
-    "id": 3,
-    "voornaam": "Emma",
-    "achternaam": "Vermeulen",
-    "email": "emma.vermeulen@coach.example.com",
-    "niveau": 1,
-    "projectId": 1,
-    "wachtwoord": "veiligWachtwoord789"
-  }//getCoach(project)
-  
-  let toegang = true //Ongemachtigde gebruikers buitenschoppen.
-  if(userArr[3] == 2){
-    toegang = false
-    gebruikers.forEach((users)=>{
-      if(users.id == userArr[2])
-        toegang = true
-    })
-  }
-  if(!toegang || (userArr[3] == 1 && Coach.id != userArr[2]))
-    document.location = "/geenToegang"
 
+  const [leden, setLeden] = useState([])
   const { projectId } = useParams();
+  const [bestellingen, setBestellingen] = useState([])
+  useEffect(() => {
+    const serverConnect = async () => {
+      //let bestel = await getData("http://localhost:3001/api/getBestellingen/"+projectId)
+      let bestel = [
+        {
+          "id": 1,
+          "aanmaak": "2024-12-01 10:30:00",
+          "winkelId": 12,
+          "winkelEnkelString": "bal",
+          "aantal": 5,
+          "totaleKostPrijsExclBtw": 12500,
+          "url": "https://voorbeeld.com/artikel/1",
+          "leverTijd": 3,
+          "leveringsAdres": "Straatnaam 123, 1000 Brussel",
+          "omschrijving": "Laptop voor kantoor",
+          "artikelNr": "ART12345",
+          "projectId": 1,
+          "rqNummer": 9876543210,
+          "bestellingDoorFDGeplaatst": null,
+          "verwachteAankomst": null,
+          "bestellingOntvangen": null,
+          "werkelijkBetaald": null,
+          "opmerking": "Snelle levering gevraagd",
+          "goedgekeurdDoorCoach": true,
+        },
+        {
+          "id": 2,
+          "aanmaak": "2024-12-02 14:15:00",
+          "winkelId": null,
+          "winkelEnkelString": "Kleine buurtwinkel",
+          "aantal": 2,
+          "totaleKostPrijsExclBtw": 8000,
+          "url": "https://voorbeeld.com/artikel/2",
+          "leverTijd": 7,
+          "leveringsAdres": "Kerkstraat 45, 2000 Antwerpen",
+          "omschrijving": "Bureau lamp",
+          "artikelNr": "ART67890",
+          "projectId": 1,
+          "rqNummer": null,
+          "bestellingDoorFDGeplaatst": "2024-12-01",
+          "verwachteAankomst": "2024-12-08",
+          "bestellingOntvangen": null,
+          "werkelijkBetaald": null,
+          "opmerking": "Betaal bij levering",
+          "goedgekeurdDoorCoach": false,
+        },
+        {
+          "id": 3,
+          "aanmaak": "2024-12-03 09:00:00",
+          "winkelId": 15,
+          "winkelEnkelString": "bol",
+          "aantal": 10,
+          "totaleKostPrijsExclBtw": 5000,
+          "url": "https://voorbeeld.com/artikel/3",
+          "leverTijd": 5,
+          "leveringsAdres": "Hoofdstraat 78, 3000 Leuven",
+          "omschrijving": "Notitieboekjes",
+          "artikelNr": "ART98765",
+          "projectId": 1,
+          "rqNummer": 1234567890,
+          "bestellingDoorFDGeplaatst": "2024-12-02",
+          "verwachteAankomst": "2024-12-07",
+          "bestellingOntvangen": "2024-12-08",
+          "werkelijkBetaald": 5000,
+          "opmerking": "Levering op tijd essentieel",
+          "goedgekeurdDoorCoach": true,
+        }
+      ]
+      let gebruikers = [
+        {
+          "id": 1,
+          "voornaam": "Sofie",
+          "achternaam": "Janssens",
+          "email": "sofie.janssens@student.example.com",
+          "niveau": 2,
+          "projectId": 1,
+          "wachtwoord": "wachtwoord123"
+        },
+        {
+          "id": 2,
+          "voornaam": "Liam",
+          "achternaam": "De Smet",
+          "email": "liam.desmet@student.example.com",
+          "niveau": 2,
+          "projectId": 1,
+          "wachtwoord": "sterkWachtwoord456"
+        }]
+      let Coach = {
+          "id": 3,
+          "voornaam": "Emma",
+          "achternaam": "Vermeulen",
+          "email": "emma.vermeulen@coach.example.com",
+          "niveau": 1,
+          "projectId": 1,
+          "wachtwoord": "veiligWachtwoord789"
+        }
+      let toegang = true //Ongemachtigde gebruikers buitenschoppen.
+      if(userArr[3] == 2){
+        toegang = false
+        gebruikers.forEach((users)=>{
+          if(users.id == userArr[2])
+            toegang = true
+        })
+      }
+      if(!toegang || (userArr[3] == 1 && Coach.id != userArr[2])){
+        document.location = "/geenToegang"
+      }
+      setBestellingen(bestel)
+      setLeden(gebruikers.concat(Coach))
+    }
+    serverConnect()
+  }, []);
 
 
-  const [bestellingen, setBestellingen] = useState(bestel)
+
   //extras: 
   //-als je coach of admin bent kan je goedkeuren.
   //-als je admin bent of het is nog niet goedgekeurd kan je verwijderen.
@@ -140,13 +148,13 @@ export const Project = () => {
       ])
     }
   }
-  const keurGoed = ({item}) => {
-    console.log(getData("google.com"));
+  const keurGoed = async() => {
+    console.log(await getData("http://127.0.0.1:3001"))
   }
   const TabelRij = ({item, verwijderGebr, goedkeurGebr, index}) => {
     let ex = []
     if(goedkeurGebr){
-      ex.push(<button disabled={item.goedgekeurdDoorCoach} >Keur goed</button>)
+      ex.push(<button disabled={item.goedgekeurdDoorCoach} onClick={()=>{keurGoed()}}>Keur goed</button>)
     }
     if(!item.goedgekeurdDoorCoach || verwijderGebr){
       ex.push(<button onClick={()=>{delBestelling(item.id)}}>Verwijder</button>)
@@ -182,7 +190,7 @@ export const Project = () => {
       </table>
       <p>Leden:</p>
       <ul>
-        {gebruikers.concat(Coach).map(user => {
+        {leden.map(user => {
           return <li>{user.voornaam} {user.achternaam}: {user.niveau==1? "Coach":"Student"}</li>
         })}
       </ul>
