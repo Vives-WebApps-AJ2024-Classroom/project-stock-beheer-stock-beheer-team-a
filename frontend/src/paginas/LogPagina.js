@@ -273,7 +273,7 @@ export const LogPagina = () => {
           </select>
           <label>Van welk project?</label>
           <select value={pGeselecteerd} size={20} onChange={(e)=> {setPGeselecteerd(e.target.value)}}>
-            <option value={-1}>(Alles)</option>
+            <option value={-1}>(alles)</option>
             {projecten.map(proj =>
               <option key={proj.id} value={proj.id}>{proj.naam}</option>
             )}
@@ -290,6 +290,20 @@ export const LogPagina = () => {
           <label>eind datum:</label>
           <input type="date" onChange={e => setEindDatum(e.target.value)}></input>
           <button onClick={() => updateQuerris()}>Haal resultaten op</button>
+          <table>
+            <tbody>
+              <tr>
+                <th>tijdstip</th>
+                <th>querry</th>
+              </tr>
+              {logResultaat.map(o =>
+                <tr>
+                  <td>{o.moment}</td>
+                  <td>{o.querry}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </>
         
         )

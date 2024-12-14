@@ -7,7 +7,7 @@ Paginas(allemaal met minimale styling):
 - Querry pagina
 - Overzicht pagina team (hoeveel geld nog over, alle bestelligen, leerlingen, mogelijkheid goedkeuring bestelling voor de coach, als je wilt mag je grafieken en diagrammen invoegen)✅(nog api invoegen)
 - Groep indelings pagina: waar administrators studenten in een team kunnen steken, en groepen aanmaken.✅(nog api invoegen)
-- Log pagina waar men data van een bepaald tijdsberijk uit de log pagina haalt.
+- Log pagina waar men data van een bepaald tijdsberijk uit de log pagina haalt.✅(nog api invoegen)
 - Winkel pagina, waar men de links van de toegelaten winkels vind. ✅
 - Home pagina met mischien een menu (basis)
 - Project aanmaak pagina (basis)
