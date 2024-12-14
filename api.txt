@@ -16,6 +16,7 @@ post:
 /maakBestelling/:projID/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr/:geplaatstDoor
     winkelId = "null": De winkel zat niet in de lijst.
     body: url   //Url in de url wordt wat moeilijk.
+/maakProject/:naam/:maxeuro/:uid/:pw    
 
 put:
 /keurGoed/:bestellingId/:UID/:PW //check zeker dat de uid de coach van het project van deze besetelling is.✅

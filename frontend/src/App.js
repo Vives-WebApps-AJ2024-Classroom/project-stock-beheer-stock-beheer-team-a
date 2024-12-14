@@ -9,6 +9,7 @@ import { BestellingPlaatsen } from "./paginas/bestelling_plaatsen";
 import { GroepsIndeling } from "./paginas/GroepsIndeling";
 import { LogPagina } from "./paginas/LogPagina";
 import { Home } from "./paginas/Home";
+import { ProjectCreatie } from "./paginas/project_aanmaken";
 
 const App = () => {
   console.log(window.location.pathname)
@@ -26,6 +27,7 @@ const App = () => {
         <Link to="/groepsIndeling">groepsIndeling</Link> | 
         <Link to="/logPagina">log pagina</Link> | 
         <Link to="/home">home</Link> | 
+        <Link to="/projectCreatie">maak project</Link> | 
         <button
           onClick={() => {
             setUser(0);
@@ -67,6 +69,7 @@ const App = () => {
         <Route path="/groepsIndeling" element={<GroepsIndeling />} />
         <Route path="/logPagina" element={<LogPagina />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/projectCreatie" element={<ProjectCreatie />} />
       </Routes>
     </Router>
   );

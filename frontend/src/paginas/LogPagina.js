@@ -19,13 +19,14 @@ export const LogPagina = () => {
     const [beginDatum, setBeginDatum] = useState(new Date().toISOString().split('T')[0])
     const [eindDatum, setEindDatum] = useState(new Date().toISOString().split('T')[0])
     const [logResultaat, setLogResultaat] = useState([])
+    if(userArr[3] != 0){//niet administrators buitenschoppen.
+      document.location = "/geenToegang"
+    }
     useEffect(() => {
         const serverConnect = async () => {
 
-          if(userArr[3] != 0){//niet administrators buitenschoppen.
-            document.location = "/geenToegang"
-          }
-          //let bestel = await getData("http://localhost:3001/api/getBestellingen/"+projectId)
+
+          //let bestel = await getData(apiURL +"getBestellingen/"+projectId)
           let gebruikers = [
             {
               "id": 1,
