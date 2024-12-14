@@ -20,6 +20,8 @@ post:
 
 put:
 /keurGoed/:bestellingId/:UID/:PW //check zeker dat de uid de coach van het project van deze besetelling is.✅
+/keurAf/:bestellingId/:UID/:PW/:reden //check zeker dat de uid de coach van het project van deze besetelling is.✅
+/ontKeur/:bestellingId/:UID/:PW //zet goedgekeurd veld terug op null
 /pasBestellingAanRestricted/:bestellingsId/:gebruikersId/:wachtwoord/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr
     winkelId = "null": De winkel zat niet in de lijst.
     body: url   //Url in de url wordt wat moeilijk.

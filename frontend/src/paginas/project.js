@@ -150,10 +150,23 @@ export const Project =  () => {
   const keurGoed = async (item) => {
     console.log(await getData(apiURL+`keurGoed/${item.id}/${userArr[2]}/${userArr[1]}/`,null,"PUT"))
   }
+  const keurAf = async (item) => {
+    let reden = prompt("Wat is de reden");
+    console.log(await getData(apiURL+`keurAf/${item.id}/${userArr[2]}/${userArr[1]}/`+reden,null,"PUT"))
+  }
+  const ontKeur = async (item) => {
+    console.log(await getData(apiURL+`ontKeur/${item.id}/${userArr[2]}/${userArr[1]}/`,null,"PUT"))
+  }
+
   const TabelRij = ({item, verwijderGebr, goedkeurGebr, index}) => {
     let ex = []
     if(goedkeurGebr){
-      ex.push(<button disabled={item.goedgekeurdDoorCoach} onClick={()=>{keurGoed(item)}}>Keur goed</button>)
+      if(item.goedgekeurdDoorCoach){
+        ex.push(<button onClick={()=>{ontKeur(item)}}>Op afwachting zetten</button>)
+      }else{
+        ex.push(<button onClick={()=>{keurGoed(item)}}>Keur goed</button>)
+        ex.push(<button onClick={()=>{keurAf(item)}}>Keur af</button>)
+      }
     }
     if(!item.goedgekeurdDoorCoach || verwijderGebr){
       ex.push(<button onClick={()=>{delBestelling(item.id)}}>Verwijder</button>)
@@ -162,7 +175,7 @@ export const Project =  () => {
       <tr>
         <td>{item.omschrijving}</td>
         <td>{item.werkelijkBetaald/100 || item.totaleKostPrijsExclBtw/100}</td>
-        <td>{item.bestellingOntvangen || (item.goedgekeurdDoorCoach ? "goedgekeurd": "niet goedgekeurd")}</td>
+        <td>{item.bestellingOntvangen || (item.goedgekeurdDoorCoach==null ? "goedkeuring in afwachting" : (item.goedgekeurdDoorCoach ? "goedgekeurd": "niet goedgekeurd"))}</td>
         <td>{item.aantal}</td>
         <td><a href={item.url}>link</a></td>
         <td>{item.winkelEnkelString}</td>
