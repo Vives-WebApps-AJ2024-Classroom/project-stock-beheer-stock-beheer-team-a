@@ -13,21 +13,31 @@ import { ProjectCreatie } from "./paginas/project_aanmaken";
 
 const App = () => {
   console.log(window.location.pathname)
+  let userArr
   if(window.location.pathname!=="/login"){
-    let userArr = CheckUserLS()
+    userArr = CheckUserLS()
   }
     
   let ProjectId = 1//getProjectByUser()
+  let extra = [];
+  if(userArr[3] === 0){
+    extra.push(
+    <>
+        <Link to="/groepsIndeling">groepsIndeling</Link> | 
+        <Link to="/logPagina">log pagina</Link> |       
+        <Link to="/projectCreatie">maak project</Link> | 
+    </>)
+  }
   return (
     <Router>
       <nav>
-        <Link to="/bestelling/1">Bestelling plaatsen </Link> | 
-        <Link to="/project/1" >Overzicht</Link> | 
-        <Link to="/winkels">Winkels</Link> | 
-        <Link to="/groepsIndeling">groepsIndeling</Link> | 
-        <Link to="/logPagina">log pagina</Link> | 
+        <Link to={'/bestelling/'+ProjectId}>Bestelling plaatsen </Link> | 
         <Link to="/home">home</Link> | 
-        <Link to="/projectCreatie">maak project</Link> | 
+        <Link to={'/project/'+ProjectId}>Overzicht</Link> | 
+        <Link to="/winkels">Winkels</Link> | 
+        {extra}
+
+
         <button
           onClick={() => {
             setUser(0);
