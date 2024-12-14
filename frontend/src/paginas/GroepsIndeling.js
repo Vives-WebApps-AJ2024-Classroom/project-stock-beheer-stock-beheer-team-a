@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import {CheckUserLS, getData, apiURL} from '../page-tools'
-//indeling: 
-/*
-Selection box met gebruikers
-Lijst met geselecteerd project voor die gebruiker
-Geselecteerd project staat ook in een tekst vak, slaat automatisch op bij aanklikken in de lijst.
-*/
-
 
 export const GroepsIndeling = () => {
-    let returne = []
     let userArr = CheckUserLS() //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
     const [projecteen, setProjecten] = useState([])
     const [gebruikerz, setGebruikers] = useState([])

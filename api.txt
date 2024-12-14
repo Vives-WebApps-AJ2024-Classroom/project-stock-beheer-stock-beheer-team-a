@@ -7,6 +7,8 @@ get:
 /winkels✅
 /getProject/:UID
 /getProjecten
+/getBestellingen
+/getQuerries/:beginDatum/:eindDatum/:projectID/:bestellingID/:gebruikerID   //alle IDs kunnen null (=-1) zijn
 
 post:
 /maakWinkel/:Naam/:Specializatie/:UID/:PW✅
@@ -41,3 +43,4 @@ routes van de frontend:
 /winkels
 /geenToegang
 /bestelling/:pid(/:bid)             bid: bestellings id, als dit er is dan wordt het de bestelling aanpassen i.p.v. een nieuwe maken.
+/logPagina

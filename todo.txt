@@ -1,4 +1,4 @@
-- react express app maken die de endpoints heeft en de code om alles in de database op te slaan.
+- node express app maken die de endpoints heeft en de code om alles in de database op te slaan.
 - Een login mechanisme (waar men kan een account aanmaken via een email, mag met een plugin/service, als deze een extra veld in de database vereisen dan kan je die gerust bijmaken)
 - Een globale menu balk in react zoals we gezien hebben in de les, met ook nog de ingelogde gebruikersnaam erop.
 Paginas(allemaal met minimale styling):

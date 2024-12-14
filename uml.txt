@@ -64,6 +64,7 @@ LogAanpassing:
 | id            | int(11)      | NO   | PRI | NULL    | auto_increment |
 | gebruikersId  | int(11)      | NO   |     | NULL    |                |
 | moment        | datetime     | NO   |     | NULL    |                |
-| bestellingsId | int(11)      | NO   |     | NULL    |                |
-| querry        | varchar(120) | NO   |     | NULL    |                |
+| bestellingsId | int(11)      | YES  |     | NULL    |                |
+| querry        | varchar(200) | NO   |     | NULL    |                |
+| projectId     | int(11)      | YES  |     | NULL    |                |
 +---------------+--------------+------+-----+---------+----------------+
