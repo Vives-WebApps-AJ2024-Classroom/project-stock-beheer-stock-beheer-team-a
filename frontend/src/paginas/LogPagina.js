@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {CheckUserLS, getData, apiURL} from '../page-tools'
 //indeling: 
 /*
@@ -9,7 +9,7 @@ Knop voor elementen op te halen.
 */
 
 export const LogPagina = () => {
-    let userArr = CheckUserLS() //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
+    let userArr = CheckUserLS(useNavigate()) //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
     const [gebruikerz, setGebruikers] = useState([])
     const [uGeselecteerd, setUGeselecteerd] = useState(-1);
     const [bestellingen, setBestellingen] = useState([])

@@ -1,0 +1,23 @@
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=roet
+      - MYSQL_DATABASE=stock-beheer
+    volumes:
+      - /var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8000:80"
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    environment:
+      - PHPMYADMIN_URL=phpmyadmin

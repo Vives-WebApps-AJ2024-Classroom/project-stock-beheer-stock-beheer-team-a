@@ -1,6 +1,6 @@
 export const apiURL = "http://localhost:3001/api/"
 
-export let CheckUserLS = () => {
+export let CheckUserLS = (navigate) => {
   let userArr //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
   try{
     userArr = JSON.parse(sessionStorage.getItem("user"))
@@ -8,7 +8,7 @@ export let CheckUserLS = () => {
       throw new Error("Session storage niet in juiste fomaat.")
     }
   }catch{
-    document.location = "/login"
+    navigate("/login")
   }
   return userArr
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CheckUserLS } from "./page-tools";
-import {BrowserRouter as Router,Route,Routes, Link, useNavigate, useParams,} from "react-router-dom";
+import {BrowserRouter as Router,Route,Routes, Link, useNavigate, useParams } from "react-router-dom";
 import { Example } from "./paginas/example";
 import { Winkels } from "./paginas/winkels";
 import { Project } from "./paginas/project";
@@ -12,31 +12,35 @@ import { Home } from "./paginas/Home";
 import { ProjectCreatie } from "./paginas/project_aanmaken";
 
 const App = () => {
-  console.log(window.location.pathname)
+  var phpmyadminURL = process.env.PHPMYADMIN_URL
   let userArr
+  let ProjectId = 1
+  const navigate = useNavigate();
+  let extra = [];
   if(window.location.pathname!=="/login"){
-    userArr = CheckUserLS()
+    userArr = CheckUserLS(navigate)
+    //getProjectByUser()
+    if(userArr[3] === 0){
+      extra.push(
+      <>
+          <Link to="/groepsIndeling">groepsIndeling</Link> | 
+          <Link to="/logPagina">log pagina</Link> |       
+          <Link to="/projectCreatie">maak project</Link> | 
+      </>)
+    }
   }
     
-  let ProjectId = 1//getProjectByUser()
-  let extra = [];
-  if(userArr[3] === 0){
-    extra.push(
-    <>
-        <Link to="/groepsIndeling">groepsIndeling</Link> | 
-        <Link to="/logPagina">log pagina</Link> |       
-        <Link to="/projectCreatie">maak project</Link> | 
-    </>)
-  }
+
   return (
-    <Router>
+    <>
+      
       <nav>
         <Link to={'/bestelling/'+ProjectId}>Bestelling plaatsen </Link> | 
         <Link to="/home">home</Link> | 
         <Link to={'/project/'+ProjectId}>Overzicht</Link> | 
         <Link to="/winkels">Winkels</Link> | 
         {extra}
-
+        {(phpmyadminURL !== null)} : <><Link to={phpmyadminURL}>Php my admin</Link></>
 
         <button
           onClick={() => {
@@ -70,18 +74,20 @@ const App = () => {
           Loguit
         </button>
       </nav>
-      <Routes>
-        <Route path="/" element={<Example />} />
-        <Route path="/winkels" element={<Winkels />} />
-        <Route path="/project/:projectId" element={<Project />} />
-        <Route path="/geenToegang" element={<GeenToegang />} />
-        <Route path="/bestelling/:projectId" element={<BestellingPlaatsen />} />
-        <Route path="/groepsIndeling" element={<GroepsIndeling />} />
-        <Route path="/logPagina" element={<LogPagina />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/projectCreatie" element={<ProjectCreatie />} />
-      </Routes>
-    </Router>
+      
+        <Routes>   
+          <Route path="/" element={<Example />} />
+          <Route path="/winkels" element={<Winkels />} />
+          <Route path="/project/:projectId" element={<Project />} />
+          <Route path="/geenToegang" element={<GeenToegang />} />
+          <Route path="/bestelling/:projectId" element={<BestellingPlaatsen />} />
+          <Route path="/groepsIndeling" element={<GroepsIndeling />} />
+          <Route path="/logPagina" element={<LogPagina />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/projectCreatie" element={<ProjectCreatie />} />
+          <Route path="/login" element={<Example />} />    
+        </Routes>
+    </>
   );
 };
 
