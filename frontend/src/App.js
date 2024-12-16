@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CheckUserLS } from "./page-tools";
-import {BrowserRouter as Router,Route,Routes, Link, useNavigate, useParams } from "react-router-dom";
+import {BrowserRouter as Router,Route,Routes,useNavigate, useParams } from "react-router-dom";
 import { Example } from "./paginas/example";
 import { Winkels } from "./paginas/winkels";
 import { Project } from "./paginas/project";
@@ -11,36 +11,40 @@ import { LogPagina } from "./paginas/LogPagina";
 import { Home } from "./paginas/Home";
 import { ProjectCreatie } from "./paginas/project_aanmaken";
 
-const App = () => {
+
+const RouterApp = () => {
+  const [extra, setExtra] = useState([])
   var phpmyadminURL = process.env.PHPMYADMIN_URL
-  let userArr
+  const [userArr, setUserArray] = useState(["","",0,2])
   let ProjectId = 1
   const navigate = useNavigate();
-  let extra = [];
-  if(window.location.pathname!=="/login"){
-    userArr = CheckUserLS(navigate)
-    //getProjectByUser()
-    if(userArr[3] === 0){
-      extra.push(
-      <>
-          <Link to="/groepsIndeling">groepsIndeling</Link> | 
-          <Link to="/logPagina">log pagina</Link> |       
-          <Link to="/projectCreatie">maak project</Link> | 
-      </>)
+  useEffect(() => {
+    const LoadUser = () => {
+      if(window.location.pathname!=="/login"){
+        setUserArray(CheckUserLS(navigate))
+        //getProjectByUser()
+        if(userArr[3] === 0){
+          setExtra(
+          <>
+              <a href="/groepsIndeling">groepsIndeling</a> | 
+              <a href="/logPagina">log pagina</a> |       
+              <a href="/projectCreatie">maak project</a> | 
+          </>)
+        }
+        if(phpmyadminURL != null){
+          setExtra([... extra, <a href={phpmyadminURL}>Php my admin</a>])
+        }
+      }
     }
-  }
-    
-
+    LoadUser()})
   return (
     <>
-      
       <nav>
-        <Link to={'/bestelling/'+ProjectId}>Bestelling plaatsen </Link> | 
-        <Link to="/home">home</Link> | 
-        <Link to={'/project/'+ProjectId}>Overzicht</Link> | 
-        <Link to="/winkels">Winkels</Link> | 
+        <a href={'/bestelling/'+ProjectId}>Bestelling plaatsen </a> | 
+        <a href="/home">home</a> | 
+        <a href={'/project/'+ProjectId}>Overzicht</a> | 
+        <a href="/winkels">Winkels</a> | 
         {extra}
-        {(phpmyadminURL !== null)} : <><Link to={phpmyadminURL}>Php my admin</Link></>
 
         <button
           onClick={() => {
@@ -74,7 +78,6 @@ const App = () => {
           Loguit
         </button>
       </nav>
-      
         <Routes>   
           <Route path="/" element={<Example />} />
           <Route path="/winkels" element={<Winkels />} />
@@ -101,4 +104,12 @@ const setUser = (wie) => {
   document.location = document.location; //soft refresh
 };
 
+const App = () => {
+  return(
+    <Router>
+      <RouterApp></RouterApp>
+    </Router>
+  )
+
+}
 export default App;

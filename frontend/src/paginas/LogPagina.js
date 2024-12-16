@@ -9,7 +9,8 @@ Knop voor elementen op te halen.
 */
 
 export const LogPagina = () => {
-    let userArr = CheckUserLS(useNavigate()) //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
+    const navigatie = useNavigate()
+    let userArr = ["","",0,2] //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
     const [gebruikerz, setGebruikers] = useState([])
     const [uGeselecteerd, setUGeselecteerd] = useState(-1);
     const [bestellingen, setBestellingen] = useState([])
@@ -19,12 +20,14 @@ export const LogPagina = () => {
     const [beginDatum, setBeginDatum] = useState(new Date().toISOString().split('T')[0])
     const [eindDatum, setEindDatum] = useState(new Date().toISOString().split('T')[0])
     const [logResultaat, setLogResultaat] = useState([])
-    if(userArr[3] != 0){//niet administrators buitenschoppen.
-      document.location = "/geenToegang"
-    }
+    
+
     useEffect(() => {
         const serverConnect = async () => {
-
+          userArr = CheckUserLS(navigatie)
+          if(userArr[3] != 0){//niet administrators buitenschoppen.
+            navigatie("/geenToegang")
+          }
 
           //let bestel = await getData(apiURL +"getBestellingen/"+projectId)
           let gebruikers = [

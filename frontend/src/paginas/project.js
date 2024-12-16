@@ -3,13 +3,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import {CheckUserLS, getData, apiURL} from '../page-tools'
 
 export const Project =  () => {
-  let userArr = CheckUserLS(useNavigate()) //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
-
   const [leden, setLeden] = useState([])
   const { projectId } = useParams();
   const [bestellingen, setBestellingen] = useState([])
+  const [userArr, setUserArray] = useState(["","",0,2])
+  let navigation = useNavigate()
   useEffect(() => {
-    const serverConnect = async () => {
+    const ServerConnect = async () => {
+      setUserArray(CheckUserLS(navigation))
+      
       //let bestel = await getData("http://localhost:3001/api/getBestellingen/"+projectId)
       let bestel = [
         {
@@ -113,12 +115,12 @@ export const Project =  () => {
         })
       }
       if(!toegang || (userArr[3] == 1 && Coach.id != userArr[2])){
-        document.location = "/geenToegang"
+        navigation("/geenToegang")
       }
       setBestellingen(bestel)
       setLeden(gebruikers.concat(Coach))
     }
-    serverConnect()
+    ServerConnect()
   }, []);
 
 

@@ -4,7 +4,10 @@ import {CheckUserLS, getData, apiURL} from '../page-tools'
 import teama from "../teama.jpg"
 
 export const Home = () => {
-    let userArr = CheckUserLS(useNavigate()) //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
+    let nav = useNavigate()
+    useEffect(()=> {
+        CheckUserLS(nav)
+    })
     return(
         <>
         <h1>Welkom op de stock </h1>

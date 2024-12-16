@@ -8,6 +8,7 @@ export const GroepsIndeling = () => {
     const [gebruikerz, setGebruikers] = useState([])
     const [uGeselecteerd, setUGeselecteerd] = useState(-1);
     const [pGeselecteerd, setPGeselecteerd] = useState(-1);
+    const navigate = useNavigate()
     useEffect(() => {
         const serverConnect = async () => {
           //let bestel = await getData("http://localhost:3001/api/getBestellingen/"+projectId)
@@ -91,7 +92,7 @@ export const GroepsIndeling = () => {
     }
             ]
           if(userArr[3] != 0){//niet administrators buitenschoppen.
-            document.location = "/geenToegang"
+            navigate("/geenToegang")
           }
           setProjecten(projecten)
           setGebruikers(gebruikers)

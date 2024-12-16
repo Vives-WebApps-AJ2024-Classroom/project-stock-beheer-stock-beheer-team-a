@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import {CheckUserLS, getData, apiURL} from '../page-tools'
-import teama from "../teama.jpg"
 
 export const ProjectCreatie = () => {
     let userArr = CheckUserLS(useNavigate()) //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
-    if(userArr[3] != 0){//niet administrators buitenschoppen.
-        document.location = "/geenToegang"
-    }
+
+    useEffect(()=>{
+        const Check = () => {
+            if(userArr[3] != 0){//niet administrators buitenschoppen.
+                document.location = "/geenToegang"
+            }
+        }
+        Check()
+    },[])
     const [naam, setNaam] = useState("")
     const [maxBudget, setMaxBudget] = useState(0)
     return(

@@ -1,7 +1,7 @@
 export const apiURL = "http://localhost:3001/api/"
 
 export let CheckUserLS = (navigate) => {
-  let userArr //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
+  let userArr//Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
   try{
     userArr = JSON.parse(sessionStorage.getItem("user"))
     if(userArr.length != 4){
@@ -10,7 +10,7 @@ export let CheckUserLS = (navigate) => {
   }catch{
     navigate("/login")
   }
-  return userArr
+  return userArr || ["","",0,2]
 }
 
 export let getData = async (url, body=null, method="get") => {
