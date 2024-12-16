@@ -14,7 +14,7 @@ import { ProjectCreatie } from "./paginas/project_aanmaken";
 
 const RouterApp = () => {
   const [extra, setExtra] = useState([])
-  var phpmyadminURL = process.env.PHPMYADMIN_URL
+  var phpmyadminURL = process.env.REACT_APP_PHPMYADMIN_URL
   const [userArr, setUserArray] = useState(["","",0,2])
   let ProjectId = 1
   const navigate = useNavigate();
@@ -29,10 +29,8 @@ const RouterApp = () => {
               <a href="/groepsIndeling">groepsIndeling</a> | 
               <a href="/logPagina">log pagina</a> |       
               <a href="/projectCreatie">maak project</a> | 
+              {phpmyadminURL ? <><a href={phpmyadminURL}>Php my admin</a> | </> : <></>}
           </>)
-        }
-        if(phpmyadminURL != null){
-          setExtra([... extra, <a href={phpmyadminURL}>Php my admin</a>])
         }
       }
     }
