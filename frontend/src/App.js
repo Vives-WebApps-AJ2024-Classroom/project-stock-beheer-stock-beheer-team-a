@@ -12,6 +12,7 @@ import { Home } from "./paginas/Home";
 import { ProjectCreatie } from "./paginas/project_aanmaken";
 
 
+
 const RouterApp = () => {
   const [extra, setExtra] = useState([])
   var phpmyadminURL = process.env.REACT_APP_PHPMYADMIN_URL
@@ -77,7 +78,7 @@ const RouterApp = () => {
         </button>
       </nav>
         <Routes>   
-          <Route path="/" element={<Example />} />
+          
           <Route path="/winkels" element={<Winkels />} />
           <Route path="/project/:projectId" element={<Project />} />
           <Route path="/geenToegang" element={<GeenToegang />} />
@@ -86,7 +87,8 @@ const RouterApp = () => {
           <Route path="/logPagina" element={<LogPagina />} />
           <Route path="/home" element={<Home />} />
           <Route path="/projectCreatie" element={<ProjectCreatie />} />
-          <Route path="/login" element={<Example />} />    
+          <Route path="/login" element={<Example />} />
+          <Route path="/" element={<Example />} />    
         </Routes>
     </>
   );
