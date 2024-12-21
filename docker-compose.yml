@@ -5,8 +5,13 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=roet
       - MYSQL_DATABASE=stock-beheer
+      - MYSQL_USER=stock
+      - MYSQL_PASSWORD=stock
     volumes:
       - /var/lib/mysql
+    ports:
+      - "3306:3306"
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
@@ -15,9 +20,25 @@ services:
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=db
+
+  backend:
+    depends_on: 
+      - db
+    build: ./backend
+    ports:
+      - "3001:3001"
+    environment:
+      - PHPMYADMIN_URL=phpmyadmin
+      - DB_HOST=db
+      - DB_USER=stock
+      - DB_PASS=stock
+      - DB_DTBS=stock-beheer
+      - DB_PORT=3306
+
   frontend:
     build: ./frontend
     ports:
       - "8080:3000"
     environment:
-      - PHPMYADMIN_URL=phpmyadmin
+      - REACT_APP_PHPMYADMIN_URL=phpmyadmin
+      - REACT_APP_BACKEND_URL=backend:3001/api

@@ -16,6 +16,8 @@ import { ProjectCreatie } from "./paginas/project_aanmaken";
 const RouterApp = () => {
   const [extra, setExtra] = useState([])
   var phpmyadminURL = process.env.REACT_APP_PHPMYADMIN_URL
+  var backendURL = process.env.REACT_APP_BACKEND_URL
+  console.log(backendURL, phpmyadminURL)
   const [userArr, setUserArray] = useState(["","",0,2])
   let ProjectId = 1
   const navigate = useNavigate();
