@@ -10,7 +10,9 @@ export const Project =  () => {
   let navigation = useNavigate()
   useEffect(() => {
     const ServerConnect = async () => {
-      setUserArray(CheckUserLS(navigation))
+      let arata = CheckUserLS(navigation)
+      setUserArray(arata)
+      console.log("r:",CheckUserLS(navigation))
       
       //let bestel = await getData("http://localhost:3001/api/getBestellingen/"+projectId)
       let bestel = [
@@ -106,15 +108,16 @@ export const Project =  () => {
           "projectId": 1,
           "wachtwoord": "veiligWachtwoord789"
         }
+      console.log(arata)
       let toegang = true //Ongemachtigde gebruikers buitenschoppen.
-      if(userArr[3] == 2){
+      if(arata[3] == 2){
         toegang = false
         gebruikers.forEach((users)=>{
-          if(users.id == userArr[2])
+          if(users.id == arata[2])
             toegang = true
         })
       }
-      if(!toegang || (userArr[3] == 1 && Coach.id != userArr[2])){
+      if(!toegang || (arata[3] == 1 && Coach.id != arata[2])){
         navigation("/geenToegang")
       }
       setBestellingen(bestel)
