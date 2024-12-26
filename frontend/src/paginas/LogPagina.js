@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import {CheckUserLS, getData, apiURL} from '../page-tools'
+import {CheckUserLS, getData, apiURL} from '../page-tools';
+import "../styles/stylesLog.css"; // Link naar de CSS file
+
 //indeling: 
 /*
 Selecteerbare lijst voor projecten in terug te vinden.
@@ -265,50 +267,52 @@ export const LogPagina = () => {
         ]
         setLogResultaat(resultaten.filter(o => (o.bestellingsId == bGeselecteerd || bGeselecteerd == -1) && (o.projectId == pGeselecteerd || pGeselecteerd == -1) && (o.gebruikersId == uGeselecteerd || uGeselecteerd == -1)))
       }
-      return( 
-        <>
-          <p>Bekijk sql querries van een bepaald tijds berijk.</p>
-          <label>Van welke gebruiker?</label>
-          <select value={uGeselecteerd} size={20} onChange={(e)=> {setUGeselecteerd(e.target.value)}}>
-            <option value={-1}>(onafhankelijk)</option>
-            {gebruikerz.map(gebr =>
-              <option key={gebr.id} value={gebr.id}>{gebr.voornaam + " " + gebr.achternaam}</option>
-            )}
-          </select>
-          <label>Van welk project?</label>
-          <select value={pGeselecteerd} size={20} onChange={(e)=> {setPGeselecteerd(e.target.value)}}>
-            <option value={-1}>(alles)</option>
-            {projecten.map(proj =>
-              <option key={proj.id} value={proj.id}>{proj.naam}</option>
-            )}
-          </select>
-          <label>Welke bestelling?</label>
-          <select value={bGeselecteerd} size={20} onChange={(e)=> {setBGeselecteerd(e.target.value)}}>
-            <option value={-1}>(onafhankelijk)</option>
-            {bestellingen.filter(a => a.projectId == pGeselecteerd).map(best =>
-              <option key={best.id} value={best.id}>{best.id}: {best.omschrijving}</option>
-            )}
-          </select>
-          <label>begin datum:</label>
-          <input type="date" onChange={e => setBeginDatum(e.target.value)}></input>
-          <label>eind datum:</label>
-          <input type="date" onChange={e => setEindDatum(e.target.value)}></input>
-          <button onClick={() => updateQuerris()}>Haal resultaten op</button>
-          <table>
-            <tbody>
-              <tr>
-                <th>tijdstip</th>
-                <th>querry</th>
-              </tr>
-              {logResultaat.map(o =>
-                <tr>
-                  <td>{o.moment}</td>
-                  <td>{o.querry}</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </>
-        
-        )
-}
+
+    return (
+        <div className="log-container">
+            <p>Bekijk sql query's van een bepaald tijdsberijk.</p>
+            <div className="input-row">
+                <label className="label">Van welke gebruiker?</label>
+                <select value={uGeselecteerd} size={5} onChange={(e) => { setUGeselecteerd(e.target.value) }}>
+                    <option value={-1}>(onafhankelijk)</option>
+                    {gebruikerz.map(gebr =>
+                        <option key={gebr.id} value={gebr.id}>{gebr.voornaam + " " + gebr.achternaam}</option>
+                    )}
+                </select>
+                <label className="label">Van welk project?</label>
+                <select value={pGeselecteerd} size={5} onChange={(e) => { setPGeselecteerd(e.target.value) }}>
+                    <option value={-1}>(alles)</option>
+                    {projecten.map(proj =>
+                        <option key={proj.id} value={proj.id}>{proj.naam}</option>
+                    )}
+                </select>
+                <label className="label">Welke bestelling?</label>
+                <select value={bGeselecteerd} size={5} onChange={(e) => { setBGeselecteerd(e.target.value) }}>
+                    <option value={-1}>(onafhankelijk)</option>
+                    {bestellingen.filter(a => a.projectId === pGeselecteerd).map(best =>
+                        <option key={best.id} value={best.id}>{best.id}: {best.omschrijving}</option>
+                    )}
+                </select>
+                <label className="label">Begin datum:</label>
+                <input type="date" onChange={e => setBeginDatum(e.target.value)} />
+                <label className="label">Eind datum:</label>
+                <input type="date" onChange={e => setEindDatum(e.target.value)} />
+                <button onClick={() => updateQuerris()}>Haal resultaten op</button>
+            </div>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Datum & tijdstip</th>
+                        <th>Query</th>
+                    </tr>
+                    {logResultaat.map(o =>
+                        <tr key={o.id}>
+                            <td>{o.moment}</td>
+                            <td>{o.querry}</td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
+        </div>
+    );
+};

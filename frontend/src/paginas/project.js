@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import {CheckUserLS, getData, apiURL} from '../page-tools'
+import "../styles/stylesProject.css"; // Link naar de CSS file
 
 export const Project =  () => {
   const [leden, setLeden] = useState([])
@@ -10,9 +11,7 @@ export const Project =  () => {
   let navigation = useNavigate()
   useEffect(() => {
     const ServerConnect = async () => {
-      let arata = CheckUserLS(navigation)
-      setUserArray(arata)
-      console.log("r:",CheckUserLS(navigation))
+      setUserArray(CheckUserLS(navigation))
       
       //let bestel = await getData("http://localhost:3001/api/getBestellingen/"+projectId)
       let bestel = [
@@ -108,16 +107,15 @@ export const Project =  () => {
           "projectId": 1,
           "wachtwoord": "veiligWachtwoord789"
         }
-      console.log(arata)
       let toegang = true //Ongemachtigde gebruikers buitenschoppen.
-      if(arata[3] == 2){
+      if(userArr[3] == 2){
         toegang = false
         gebruikers.forEach((users)=>{
-          if(users.id == arata[2])
+          if(users.id == userArr[2])
             toegang = true
         })
       }
-      if(!toegang || (arata[3] == 1 && Coach.id != arata[2])){
+      if(!toegang || (userArr[3] == 1 && Coach.id != userArr[2])){
         navigation("/geenToegang")
       }
       setBestellingen(bestel)
@@ -200,19 +198,36 @@ export const Project =  () => {
   )
  
   return (
-    <>
-      <p>Bestellingen:</p>
-      <table>
-        {tstuf}
-      </table>
-      <p>Leden:</p>
-      <ul>
-        {leden.map(user => {
-          return <li>{user.voornaam} {user.achternaam}: {user.niveau==1? "Coach":"Student"}</li>
-        })}
-      </ul>
-    </>
-  )
+    <div className="project-container">
+        <p>Bestellingen:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Omschrijving</th>
+                    <th>Betaald/kostprijs<br/>(excl. btw)</th>
+                    <th>Ontvangen/goedgekeurd</th>
+                    <th>Aantal</th>
+                    <th>URL</th>
+                    <th>Winkel</th>
+                    <th>Bewerkingen</th>
+                </tr>
+            </thead>
+            <tbody>
+          {bestellingen.map((item, index) => (
+            <TabelRij key={item.id} item={item} verwijderGebr={userArr[3] === 0} goedkeurGebr={userArr[3] in [0, 1]} index={index} />
+          ))}
+        </tbody>
+        </table>
+        <div id="LedenLijst">
+        <p>Leden:</p>
+        <ul>
+            {leden.map(user => (
+                <li key={user.id}>{user.voornaam} {user.achternaam}: {user.niveau === 1 ? "Coach" : "Student"}</li>
+            ))}
+        </ul>
+        </div>
+    </div>
+);
 
 }
 

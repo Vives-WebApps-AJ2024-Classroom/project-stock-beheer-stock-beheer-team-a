@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/stylesWinkels.css"; // Link naar de CSS file
 
 export const winkels = [
   {
@@ -14,7 +15,7 @@ export const winkels = [
     specializatie: "wasmachines",
   },
   { id: 1, naam: "Amazon", url: "https://bing.com", specializatie: "vijzen" },
-]; // vervang later door get request voor winkels te verkrijgen
+];
 
 export const Winkels = () => {
   let returne = [];
@@ -34,7 +35,7 @@ export const Winkels = () => {
     // code voor de admin
     for (let i = 0; i < winkels.length; i++) {
       returne.push(
-        <div key={i}>
+        <div className="winkel-item" key={i}>
           <p>
             <a href={winkels[i].url}>{winkels[i].naam}</a>
           </p>
@@ -43,18 +44,18 @@ export const Winkels = () => {
       );
     }
     returne.push(
-      <div>
+      <div className="input-group" key="new-store">
         <label>Winkel Naam:</label>
-        <input value={nw} onChange={(e) => setnw(e.target.value)}></input>
+        <input value={nw} onChange={(e) => setnw(e.target.value)} />
         <br />
         <label>Winkel Url:</label>
-        <input value={nwurl} onChange={(e) => setnwurl(e.target.value)}></input>
+        <input value={nwurl} onChange={(e) => setnwurl(e.target.value)} />
         <br />
         <label>Winkel Specializatie:</label>
         <input
           value={nwspec}
           onChange={(e) => setnwspec(e.target.value)}
-        ></input>
+        />
         <br />
         <button>Maak winkel aan</button>
       </div>
@@ -62,7 +63,7 @@ export const Winkels = () => {
   } else {
     for (let i = 0; i < winkels.length; i++) {
       returne.push(
-        <div key={i}>
+        <div className="winkel-item" key={i}>
           <p>
             <a href={winkels[i].url}>{winkels[i].naam}</a>
           </p>
@@ -72,5 +73,5 @@ export const Winkels = () => {
     }
   }
 
-  return <>{returne}</>;
+  return <div className="winkels-container">{returne}</div>;
 };
