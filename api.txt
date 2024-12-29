@@ -36,7 +36,9 @@ delete:
 /delBestelling/:bestellingId/:uid/:pw        //kan enkel door leerlingen&coach als het nog niet goedgekeurd is of door de admin
 
 crud:
-/gebruikers (heeft voor aanpassende functies wachtwoord en gebruikersId van een Administrator of de gebruiker zelf nodig)
+/gebruikers 
++heeft voor aanpassende functies wachtwoord en gebruikersId van een Administrator of de gebruiker zelf nodig
++heeft gebruiker zoeken per email adres nodig
 
 
 routes van de frontend:
