@@ -17,6 +17,10 @@ router.put(
   "/pasBestellingAan/:bestellingsId/:gebruikersId/:wachtwoord/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omschrijving/:artikelNr/:geplaatstDoor/:rqNummer/:goedgekeurd/:doorFDGeplaatst/:verwachteAankomst/:bestellingOntvangen/:werkelijkBetaald/:opmerking",
   bestellingController.pasBestellingAan
 );
+router.delete(
+  "/delBestelling/:bestellingId/:uid/:pw",
+  bestellingController.delBestelling
+);
 router.post(
   "/maakBestelling/:projID/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omschrijving/:artikelNr/:geplaatstDoor",
   bestellingController.maakBestelling
