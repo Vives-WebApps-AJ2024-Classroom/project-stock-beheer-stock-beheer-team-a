@@ -1,15 +1,16 @@
 const express = require("express");
 const app = express();
 const port = 3001;
-const cors = require("cors")
+const cors = require("cors");
 
 const bestellingRoutes = require("./routes/bestellingRoutes");
 const gebruikerRoutes = require("./routes/gebruikerRoutes");
 const winkelRoutes = require("./routes/winkelRoutes");
+const projectRoutes = require("./routes/projectRoutes");
 
 // Middleware to parse JSON bodies
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 // Define a route for the root URL
 app.get("/", (req, res) => {
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 app.use("/api", bestellingRoutes);
 app.use("/api", gebruikerRoutes);
 app.use("/api", winkelRoutes);
+app.use("/api", projectRoutes);
 
 if (require.main === module) {
   app.listen(port, () => {
