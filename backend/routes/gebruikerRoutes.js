@@ -7,5 +7,9 @@ router.get("/gebruikers/:id", gebruikerController.getGebruikerById);
 router.post("/gebruikers", gebruikerController.createGebruiker);
 router.put("/gebruikers/:id", gebruikerController.updateGebruiker);
 router.delete("/gebruikers/:id", gebruikerController.deleteGebruiker);
+router.put(
+  "/steekGebruikerInProject/:uid/:pid/:adminid/:pw",
+  gebruikerController.steekGebruikerInProject
+);
 
 module.exports = router;

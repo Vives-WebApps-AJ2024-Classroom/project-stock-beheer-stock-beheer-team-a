@@ -88,3 +88,42 @@ exports.deleteGebruiker = (req, res) => {
     res.send("Gebruiker deleted successfully");
   });
 };
+
+exports.steekGebruikerInProject = (req, res) => {
+  const { uid, pid, adminid, pw } = req.params;
+
+  // Validate the input
+  if (!uid || !pid || !adminid || !pw) {
+    return res.status(400).send("All fields are required");
+  }
+
+  // Check if the admin credentials are valid
+  const checkAdminQuery =
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 3";
+  db.query(checkAdminQuery, [adminid, pw], (err, results) => {
+    if (err) {
+      console.error("Error checking admin credentials:", err);
+      res.status(500).send("Error checking admin credentials");
+      return;
+    }
+
+    if (results.length === 0) {
+      return res.status(403).send("Unauthorized: Invalid admin credentials");
+    }
+
+    // Update the project ID of the gebruiker
+    const updateQuery = "UPDATE Gebruiker SET projectId = ? WHERE id = ?";
+    db.query(
+      updateQuery,
+      [pid === "-1" ? null : pid, uid],
+      (err, updateResults) => {
+        if (err) {
+          console.error("Error updating gebruiker project ID:", err);
+          res.status(500).send("Error updating gebruiker project ID");
+          return;
+        }
+        res.status(200).send("Gebruiker project ID updated successfully");
+      }
+    );
+  });
+};
