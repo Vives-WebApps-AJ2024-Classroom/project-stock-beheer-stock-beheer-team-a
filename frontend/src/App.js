@@ -52,11 +52,26 @@ const WelcomePage = () => {
                 setLastName(capitalizeFirstLetter(nameParts[1]));
                 setEmail(emailAddress);
 
-                const rol_id = emailAddress.endsWith('@student.vives.be') ? 2 : 0;
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=<>?';
+                const length = 12;
+                let password = '';
+                for (let i = 0; i < length; i++) {
+                    const randomIndex = Math.floor(Math.random() * characters.length);
+                    password += characters[randomIndex];
+                }
 
+                console.log(password);
+
+                const rol_id = emailAddress.endsWith('@student.vives.be') 
+                ? 2 
+                : emailAddress.endsWith('@gmail.com') 
+                    ? 0 
+                    : null; // Als geen van beide condities waar is, stel in op null of laat deze leeg.
+            
+            
                 console.log(rol_id);
                 // Verstuur data naar de backend
-                sendDataToBackend(capitalizeFirstLetter(nameParts[0]), capitalizeFirstLetter(nameParts[1]), emailAddress, rol_id);
+                sendDataToBackend(capitalizeFirstLetter(nameParts[0]), capitalizeFirstLetter(nameParts[1]), emailAddress, rol_id, password);
             }
         }
     }, [user, isSignedIn, navigate]);
@@ -65,7 +80,7 @@ const WelcomePage = () => {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     };
 
-    const sendDataToBackend = async (voornaam, achternaam, email, niveau, projectId, wachtwoord) => {
+    const sendDataToBackend = async (voornaam, achternaam, email, niveau, wachtwoord) => {
         try {
             // Controleer of het e-mailadres al bestaat
             const checkResponse = await axios.get(`http://localhost:3001/gebruiker?email=${email}`);
@@ -74,13 +89,13 @@ const WelcomePage = () => {
                 console.log("Gebruiker bestaat al, geen nieuwe invoer nodig.");
             } else {
                 // Als de gebruiker niet bestaat, verstuur de data
-                const response = await axios.post("http://localhost:3000/gebruiker", {
+                const response = await axios.post("http://localhost:3001/gebruiker", {
                     voornaam,
                     achternaam,
                     email,
                     niveau,
-                    projectId: "7",
-                    wachtwoord: "defaultwachtwoord",
+                    projectId: 7,
+                    wachtwoord,
                 });
                 console.log("Data succesvol verstuurd:", response.data);
             }
