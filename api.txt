@@ -35,13 +35,22 @@ put:
 delete:
 /delBestelling/:bestellingId/:uid/:pw        //kan enkel door leerlingen&coach als het nog niet goedgekeurd is of door de admin✅
 
-crud:
-/gebruikers 
-+heeft voor aanpassende functies wachtwoord en gebruikersId van een Administrator of de gebruiker zelf nodig
-+heeft gebruiker zoeken per email adres nodig
+gebruikers:
+GET: 
+/gebruikers             //geeft alle gebruikers
+/gebruikers/:id         //geeft een specifieke gebruiker
+/gebruikers/:email      //geeft een specifieke gebruiker maar dan aan de hand van email adres
+POST:
+/gebruiker/:naam/:achternaam/:rol/:email/:wachtwoord         //aanmaak van admins hier is verboden, ze moeten zelf in phpmyadmin worden aangemaakt.
+    geeft het hele gebruikers object als respons inclusief id
+PUT:
+/gebruiker/:id/:naam/:achternaam/:rol/:email/:wachtwoord/:adminid/:wachtwoord   //parameters die -1 zijn worden niet aangepast
+DELETE:
+/gebruiker/:id/:adminid/:wachtwoord
 
 
-routes van de frontend:
+
+=============================================routes van de frontend:
 /                                   Home met mss menu
 /login                              Mag aangepast worden
 /project/:pid                       pid = project id
