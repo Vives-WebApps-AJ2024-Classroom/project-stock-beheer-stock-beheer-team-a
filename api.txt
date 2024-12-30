@@ -21,19 +21,19 @@ post:
 put:
 /keurGoed/:bestellingId/:UID/:PW //check zeker dat de uid de coach van het project van deze besetelling is.✅
 /keurAf/:bestellingId/:UID/:PW/:reden //check zeker dat de uid de coach van het project van deze besetelling is.✅
-/ontKeur/:bestellingId/:UID/:PW //zet goedgekeurd veld terug op null
+/ontKeur/:bestellingId/:UID/:PW //zet goedgekeurd veld terug op null✅
 /pasBestellingAanRestricted/:bestellingsId/:gebruikersId/:wachtwoord/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr
     winkelId = "null": De winkel zat niet in de lijst.
     body: url   //Url in de url wordt wat moeilijk.
-    Kan enkel gedaan worden door leden van het team en als het nog niet op "goedgekeurd" stond.
+    Kan enkel gedaan worden door leden van het team en als het nog niet op "goedgekeurd" stond.✅
 /pasBestellingAan/:bestellingsId/:gebruikersId/:wachtwoord/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr/:geplaatstDoor/:rqNummer/:goedgekeurd/:doorFDGeplaatst/:verwachteAankomst/:bestellingOntvangen/:werkelijkBetaald/:opmerking
     winkelId = "null": De winkel zat niet in de lijst.
     body: url   //Url in de url wordt wat moeilijk.
-    Enkel voor de Administrator
-/steekGebruikerInProject/:uid/:pid/:adminid/:pw     //als pid gelijk is aan -1 dan mag je het project van de gebruiker op null zetten.
+    Enkel voor de Administrator ✅
+/steekGebruikerInProject/:uid/:pid/:adminid/:pw     //als pid gelijk is aan -1 dan mag je het project van de gebruiker op null zetten. ✅
 
 delete:
-/delBestelling/:bestellingId/:uid/:pw        //kan enkel door leerlingen&coach als het nog niet goedgekeurd is of door de admin
+/delBestelling/:bestellingId/:uid/:pw        //kan enkel door leerlingen&coach als het nog niet goedgekeurd is of door de admin✅
 
 crud:
 /gebruikers 
