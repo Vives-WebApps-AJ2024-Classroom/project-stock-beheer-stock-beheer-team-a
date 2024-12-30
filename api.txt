@@ -37,8 +37,8 @@ delete:
 
 gebruikers:
 GET: 
-/gebruikers             //geeft alle gebruikers
-/gebruikers/:id         //geeft een specifieke gebruiker
+/gebruikers             //geeft alle gebruikers✅
+/gebruikers/:id         //geeft een specifieke gebruiker✅
 /gebruikers/:email      //geeft een specifieke gebruiker maar dan aan de hand van email adres
 POST:
 /gebruiker/:naam/:achternaam/:rol/:email/:wachtwoord         //aanmaak van admins hier is verboden, ze moeten zelf in phpmyadmin worden aangemaakt.
