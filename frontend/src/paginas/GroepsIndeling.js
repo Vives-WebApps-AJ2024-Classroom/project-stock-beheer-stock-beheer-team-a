@@ -6,7 +6,6 @@ import "../styles/stylesGroepsIndeling.css"; // Ensure to import the CSS file
 
 export const GroepsIndeling = () => {
     let userArr = CheckUserLS(); // Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
-    const role = localStorage.getItem('role'); // Haal de rol op uit localStorage
     const [projecteen, setProjecten] = useState([]);
     const [gebruikerz, setGebruikers] = useState([]);
     const [uGeselecteerd, setUGeselecteerd] = useState(-1);
@@ -15,7 +14,7 @@ export const GroepsIndeling = () => {
 
     useEffect(() => {
 
-        if(role !== "0") {
+        if(userArr[3] != 0) {
             navigate("/geenToegang")
         }
 

@@ -1,9 +1,11 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { SignedIn, SignedOut, useClerk } from "@clerk/clerk-react";
+import { CheckUserLS, apiURL } from '../page-tools';
+
 
 const Navbar = () => {
-    const role = localStorage.getItem('role'); // Haal de rol op uit localStorage
+    let userArr = CheckUserLS(useNavigate())
     const location = useLocation();
     const { signOut } = useClerk();
 
@@ -16,7 +18,7 @@ const Navbar = () => {
         <nav>
             <Link to="/home">Home</Link>
 
-            {role === "0" && (  
+            {userArr[3] == 0 && (  
                 <>
                     <Link to="/groepsIndeling">GroepsIndeling</Link>
                     <Link to="/projectCreatie">Project aanmaken</Link>
@@ -25,7 +27,7 @@ const Navbar = () => {
                     <Link to="/logPagina">Log pagina</Link>                
                 </>
             )}
-            {role === "2" && (  
+            {userArr[3] == 2 && (  
                 <>
                     <Link to="/project/:projectId">Overzicht</Link>
                     <Link to="/bestelling/:projectId">Bestelling plaatsen</Link>

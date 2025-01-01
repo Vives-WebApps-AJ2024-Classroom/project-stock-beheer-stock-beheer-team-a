@@ -7,7 +7,6 @@ import  { CheckUserLS, getData, apiURL } from "../page-tools";
 // Component for placing orders
 export const BestellingPlaatsen = () => {
   const navigatie = useNavigate()
-  const role = localStorage.getItem('role'); // Haal de rol op uit localStorage
   const [formData, setFormData] = useState({
     naam: "",
     Winkel: "",
@@ -33,10 +32,7 @@ export const BestellingPlaatsen = () => {
       setProjectGroup(groepNR)
       
     } catch {
-      document.location = "/login";
-    }
-    if (role !== '0' && role !== '2') {
-      navigatie("/geenToegang");
+      navigatie("/login")
     }
   
     // Fetch winkel data

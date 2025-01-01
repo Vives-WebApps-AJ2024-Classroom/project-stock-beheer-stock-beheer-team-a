@@ -11,23 +11,6 @@ function UserRoleRedirect({ requiredRole, children }) {
     if (isSignedIn && user) {
       console.log("User Info:", user);  // Log user info in console
       const userEmail = user.primaryEmailAddress.emailAddress;
-
-    /*  if (userEmail.endsWith('@student.vives.be')) {
-        localStorage.setItem('role', '0');
-        setRole(0); // Rol is student
-        console.log("Student ingelogd");
-
-      } */
-
-      if (userEmail.endsWith('@gmail.com')) {
-
-        localStorage.setItem('role', '2');
-        setRole(2); // Rol is admin
-        console.log("Admin ingelogd");
-        
-      } else {
-        navigate('/'); // Redirect naar home als geen van de rollen matcht
-      }
     } else {
       navigate('/'); // Redirect naar home als de gebruiker niet ingelogd is
     }

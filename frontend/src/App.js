@@ -19,6 +19,7 @@ import { LogPagina } from "./paginas/LogPagina";
 import { Home } from "./paginas/Home"; // Zorg ervoor dat dit correct geïmporteerd is
 import { ProjectCreatie } from "./paginas/project_aanmaken";
 import "./paginas/login.css"; // Zorg dat deze stijl beschikbaar is
+import {getData, apiURL} from "./page-tools"
 
 const WelcomePage = () => {
     const { user, isSignedIn } = useUser();
@@ -36,16 +37,25 @@ const WelcomePage = () => {
 
             console.log(emailAddress);
             console.log([username]);
-            if(emailAddress.endsWith('@gmail.com')) { //@vives.be
-                localStorage.setItem('role', '0');
-                console.log(localStorage);
-                console.log("jaja je bent admin");
-            } else if (emailAddress.endsWith('@student.vives.be')) {
-                localStorage.setItem('role', '2');
-                console.log(localStorage);
-                console.log("je bent studentje");
+            
+            const netwerkThread = async() => {
+                let setArr = []
+                setArr.append(username)
+                setArr.append("waap soort")
+                const jsondata = await getData(apiURL + "gebruiker?email=" + emailAddress, null, "GET");
+                setArr.append(jsondata.id)
+                if(emailAddress.endsWith('@gmail.com')) { //@vives.be
+                    console.log(localStorage);
+                    console.log("jaja je bent admin");
+                    setArr.append(0)
+                } else if (emailAddress.endsWith('@student.vives.be')) {
+                    console.log(localStorage);
+                    console.log("je bent studentje");
+                    setArr.append(2)
+                }
+                sessionStorage.setItem("user",JSON.stringify(setArr))
             }
-
+            netwerkThread()
             // Voornaam en achternaam opslaan
             if (nameParts.length > 1) {
                 setFirstName(capitalizeFirstLetter(nameParts[0]));

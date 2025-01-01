@@ -13,7 +13,6 @@ Knop voor elementen op te halen.
 export const LogPagina = () => {
   const navigatie = useNavigate()
   let userArr = ["","",0,2] //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
-  const role = localStorage.getItem('role'); // Haal de rol op uit localStorage
   const [gebruikerz, setGebruikers] = useState([])
   const [uGeselecteerd, setUGeselecteerd] = useState(-1);
   const [bestellingen, setBestellingen] = useState([])

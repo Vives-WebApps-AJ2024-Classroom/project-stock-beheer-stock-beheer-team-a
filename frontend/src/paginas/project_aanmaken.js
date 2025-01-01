@@ -5,7 +5,6 @@ import "../styles/stylesMakeProject.css"; // Link naar de CSS file
 
 export const ProjectCreatie = () => {
     let userArr = CheckUserLS(useNavigate()) //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
-    const role = localStorage.getItem('role'); // Haal de rol op uit localStorage
     const navigate = useNavigate();
 
     useEffect(()=>{

@@ -4,8 +4,7 @@ import { CheckUserLS, getData, apiURL } from '../page-tools'
 import "../styles/stylesProject.css"; // Link naar de CSS file
 
 export const Project = () => {
-  const navigatie = useNavigate()
-  const role = localStorage.getItem('role'); // Haal de rol op uit localStorage
+  const navigation = useNavigate()
   const [leden, setLeden] = useState([])
   const { projectId } = useParams();
   const [bestellingen, setBestellingen] = useState([])
