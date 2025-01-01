@@ -5,7 +5,8 @@ import "../styles/stylesGroepsIndeling.css"; // Ensure to import the CSS file
 
 
 export const GroepsIndeling = () => {
-    let userArr = CheckUserLS(useNavigate()); // Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
+    let userArr = CheckUserLS(); // Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
+    const role = localStorage.getItem('role'); // Haal de rol op uit localStorage
     const [projecteen, setProjecten] = useState([]);
     const [gebruikerz, setGebruikers] = useState([]);
     const [uGeselecteerd, setUGeselecteerd] = useState(-1);
@@ -13,6 +14,11 @@ export const GroepsIndeling = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        if(role !== "0") {
+            navigate("/geenToegang")
+        }
+
         const serverConnect = async () => {
             let projecten = [
                 {
@@ -95,9 +101,8 @@ export const GroepsIndeling = () => {
                 }
             ];
 
-            if (userArr[3] !== 0) { // niet administrators buitenschoppen.
-                navigate("/geenToegang");
-            }
+
+
             setProjecten(projecten);
             setGebruikers(gebruikers);
         }

@@ -5,11 +5,17 @@ import teama from "../teama.jpg";
 import "../styles/stylesHome.css"; // Ensure to import the CSS file
 
 export const Home = () => {
-    let nav = useNavigate();
+    const navigatie = useNavigate()
+    const role = localStorage.getItem('role'); // Haal de rol op uit localStorage
     
     useEffect(() => {
-        CheckUserLS(nav);
-    }, [nav]); // Add nav as a dependency
+      /*  if (role !== '0' && role !== ) {
+            navigatie("/geenToegang");
+        }*/
+
+
+
+    }, [role, navigatie]); 
 
     return (
         <div className="home-container">

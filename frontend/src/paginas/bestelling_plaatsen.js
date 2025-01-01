@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { winkels } from "./winkels"; // Import the winkels array
 import "../styles/stylesBestelling.css"; // Link to the CSS file
+import  { CheckUserLS, getData, apiURL } from "../page-tools";
 
 // Component for placing orders
 export const BestellingPlaatsen = () => {
+  const navigatie = useNavigate()
+  const role = localStorage.getItem('role'); // Haal de rol op uit localStorage
   const [formData, setFormData] = useState({
     naam: "",
     Winkel: "",
@@ -17,20 +21,26 @@ export const BestellingPlaatsen = () => {
   const [projectGroup, setProjectGroup] = useState("");
   const [availableWinkels, setAvailableWinkels] = useState([]);
 
-  useEffect(() => {
+  useEffect(async () => {
+
     let userArr; // Normal format: ["username", "password", id, level]
     try {
-      userArr = JSON.parse(sessionStorage.getItem("user"));
+      userArr = CheckUserLS(navigatie);
       if (userArr.length !== 4) {
         throw new Error("Session storage not in the correct format.");
       }
-      setProjectGroup(userArr[2]); // Assuming the project group is at index 2
+      let groepNR = await getData(apiURL + `gebruiker/${userArr[2]}`, null, "GET").projectId;
+      setProjectGroup(groepNR)
+      
     } catch {
       document.location = "/login";
     }
-
+    if (role !== '0' && role !== '2') {
+      navigatie("/geenToegang");
+    }
+  
     // Fetch winkel data
-    setAvailableWinkels(winkels);
+    setAvailableWinkels(winkels);//dit moet nog veranderen door een api request
   }, []);
 
   const handleChange = (e) => {

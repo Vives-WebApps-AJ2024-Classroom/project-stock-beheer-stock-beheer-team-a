@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
 import "../styles/stylesWinkels.css"; // Link naar de CSS file
+import {CheckUserLS} from "../page-tools"
 
 export const winkels = [
   {
@@ -18,20 +20,14 @@ export const winkels = [
 ];
 
 export const Winkels = () => {
+  const navigatie = useNavigate();
   let returne = [];
   let userArr; // Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
   const [nw, setnw] = useState("");
   const [nwurl, setnwurl] = useState("");
   const [nwspec, setnwspec] = useState("");
-  try {
-    userArr = JSON.parse(sessionStorage.getItem("user"));
-    if (userArr.length !== 4) {
-      throw new Error("Session storage niet in juiste formaat.");
-    }
-  } catch {
-    document.location = "/login";
-  }
-  if (userArr[3] == 0) {
+  
+  if (CheckUserLS(navigatie)[3] == 0) {
     // code voor de admin
     for (let i = 0; i < winkels.length; i++) {
       returne.push(

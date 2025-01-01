@@ -5,14 +5,15 @@ import "../styles/stylesMakeProject.css"; // Link naar de CSS file
 
 export const ProjectCreatie = () => {
     let userArr = CheckUserLS(useNavigate()) //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
+    const role = localStorage.getItem('role'); // Haal de rol op uit localStorage
+    const navigate = useNavigate();
 
     useEffect(()=>{
-        const Check = () => {
-            if(userArr[3] != 0){//niet administrators buitenschoppen.
-                document.location = "/geenToegang"
-            }
+
+        if(userArr[3] != 0){//niet administrators buitenschoppen.
+            document.location = "/geenToegang"
         }
-        Check()
+
     },[])
     const [naam, setNaam] = useState("")
     const [maxBudget, setMaxBudget] = useState(0)

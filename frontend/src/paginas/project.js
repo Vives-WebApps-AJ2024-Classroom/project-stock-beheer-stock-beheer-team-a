@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import {CheckUserLS, getData, apiURL} from '../page-tools'
+import { CheckUserLS, getData, apiURL } from '../page-tools'
 import "../styles/stylesProject.css"; // Link naar de CSS file
 
-export const Project =  () => {
+export const Project = () => {
+  const navigatie = useNavigate()
+  const role = localStorage.getItem('role'); // Haal de rol op uit localStorage
   const [leden, setLeden] = useState([])
   const { projectId } = useParams();
   const [bestellingen, setBestellingen] = useState([])
-  const [userArr, setUserArray] = useState(["","",0,2])
-  let navigation = useNavigate()
+  const [userArr, setUserArray] = useState(["", "", 0, 2])
   useEffect(() => {
     const ServerConnect = async () => {
       setUserArray(CheckUserLS(navigation))
-      
+
       //let bestel = await getData("http://localhost:3001/api/getBestellingen/"+projectId)
       let bestel = [
         {
@@ -99,14 +100,15 @@ export const Project =  () => {
           "wachtwoord": "sterkWachtwoord456"
         }]
       let Coach = {
-          "id": 3,
-          "voornaam": "Emma",
-          "achternaam": "Vermeulen",
-          "email": "emma.vermeulen@coach.example.com",
-          "niveau": 1,
-          "projectId": 1,
-          "wachtwoord": "veiligWachtwoord789"
-        }
+        "id": 3,
+        "voornaam": "Emma",
+        "achternaam": "Vermeulen",
+        "email": "emma.vermeulen@coach.example.com",
+        "niveau": 1,
+        "projectId": 1,
+        "wachtwoord": "veiligWachtwoord789"
+      }
+
       let toegang = true //Ongemachtigde gebruikers buitenschoppen.
       if(userArr[3] == 2){
         toegang = false
@@ -130,7 +132,7 @@ export const Project =  () => {
   //-als je coach of admin bent kan je goedkeuren.
   //-als je admin bent of het is nog niet goedgekeurd kan je verwijderen.
   let tstuf = []
-  tstuf.push(<tr><th>Omschrijving</th><th>Betaald/kostprijs<br/>(excl. btw)</th><th>Ontvangen/goedgekeurd</th><th>Aantal</th><th>URL</th><th>Winkel</th><th>Bewerkingen</th></tr>)
+  tstuf.push(<tr><th>Omschrijving</th><th>Betaald/kostprijs<br />(excl. btw)</th><th>Ontvangen/goedgekeurd</th><th>Aantal</th><th>URL</th><th>Winkel</th><th>Bewerkingen</th></tr>)
   const delBestelling = async (id) => {
     await getData(apiURL + `/delBestelling/${id}/${userArr[2]}/${userArr[1]}`)
     console.log("VOEG NOG ERROR DETECTIE IN DE RESPONSE TOE HIER!")
@@ -139,95 +141,96 @@ export const Project =  () => {
     ))
   }
   const voegInfoToe = (index, infoObje) => {
-    if(bestellingen[index+1] && infoObje.id == bestellingen[index+1].id){
+    if (bestellingen[index + 1] && infoObje.id == bestellingen[index + 1].id) {
       setBestellingen(
-        bestellingen.filter((_, indx) => indx !== index+1)
+        bestellingen.filter((_, indx) => indx !== index + 1)
       );
-    }else{
-      setBestellingen([... bestellingen.slice(0, index+1),
+    } else {
+      setBestellingen([...bestellingen.slice(0, index + 1),
         infoObje,
-        ... bestellingen.slice(index+1)
+      ...bestellingen.slice(index + 1)
       ])
     }
   }
   const keurGoed = async (item) => {
-    console.log(await getData(apiURL+`keurGoed/${item.id}/${userArr[2]}/${userArr[1]}/`,null,"PUT"))
+    console.log(await getData(apiURL + `keurGoed/${item.id}/${userArr[2]}/${userArr[1]}/`, null, "PUT"))
   }
   const keurAf = async (item) => {
     let reden = prompt("Wat is de reden");
-    console.log(await getData(apiURL+`keurAf/${item.id}/${userArr[2]}/${userArr[1]}/`+reden,null,"PUT"))
+    console.log(await getData(apiURL + `keurAf/${item.id}/${userArr[2]}/${userArr[1]}/` + reden, null, "PUT"))
   }
   const ontKeur = async (item) => {
-    console.log(await getData(apiURL+`ontKeur/${item.id}/${userArr[2]}/${userArr[1]}/`,null,"PUT"))
+    console.log(await getData(apiURL + `ontKeur/${item.id}/${userArr[2]}/${userArr[1]}/`, null, "PUT"))
   }
 
-  const TabelRij = ({item, verwijderGebr, goedkeurGebr, index}) => {
+  const TabelRij = ({ item, verwijderGebr, goedkeurGebr, index }) => {
     let ex = []
-    if(goedkeurGebr){
-      if(item.goedgekeurdDoorCoach){
-        ex.push(<button onClick={()=>{ontKeur(item)}}>Op afwachting zetten</button>)
-      }else{
-        ex.push(<button onClick={()=>{keurGoed(item)}}>Keur goed</button>)
-        ex.push(<button onClick={()=>{keurAf(item)}}>Keur af</button>)
+    if (goedkeurGebr) {
+      if (item.goedgekeurdDoorCoach) {
+        ex.push(<button onClick={() => { ontKeur(item) }}>Op afwachting zetten</button>)
+      } else {
+        ex.push(<button onClick={() => { keurGoed(item) }}>Keur goed</button>)
+        ex.push(<button onClick={() => { keurAf(item) }}>Keur af</button>)
       }
     }
-    if(!item.goedgekeurdDoorCoach || verwijderGebr){
-      ex.push(<button onClick={()=>{delBestelling(item.id)}}>Verwijder</button>)
+    if (!item.goedgekeurdDoorCoach || verwijderGebr) {
+      ex.push(<button onClick={() => { delBestelling(item.id) }}>Verwijder</button>)
     }
-    return(
+    return (
       <tr>
         <td>{item.omschrijving}</td>
-        <td>{item.werkelijkBetaald/100 || item.totaleKostPrijsExclBtw/100}</td>
-        <td>{item.bestellingOntvangen || (item.goedgekeurdDoorCoach==null ? "goedkeuring in afwachting" : (item.goedgekeurdDoorCoach ? "goedgekeurd": "niet goedgekeurd"))}</td>
+        <td>{item.werkelijkBetaald / 100 || item.totaleKostPrijsExclBtw / 100}</td>
+        <td>{item.bestellingOntvangen || (item.goedgekeurdDoorCoach == null ? "goedkeuring in afwachting" : (item.goedgekeurdDoorCoach ? "goedgekeurd" : "niet goedgekeurd"))}</td>
         <td>{item.aantal}</td>
         <td><a href={item.url}>link</a></td>
         <td>{item.winkelEnkelString}</td>
-        <td><button onClick={() => {voegInfoToe(index, item)}}>Meer info</button></td>
+        <td><button onClick={() => { voegInfoToe(index, item) }}>Meer info</button></td>
         {ex}
       </tr>
     )
   }
   tstuf.push(
     bestellingen.map((item, index) => {
-      if(index != 0 && bestellingen[index-1].id == item.id){
+      if (index != 0 && bestellingen[index - 1].id == item.id) {
 
-        return <><tr> <td>Aanmaak: {item.aanmaak}</td><td> lever tijd: {item.leverTijd}</td><td> lever adres: {item.leveringsAdres}</td><td> artikel nr: {item.artikelNr}</td><td> rq nr: {item.rqNummer}</td><td> Bestelling door financ dienst geplaatst: {item.bestellingDoorFDGeplaatst}</td><td> verwachte aankomst: {item.verwachteAankomst}</td></tr><tr><td> bestelling ontvangen: {item.bestellingOntvangen}</td><td> opmerking: {item.opmerking} </td><td><button onClick={()=>{document.location = /bestelling/+item.id}}>Aanpassen</button></td></tr></>
-      }else{
-        return <TabelRij item={item} verwijderGebr={userArr[3]==0} goedkeurGebr={userArr[3] in [0,1]} index={index}></TabelRij>
-      }})
+        return <><tr> <td>Aanmaak: {item.aanmaak}</td><td> lever tijd: {item.leverTijd}</td><td> lever adres: {item.leveringsAdres}</td><td> artikel nr: {item.artikelNr}</td><td> rq nr: {item.rqNummer}</td><td> Bestelling door financ dienst geplaatst: {item.bestellingDoorFDGeplaatst}</td><td> verwachte aankomst: {item.verwachteAankomst}</td></tr><tr><td> bestelling ontvangen: {item.bestellingOntvangen}</td><td> opmerking: {item.opmerking} </td><td><button onClick={() => { document.location = /bestelling/ + item.id }}>Aanpassen</button></td></tr></>
+      } else {
+        return <TabelRij item={item} verwijderGebr={userArr[3] == 0} goedkeurGebr={userArr[3] in [0, 1]} index={index}></TabelRij>
+      }
+    })
   )
- 
+
   return (
     <div className="project-container">
-        <p>Bestellingen:</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Omschrijving</th>
-                    <th>Betaald/kostprijs<br/>(excl. btw)</th>
-                    <th>Ontvangen/goedgekeurd</th>
-                    <th>Aantal</th>
-                    <th>URL</th>
-                    <th>Winkel</th>
-                    <th>Bewerkingen</th>
-                </tr>
-            </thead>
-            <tbody>
+      <p>Bestellingen:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Omschrijving</th>
+            <th>Betaald/kostprijs<br />(excl. btw)</th>
+            <th>Ontvangen/goedgekeurd</th>
+            <th>Aantal</th>
+            <th>URL</th>
+            <th>Winkel</th>
+            <th>Bewerkingen</th>
+          </tr>
+        </thead>
+        <tbody>
           {bestellingen.map((item, index) => (
             <TabelRij key={item.id} item={item} verwijderGebr={userArr[3] === 0} goedkeurGebr={userArr[3] in [0, 1]} index={index} />
           ))}
         </tbody>
-        </table>
-        <div id="LedenLijst">
+      </table>
+      <div id="LedenLijst">
         <p>Leden:</p>
         <ul>
-            {leden.map(user => (
-                <li key={user.id}>{user.voornaam} {user.achternaam}: {user.niveau === 1 ? "Coach" : "Student"}</li>
-            ))}
+          {leden.map(user => (
+            <li key={user.id}>{user.voornaam} {user.achternaam}: {user.niveau === 1 ? "Coach" : "Student"}</li>
+          ))}
         </ul>
-        </div>
+      </div>
     </div>
-);
+  );
 
 }
 
