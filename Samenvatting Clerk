@@ -1,0 +1,14 @@
+Clerk is handig voor gebruikersauthenticatie.
+
+Voordelen :
+
+    Gemakkelijk te gebruiken
+    Dashboard op hun site met alle gebruikers ( kan aanpassingen maken per gebruiker enzovoort )
+    Mooie UI om in te loggen
+    Authenticatie met code per mail tijdens inloggen
+
+Nadelen :
+
+    Er is een betalende versie waar men meer mee kan ( bijvoorbeeld een emailadres verbannen )
+    Het gebruikte wachtwoord van een user kan niet worden opgehaald uit de JSON ( wel emailadres enzo )
+    Leercurve : Het duurt wel even vooraleer je volledig mee bent met het 'clerkverhaal'
