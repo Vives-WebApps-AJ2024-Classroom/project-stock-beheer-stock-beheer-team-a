@@ -26,7 +26,7 @@ export const LogPagina = () => {
 
   useEffect(() => {
     const serverConnect = async () => {
-      userArr = CheckUserLS(navigatie)
+      userArr = CheckUserLS()
       if(userArr[3] != 0){//niet administrators buitenschoppen.
         navigatie("/geenToegang")
       }

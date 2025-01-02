@@ -40,20 +40,23 @@ const WelcomePage = () => {
             
             const netwerkThread = async() => {
                 let setArr = []
-                setArr.append(username)
-                setArr.append("waap soort")
-                const jsondata = await getData(apiURL + "gebruiker?email=" + emailAddress, null, "GET");
-                setArr.append(jsondata.id)
+                setArr.push(username)
+                setArr.push("waap soort")
+                let jsondata = await getData(apiURL + "gebruiker?email=" + emailAddress, null, "GET");
+                if(jsondata == null){ //backend verbinding gefaald
+                    jsondata = {"id":1}
+                }
+                setArr.push(jsondata.id)
                 if(emailAddress.endsWith('@gmail.com')) { //@vives.be
                     console.log(localStorage);
                     console.log("jaja je bent admin");
-                    setArr.append(0)
+                    setArr.push(0)
                 } else if (emailAddress.endsWith('@student.vives.be')) {
                     console.log(localStorage);
                     console.log("je bent studentje");
-                    setArr.append(2)
+                    setArr.push(2)
                 }
-                sessionStorage.setItem("user",JSON.stringify(setArr))
+                localStorage.setItem("user",JSON.stringify(setArr))
             }
             netwerkThread()
             // Voornaam en achternaam opslaan

@@ -1,16 +1,10 @@
 # Documentatie voor contributers
 Wachtwoord en gebruikers id worden gebruikt als authenticatie tot de backend. Ze worden opgeslagen in session storage.<br>
-Voorbeeld code voor credentials op te vragen en als ze niet bestaan de gebruiker naar /login sturen:<br>
+Voorbeeld code voor credentials op te vragen:<br>
 ```
-let userArr //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
-  try{
-    userArr = JSON.parse(sessionStorage.getItem("user"))
-    if(userArr.length != 4){
-      throw new Error("Session storage niet in juiste fomaat.")
-    }
-  }catch{
-    document.location = "/login"
-  }
+import { CheckUserLS, apiURL } from '../page-tools';
+...
+let userArr = checkUserLS()
 ```
 <br>
 Voor parameters die je vooraf nodig hebt voor je pagina mag je zelf specifiëren of het via een staat of via een url parameter is dat je ze gebruikt.<br>

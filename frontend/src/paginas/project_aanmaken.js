@@ -4,7 +4,7 @@ import {CheckUserLS, getData, apiURL} from '../page-tools';
 import "../styles/stylesMakeProject.css"; // Link naar de CSS file
 
 export const ProjectCreatie = () => {
-    let userArr = CheckUserLS(useNavigate()) //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
+    let userArr = CheckUserLS() //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
     const navigate = useNavigate();
 
     useEffect(()=>{

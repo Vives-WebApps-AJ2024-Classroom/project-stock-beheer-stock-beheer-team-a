@@ -20,23 +20,24 @@ export const BestellingPlaatsen = () => {
   const [projectGroup, setProjectGroup] = useState("");
   const [availableWinkels, setAvailableWinkels] = useState([]);
 
-  useEffect(async () => {
-
-    let userArr; // Normal format: ["username", "password", id, level]
-    try {
-      userArr = CheckUserLS(navigatie);
-      if (userArr.length !== 4) {
-        throw new Error("Session storage not in the correct format.");
+  useEffect(() => {
+    const nwThread = async () => {
+      let userArr; // Normal format: ["username", "password", id, level]
+      try {
+        userArr = CheckUserLS();
+        if (userArr.length !== 4) {
+          throw new Error("Session storage not in the correct format.");
+        }
+        let groepNR = await getData(apiURL + `gebruiker/${userArr[2]}`, null, "GET").projectId;
+        setProjectGroup(groepNR)
+        
+      } catch {
+        navigatie("/login")
       }
-      let groepNR = await getData(apiURL + `gebruiker/${userArr[2]}`, null, "GET").projectId;
-      setProjectGroup(groepNR)
-      
-    } catch {
-      navigatie("/login")
+    
+      // Fetch winkel data
+      setAvailableWinkels(winkels);//dit moet nog veranderen door een api request
     }
-  
-    // Fetch winkel data
-    setAvailableWinkels(winkels);//dit moet nog veranderen door een api request
   }, []);
 
   const handleChange = (e) => {

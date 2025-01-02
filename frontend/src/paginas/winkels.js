@@ -27,7 +27,7 @@ export const Winkels = () => {
   const [nwurl, setnwurl] = useState("");
   const [nwspec, setnwspec] = useState("");
   
-  if (CheckUserLS(navigatie)[3] == 0) {
+  if (CheckUserLS()[3] == 0) {
     // code voor de admin
     for (let i = 0; i < winkels.length; i++) {
       returne.push(

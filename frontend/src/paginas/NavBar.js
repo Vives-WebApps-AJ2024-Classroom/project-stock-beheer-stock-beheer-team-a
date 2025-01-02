@@ -5,7 +5,7 @@ import { CheckUserLS, apiURL } from '../page-tools';
 
 
 const Navbar = () => {
-    let userArr = CheckUserLS(useNavigate())
+    let userArr = CheckUserLS()
     const location = useLocation();
     const { signOut } = useClerk();
 

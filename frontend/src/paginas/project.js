@@ -11,7 +11,7 @@ export const Project = () => {
   const [userArr, setUserArray] = useState(["", "", 0, 2])
   useEffect(() => {
     const ServerConnect = async () => {
-      setUserArray(CheckUserLS(navigation))
+      setUserArray(CheckUserLS())
 
       //let bestel = await getData("http://localhost:3001/api/getBestellingen/"+projectId)
       let bestel = [
