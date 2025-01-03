@@ -11,7 +11,8 @@ export const Project = () => {
   const [userArr, setUserArray] = useState(["", "", 0, 2])
   useEffect(() => {
     const ServerConnect = async () => {
-      setUserArray(CheckUserLS())
+      let user = CheckUserLS()
+      setUserArray(user)
 
       //let bestel = await getData("http://localhost:3001/api/getBestellingen/"+projectId)
       let bestel = [
@@ -107,16 +108,15 @@ export const Project = () => {
         "projectId": 1,
         "wachtwoord": "veiligWachtwoord789"
       }
-
       let toegang = true //Ongemachtigde gebruikers buitenschoppen.
-      if(userArr[3] == 2){
+      if(user[3] == 2){
         toegang = false
         gebruikers.forEach((users)=>{
-          if(users.id == userArr[2])
+          if(users.id == user[2])
             toegang = true
         })
       }
-      if(!toegang || (userArr[3] == 1 && Coach.id != userArr[2])){
+      if(!toegang || (user[3] == 1 && Coach.id != user[2])){
         navigation("/geenToegang")
       }
       setBestellingen(bestel)
