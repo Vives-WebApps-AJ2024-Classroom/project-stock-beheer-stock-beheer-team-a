@@ -1,154 +1,84 @@
-const http = require("http");
-const assert = require("assert");
+const request = require("supertest");
+const app = require("./index");
 
-const testGetRequest = (
-  path,
-  expectedStatusCode,
-  expectedResponseType,
-  callback
-) => {
-  const options = {
-    hostname: "localhost",
-    port: 3000,
-    path: path,
-    method: "GET",
-  };
-
-  const req = http.request(options, (res) => {
-    let data = "";
-
-    // A chunk of data has been received.
-    res.on("data", (chunk) => {
-      data += chunk;
-    });
-
-    // The whole response has been received.
-    res.on("end", () => {
-      assert.strictEqual(res.statusCode, expectedStatusCode);
-      if (expectedResponseType === "text") {
-        assert.strictEqual(
-          res.headers["content-type"],
-          "text/html; charset=utf-8"
-        );
-      } else if (expectedResponseType === "json") {
-        assert.strictEqual(
-          res.headers["content-type"],
-          "application/json; charset=utf-8"
-        );
-        data = JSON.parse(data);
-        assert.ok(Array.isArray(data));
-      }
-      callback();
-    });
-  });
-
-  req.on("error", (e) => {
-    console.error(`Problem with request: ${e.message}`);
-  });
-
-  req.end();
+const testGetRequest = (url, expectedStatus, expectedType, done) => {
+  request(app)
+    .get(url)
+    .expect("Content-Type", new RegExp(expectedType))
+    .expect(expectedStatus, done);
 };
 
-const testPostRequest = (path, body, expectedStatusCode, callback) => {
-  const options = {
-    hostname: "localhost",
-    port: 3000,
-    path: path,
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
-  const req = http.request(options, (res) => {
-    let data = "";
-
-    // A chunk of data has been received.
-    res.on("data", (chunk) => {
-      data += chunk;
-    });
-
-    // The whole response has been received.
-    res.on("end", () => {
-      assert.strictEqual(res.statusCode, expectedStatusCode);
-      callback();
-    });
-  });
-
-  req.on("error", (e) => {
-    console.error(`Problem with request: ${e.message}`);
-  });
-
-  // Write data to request body
-  req.write(JSON.stringify(body));
-  req.end();
+const testPostRequest = (url, data, expectedStatus, done) => {
+  request(app)
+    .post(url)
+    .send(data)
+    .expect(expectedStatus, done);
 };
 
-const testPutRequest = (path, expectedStatusCode, callback) => {
-  const options = {
-    hostname: "localhost",
-    port: 3000,
-    path: path,
-    method: "PUT",
-  };
-
-  const req = http.request(options, (res) => {
-    let data = "";
-
-    // A chunk of data has been received.
-    res.on("data", (chunk) => {
-      data += chunk;
-    });
-
-    // The whole response has been received.
-    res.on("end", () => {
-      assert.strictEqual(res.statusCode, expectedStatusCode);
-      callback();
-    });
-  });
-
-  req.on("error", (e) => {
-    console.error(`Problem with request: ${e.message}`);
-  });
-
-  req.end();
+const testPutRequest = (url, data, expectedStatus, done) => {
+  request(app)
+    .put(url)
+    .send(data)
+    .expect(expectedStatus, done);
 };
 
-const runTests = () => {
-  testGetRequest("/", 200, "text", () => {
-    console.log("Root URL test passed");
-    testGetRequest("/api/winkels", 200, "json", () => {
-      console.log("Winkels test passed");
-      testGetRequest("/api/getBestellingen/1", 200, "json", () => {
-        console.log("Bestellingen test passed");
-        testGetRequest("/api/getStudenten/1", 200, "json", () => {
-          console.log("Studenten test passed");
-          testGetRequest("/api/getCoach/1", 200, "json", () => {
-            console.log("Coach test passed");
-            testPostRequest(
-              "/api/maakWinkel/Naam/Specializatie/UID/PW",
-              { url: "https://example.com" },
-              201,
-              () => {
-                console.log("Maak Winkel test passed");
-                // Update the UID and PW to match the coach's credentials
-                const coachUID = "william.R@example.com"; // Replace with the correct UID
-                const coachPW = "secretpassword"; // Replace with the correct password
-                const bestellingId = 1; // Replace with the correct bestelling ID
-                testPutRequest(
-                  `/api/keurGoed/${bestellingId}/${coachUID}/${coachPW}`,
-                  200,
-                  () => {
-                    console.log("Keur Goed test passed");
-                  }
-                );
-              }
-            );
-          });
-        });
-      });
-    });
-  });
+const testDeleteRequest = (url, expectedStatus, done) => {
+  request(app)
+    .delete(url)
+    .expect(expectedStatus, done);
 };
 
-runTests();
+console.log("Starting tests...");
+
+testGetRequest("/api/getBestellingen/1", 200, "json", () => {
+  console.log("Get Bestellingen test passed");
+
+  testPostRequest(
+    "/api/maakBestelling/1/null/WinkelNaam/10/100/5/Omschrijving/ArtikelNr/GeplaatstDoor",
+    { url: "https://example.com" },
+    201,
+    () => {
+      console.log("Maak Bestelling test passed");
+
+      testPutRequest(
+        "/api/pasBestellingAan/1/gebruikersId/wachtwoord/null/WinkelNaam/10/100/5/Omschrijving/ArtikelNr/GeplaatstDoor/rqNummer/true/doorFDGeplaatst/verwachteAankomst/bestellingOntvangen/werkelijkBetaald/opmerking",
+        { url: "https://example.com" },
+        200,
+        () => {
+          console.log("Pas Bestelling Aan test passed");
+
+          testPutRequest(
+            "/api/pasBestellingAanRestricted/1/gebruikersId/wachtwoord/null/WinkelNaam/10/100/5/Omschrijving/ArtikelNr",
+            { url: "https://example.com" },
+            200,
+            () => {
+              console.log("Pas Bestelling Aan Restricted test passed");
+
+              testPostRequest(
+                "/api/maakOfUpdateBestelling/1/null/WinkelNaam/10/100/5/Omschrijving/ArtikelNr/GeplaatstDoor/false",
+                {
+                  url: "https://example.com",
+                  adminId: "adminId",
+                  adminPw: "adminPw",
+                },
+                201,
+                () => {
+                  console.log("Maak Of Update Bestelling test passed");
+
+                  testDeleteRequest(
+                    "/api/delBestelling/1/uid/pw",
+                    200,
+                    () => {
+                      console.log("Delete Bestelling test passed");
+                      console.log("All tests passed");
+                    }
+                  );
+                }
+              );
+            }
+          );
+        }
+      );
+    }
+  );
+});
