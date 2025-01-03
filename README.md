@@ -11,12 +11,3 @@ Voor parameters die je vooraf nodig hebt voor je pagina mag je zelf specifiëren
 
 ### Aanvraag api voor backend
 Je kan de soort data die je nodig hebt aanvragen in het api.txt bestand, tot dat het geïmplementeerd is zal je wel gebruik moeten maken van voorbeeld data, geef desnoods de uml aan chatgpt en vraag aan hem om voorbeeld data aan te maken.
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=17411618&assignment_repo_type=AssignmentRepo)
