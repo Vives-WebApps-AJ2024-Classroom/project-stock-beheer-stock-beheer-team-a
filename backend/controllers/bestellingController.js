@@ -76,7 +76,18 @@ exports.maakOfUpdateBestelling = (req, res) => {
     geplaatstDoor,
     isUpdate,
   } = req.params;
-  const { url } = req.body;
+  const {
+    url,
+    rqNummer,
+    goedgekeurdDoorCoach,
+    bestellingDoorFDGeplaatst,
+    verwachteAankomst,
+    bestellingOntvangen,
+    werkelijkBetaald,
+    opmerking,
+    adminId,
+    adminPw,
+  } = req.body;
 
   // Valideer de invoer
   if (
@@ -93,16 +104,31 @@ exports.maakOfUpdateBestelling = (req, res) => {
     return res.status(400).send("Alle velden zijn verplicht");
   }
 
-  if (isUpdate === "true") {
-    // Update de bestelling
-    const updateQuery = `
-      UPDATE Bestelling
-      SET winkelId = ?, winkelEnkelString = ?, aantal = ?, totaleKostPrijsExclBtw = ?, url = ?, leverTijd = ?, omschrijving = ?, artikelNr = ?
-      WHERE id = ?
-    `;
-    db.query(
-      updateQuery,
-      [
+  // Check if the user is an admin
+  const checkAdminQuery =
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 2";
+  db.query(checkAdminQuery, [adminId, adminPw], (err, results) => {
+    if (err) {
+      console.error("Error checking admin credentials:", err);
+      res.status(500).send("Error checking admin credentials");
+      return;
+    }
+
+    const isAdmin = results.length > 0;
+
+    if (isUpdate === "true") {
+      // Update de bestelling
+      const updateFields = [
+        "winkelId = ?",
+        "winkelEnkelString = ?",
+        "aantal = ?",
+        "totaleKostPrijsExclBtw = ?",
+        "url = ?",
+        "leverTijd = ?",
+        "omschrijving = ?",
+        "artikelNr = ?",
+      ];
+      const updateValues = [
         winkelId === "null" ? null : winkelId,
         winkelNaam,
         aantal,
@@ -111,26 +137,59 @@ exports.maakOfUpdateBestelling = (req, res) => {
         leverTijd,
         omschrijving,
         artikelNr,
-        geplaatstDoor,
-      ],
-      (err, updateResults) => {
+      ];
+
+      if (isAdmin) {
+        updateFields.push(
+          "rqNummer = ?",
+          "goedgekeurdDoorCoach = ?",
+          "bestellingDoorFDGeplaatst = ?",
+          "verwachteAankomst = ?",
+          "bestellingOntvangen = ?",
+          "werkelijkBetaald = ?",
+          "opmerking = ?"
+        );
+        updateValues.push(
+          rqNummer,
+          goedgekeurdDoorCoach,
+          bestellingDoorFDGeplaatst,
+          verwachteAankomst,
+          bestellingOntvangen,
+          werkelijkBetaald,
+          opmerking
+        );
+      }
+
+      updateValues.push(geplaatstDoor);
+
+      const updateQuery = `
+        UPDATE Bestelling
+        SET ${updateFields.join(", ")}
+        WHERE id = ?
+      `;
+      db.query(updateQuery, updateValues, (err, updateResults) => {
         if (err) {
           console.error("Error updating bestelling:", err);
           res.status(500).send("Error updating bestelling");
           return;
         }
         res.status(200).send("Bestelling updated successfully");
-      }
-    );
-  } else {
-    // Maak een nieuwe bestelling
-    const insertQuery = `
-      INSERT INTO Bestelling (projectId, winkelId, winkelEnkelString, aantal, totaleKostPrijsExclBtw, url, leverTijd, omschrijving, artikelNr, goedgekeurdDoorCoach)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
-    `;
-    db.query(
-      insertQuery,
-      [
+      });
+    } else {
+      // Maak een nieuwe bestelling
+      const insertFields = [
+        "projectId",
+        "winkelId",
+        "winkelEnkelString",
+        "aantal",
+        "totaleKostPrijsExclBtw",
+        "url",
+        "leverTijd",
+        "omschrijving",
+        "artikelNr",
+        "goedgekeurdDoorCoach",
+      ];
+      const insertValues = [
         projID,
         winkelId === "null" ? null : winkelId,
         winkelNaam,
@@ -140,15 +199,40 @@ exports.maakOfUpdateBestelling = (req, res) => {
         leverTijd,
         omschrijving,
         artikelNr,
-      ],
-      (err, results) => {
+        0,
+      ];
+      // EXTRA:: admin heeft extra velden die ingevuld moeten worden
+      if (isAdmin) {
+        insertFields.push(
+          "rqNummer",
+          "bestellingDoorFDGeplaatst",
+          "verwachteAankomst",
+          "bestellingOntvangen",
+          "werkelijkBetaald",
+          "opmerking"
+        );
+        insertValues.push(
+          rqNummer,
+          bestellingDoorFDGeplaatst,
+          verwachteAankomst,
+          bestellingOntvangen,
+          werkelijkBetaald,
+          opmerking
+        );
+      }
+
+      const insertQuery = `
+        INSERT INTO Bestelling (${insertFields.join(", ")})
+        VALUES (${insertValues.map(() => "?").join(", ")})
+      `;
+      db.query(insertQuery, insertValues, (err, results) => {
         if (err) {
           console.error("Error creating bestelling:", err);
           res.status(500).send("Error creating bestelling");
           return;
         }
         res.status(201).send("Bestelling created successfully");
-      }
-    );
-  }
+      });
+    }
+  });
 };
