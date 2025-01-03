@@ -215,9 +215,10 @@ export const Project = () => {
           </tr>
         </thead>
         <tbody>
-          {bestellingen.map((item, index) => (
+          {tstuf}
+          {/*bestellingen.map((item, index) => (
             <TabelRij key={item.id} item={item} verwijderGebr={userArr[3] === 0} goedkeurGebr={userArr[3] in [0, 1]} index={index} />
-          ))}
+          ))*/}
         </tbody>
       </table>
       <div id="LedenLijst">
