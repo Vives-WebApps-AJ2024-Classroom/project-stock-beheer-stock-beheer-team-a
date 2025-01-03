@@ -380,3 +380,77 @@ exports.delBestelling = (req, res) => {
     });
   });
 };
+
+// Pas een bestelling aan met beperkte rechten
+exports.pasBestellingAanRestricted = (req, res) => {
+  const {
+    bestellingsId,
+    gebruikersId,
+    wachtwoord,
+    winkelId,
+    winkelNaam,
+    aantal,
+    totaleKostPrijsExclBtw,
+    leverTijd,
+    omschrijving,
+    artikelNr,
+  } = req.params;
+
+  // Valideer de invoer
+  if (
+    !bestellingsId ||
+    !gebruikersId ||
+    !wachtwoord ||
+    !winkelNaam ||
+    !aantal ||
+    !totaleKostPrijsExclBtw ||
+    !leverTijd ||
+    !omschrijving ||
+    !artikelNr
+  ) {
+    return res.status(400).send("Alle velden zijn verplicht");
+  }
+
+  // Controleer of de gebruiker gemachtigd is om de bestelling aan te passen
+  const checkUserQuery =
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ?";
+  db.query(checkUserQuery, [gebruikersId, wachtwoord], (err, results) => {
+    if (err) {
+      console.error("Error checking user credentials:", err);
+      res.status(500).send("Error checking user credentials");
+      return;
+    }
+
+    if (results.length === 0) {
+      return res.status(403).send("Unauthorized: Invalid user credentials");
+    }
+
+    // Pas de bestelling aan
+    const updateQuery = `
+      UPDATE Bestelling
+      SET winkelId = ?, winkelEnkelString = ?, aantal = ?, totaleKostPrijsExclBtw = ?, leverTijd = ?, omschrijving = ?, artikelNr = ?
+      WHERE id = ? AND goedgekeurdDoorCoach IS NULL
+    `;
+    db.query(
+      updateQuery,
+      [
+        winkelId === "null" ? null : winkelId,
+        winkelNaam,
+        aantal,
+        totaleKostPrijsExclBtw,
+        leverTijd,
+        omschrijving,
+        artikelNr,
+        bestellingsId,
+      ],
+      (err, updateResults) => {
+        if (err) {
+          console.error("Error updating bestelling:", err);
+          res.status(500).send("Error updating bestelling");
+          return;
+        }
+        res.status(200).send("Bestelling updated successfully");
+      }
+    );
+  });
+};
