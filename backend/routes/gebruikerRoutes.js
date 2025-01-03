@@ -4,12 +4,18 @@ const gebruikerController = require("../controllers/gebruikerController");
 
 router.get("/gebruikers", gebruikerController.getGebruikers);
 router.get("/gebruikers/:id", gebruikerController.getGebruikerById);
-router.post("/gebruikers", gebruikerController.createGebruiker);
-router.put("/gebruikers/:id", gebruikerController.updateGebruiker);
-router.delete("/gebruikers/:id", gebruikerController.deleteGebruiker);
+router.get("/gebruiker", gebruikerController.getGebruikerByEmail);
+router.post(
+  "/gebruiker/:naam/:achternaam/:rol/:email/:wachtwoord",
+  gebruikerController.createGebruiker
+);
 router.put(
-  "/steekGebruikerInProject/:uid/:pid/:adminid/:pw",
-  gebruikerController.steekGebruikerInProject
+  "/gebruiker/:id/:naam/:achternaam/:rol/:email/:wachtwoord/:adminid/:adminpw",
+  gebruikerController.updateGebruiker
+);
+router.delete(
+  "/gebruiker/:id/:adminid/:adminpw",
+  gebruikerController.deleteGebruiker
 );
 
 module.exports = router;
