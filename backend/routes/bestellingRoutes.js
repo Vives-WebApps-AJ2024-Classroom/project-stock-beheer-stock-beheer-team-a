@@ -25,5 +25,9 @@ router.post(
   "/maakBestelling/:projID/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omschrijving/:artikelNr/:geplaatstDoor",
   bestellingController.maakBestelling
 );
+router.post(
+  "/maakOfUpdateBestelling/:projID/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omschrijving/:artikelNr/:geplaatstDoor/:isUpdate",
+  bestellingController.maakOfUpdateBestelling
+);
 
 module.exports = router;
