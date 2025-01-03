@@ -62,6 +62,102 @@ exports.keurGoed = (req, res) => {
   });
 };
 
+// Keur een bestelling af
+exports.keurAf = (req, res) => {
+  const { bestellingId, uid, pw, reden } = req.params;
+
+  // Valideer de invoer
+  if (!bestellingId || !uid || !pw || !reden) {
+    return res.status(400).send("Alle velden zijn verplicht");
+  }
+
+  // Controleer of de UID de coach is van het project dat bij de bestelling hoort
+  const query = `
+    SELECT b.projectId, g.niveau
+    FROM Bestelling b
+    JOIN Gebruiker g ON b.projectId = g.projectId
+    WHERE b.id = ? AND g.id = ? AND g.wachtwoord = ? AND g.niveau = 1
+  `;
+  db.query(query, [bestellingId, uid, pw], (err, results) => {
+    if (err) {
+      console.error("Error checking coach:", err);
+      res.status(500).send("Error checking coach");
+      return;
+    }
+
+    if (results.length === 0) {
+      console.log(
+        `Authorization failed for UID: ${uid}, PW: ${pw}, Bestelling ID: ${bestellingId}`
+      );
+      return res
+        .status(403)
+        .send(
+          "Unauthorized: UID is not the coach of the project associated with this bestelling"
+        );
+    }
+
+    // Keur de bestelling af
+    const updateQuery =
+      "UPDATE Bestelling SET goedgekeurdDoorCoach = 0, opmerking = ? WHERE id = ?";
+    db.query(updateQuery, [reden, bestellingId], (err, updateResults) => {
+      if (err) {
+        console.error("Error rejecting bestelling:", err);
+        res.status(500).send("Error rejecting bestelling");
+        return;
+      }
+      res.status(200).send("Bestelling rejected successfully");
+    });
+  });
+};
+
+// Ontkeur een bestelling
+exports.ontKeur = (req, res) => {
+  const { bestellingId, uid, pw } = req.params;
+
+  // Valideer de invoer
+  if (!bestellingId || !uid || !pw) {
+    return res.status(400).send("Alle velden zijn verplicht");
+  }
+
+  // Controleer of de UID de coach is van het project dat bij de bestelling hoort
+  const query = `
+    SELECT b.projectId, g.niveau
+    FROM Bestelling b
+    JOIN Gebruiker g ON b.projectId = g.projectId
+    WHERE b.id = ? AND g.id = ? AND g.wachtwoord = ? AND g.niveau = 1
+  `;
+  db.query(query, [bestellingId, uid, pw], (err, results) => {
+    if (err) {
+      console.error("Error checking coach:", err);
+      res.status(500).send("Error checking coach");
+      return;
+    }
+
+    if (results.length === 0) {
+      console.log(
+        `Authorization failed for UID: ${uid}, PW: ${pw}, Bestelling ID: ${bestellingId}`
+      );
+      return res
+        .status(403)
+        .send(
+          "Unauthorized: UID is not the coach of the project associated with this bestelling"
+        );
+    }
+
+    // Ontkeur de bestelling
+    const updateQuery =
+      "UPDATE Bestelling SET goedgekeurdDoorCoach = NULL WHERE id = ?";
+    db.query(updateQuery, [bestellingId], (err, updateResults) => {
+      if (err) {
+        console.error("Error unapproving bestelling:", err);
+        res.status(500).send("Error unapproving bestelling");
+        return;
+      }
+      res.status(200).send("Bestelling unapproved successfully");
+    });
+  });
+};
+
 // Maak of update een bestelling
 exports.maakOfUpdateBestelling = (req, res) => {
   const {
@@ -201,7 +297,7 @@ exports.maakOfUpdateBestelling = (req, res) => {
         artikelNr,
         0,
       ];
-      // EXTRA:: admin heeft extra velden die ingevuld moeten worden
+
       if (isAdmin) {
         insertFields.push(
           "rqNummer",
@@ -234,5 +330,53 @@ exports.maakOfUpdateBestelling = (req, res) => {
         res.status(201).send("Bestelling created successfully");
       });
     }
+  });
+};
+
+// Verwijder een bestelling
+exports.delBestelling = (req, res) => {
+  const { bestellingId, uid, pw } = req.params;
+
+  // Valideer de invoer
+  if (!bestellingId || !uid || !pw) {
+    return res.status(400).send("Alle velden zijn verplicht");
+  }
+
+  // Controleer of de gebruiker gemachtigd is om de bestelling te verwijderen
+  const query = `
+    SELECT b.goedgekeurdDoorCoach, g.niveau
+    FROM Bestelling b
+    JOIN Gebruiker g ON b.projectId = g.projectId
+    WHERE b.id = ? AND g.id = ? AND g.wachtwoord = ?
+  `;
+  db.query(query, [bestellingId, uid, pw], (err, results) => {
+    if (err) {
+      console.error("Error checking user:", err);
+      res.status(500).send("Error checking user");
+      return;
+    }
+
+    if (
+      results.length === 0 ||
+      (results[0].goedgekeurdDoorCoach !== null && results[0].niveau !== 2)
+    ) {
+      console.log(
+        `Authorization failed for UID: ${uid}, PW: ${pw}, Bestelling ID: ${bestellingId}`
+      );
+      return res
+        .status(403)
+        .send("Unauthorized: User is not authorized to delete this bestelling");
+    }
+
+    // Verwijder de bestelling
+    const deleteQuery = "DELETE FROM Bestelling WHERE id = ?";
+    db.query(deleteQuery, [bestellingId], (err, deleteResults) => {
+      if (err) {
+        console.error("Error deleting bestelling:", err);
+        res.status(500).send("Error deleting bestelling");
+        return;
+      }
+      res.status(200).send("Bestelling deleted successfully");
+    });
   });
 };

@@ -1,7 +1,11 @@
 const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+
+dotenv.config();
+
 const app = express();
 const port = 3001;
-const cors = require("cors");
 
 const bestellingRoutes = require("./routes/bestellingRoutes");
 const gebruikerRoutes = require("./routes/gebruikerRoutes");
