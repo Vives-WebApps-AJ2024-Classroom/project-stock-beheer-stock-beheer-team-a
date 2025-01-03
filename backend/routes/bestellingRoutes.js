@@ -10,10 +10,6 @@ router.put(
 );
 router.put("/ontKeur/:bestellingId/:uid/:pw", bestellingController.ontKeur);
 router.put(
-  "/pasBestellingAanRestricted/:bestellingsId/:gebruikersId/:wachtwoord/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omschrijving/:artikelNr",
-  bestellingController.pasBestellingAanRestricted
-);
-router.put(
   "/pasBestellingAan/:bestellingsId/:gebruikersId/:wachtwoord/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omschrijving/:artikelNr/:geplaatstDoor/:rqNummer/:goedgekeurd/:doorFDGeplaatst/:verwachteAankomst/:bestellingOntvangen/:werkelijkBetaald/:opmerking",
   bestellingController.pasBestellingAan
 );

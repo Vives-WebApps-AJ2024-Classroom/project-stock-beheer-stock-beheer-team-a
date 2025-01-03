@@ -158,8 +158,8 @@ exports.ontKeur = (req, res) => {
   });
 };
 
-// Maak of update een bestelling
-exports.maakOfUpdateBestelling = (req, res) => {
+// Maak een nieuwe bestelling
+exports.maakBestelling = (req, res) => {
   const {
     projID,
     winkelId,
@@ -170,20 +170,8 @@ exports.maakOfUpdateBestelling = (req, res) => {
     omschrijving,
     artikelNr,
     geplaatstDoor,
-    isUpdate,
   } = req.params;
-  const {
-    url,
-    rqNummer,
-    goedgekeurdDoorCoach,
-    bestellingDoorFDGeplaatst,
-    verwachteAankomst,
-    bestellingOntvangen,
-    werkelijkBetaald,
-    opmerking,
-    adminId,
-    adminPw,
-  } = req.body;
+  const { url } = req.body;
 
   // Valideer de invoer
   if (
@@ -200,136 +188,143 @@ exports.maakOfUpdateBestelling = (req, res) => {
     return res.status(400).send("Alle velden zijn verplicht");
   }
 
-  // Check if the user is an admin
-  const checkAdminQuery =
-    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 2";
-  db.query(checkAdminQuery, [adminId, adminPw], (err, results) => {
+  const insertQuery = `
+    INSERT INTO Bestelling (projectId, winkelId, winkelEnkelString, aantal, totaleKostPrijsExclBtw, url, leverTijd, omschrijving, artikelNr, goedgekeurdDoorCoach)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
+  `;
+  db.query(
+    insertQuery,
+    [
+      projID,
+      winkelId === "null" ? null : winkelId,
+      winkelNaam,
+      aantal,
+      totaleKostPrijsExclBtw,
+      url,
+      leverTijd,
+      omschrijving,
+      artikelNr,
+    ],
+    (err, results) => {
+      if (err) {
+        console.error("Error creating bestelling:", err);
+        res.status(500).send("Error creating bestelling");
+        return;
+      }
+      res.status(201).send("Bestelling created successfully");
+    }
+  );
+};
+
+// Pas een bestaande bestelling aan
+exports.pasBestellingAan = (req, res) => {
+  const {
+    bestellingsId,
+    gebruikersId,
+    wachtwoord,
+    winkelId,
+    winkelNaam,
+    aantal,
+    totaleKostPrijsExclBtw,
+    leverTijd,
+    omschrijving,
+    artikelNr,
+    geplaatstDoor,
+    rqNummer,
+    goedgekeurd,
+    doorFDGeplaatst,
+    verwachteAankomst,
+    bestellingOntvangen,
+    werkelijkBetaald,
+    opmerking,
+  } = req.params;
+  const { url } = req.body;
+
+  // Valideer de invoer
+  if (
+    !bestellingsId ||
+    !gebruikersId ||
+    !wachtwoord ||
+    !winkelNaam ||
+    !aantal ||
+    !totaleKostPrijsExclBtw ||
+    !leverTijd ||
+    !omschrijving ||
+    !artikelNr ||
+    !geplaatstDoor ||
+    !url
+  ) {
+    return res.status(400).send("Alle velden zijn verplicht");
+  }
+
+  // Controleer of de gebruiker gemachtigd is om de bestelling aan te passen
+  const checkUserQuery =
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ?";
+  db.query(checkUserQuery, [gebruikersId, wachtwoord], (err, results) => {
     if (err) {
-      console.error("Error checking admin credentials:", err);
-      res.status(500).send("Error checking admin credentials");
+      console.error("Error checking user credentials:", err);
+      res.status(500).send("Error checking user credentials");
       return;
     }
 
-    const isAdmin = results.length > 0;
+    if (results.length === 0) {
+      return res.status(403).send("Unauthorized: Invalid user credentials");
+    }
 
-    if (isUpdate === "true") {
-      // Update de bestelling
-      const updateFields = [
-        "winkelId = ?",
-        "winkelEnkelString = ?",
-        "aantal = ?",
-        "totaleKostPrijsExclBtw = ?",
-        "url = ?",
-        "leverTijd = ?",
-        "omschrijving = ?",
-        "artikelNr = ?",
-      ];
-      const updateValues = [
-        winkelId === "null" ? null : winkelId,
-        winkelNaam,
-        aantal,
-        totaleKostPrijsExclBtw,
-        url,
-        leverTijd,
-        omschrijving,
-        artikelNr,
-      ];
+    const updateFields = [
+      "winkelId = ?",
+      "winkelEnkelString = ?",
+      "aantal = ?",
+      "totaleKostPrijsExclBtw = ?",
+      "url = ?",
+      "leverTijd = ?",
+      "omschrijving = ?",
+      "artikelNr = ?",
+      "geplaatstDoor = ?",
+      "rqNummer = ?",
+      "goedgekeurdDoorCoach = ?",
+      "bestellingDoorFDGeplaatst = ?",
+      "verwachteAankomst = ?",
+      "bestellingOntvangen = ?",
+      "werkelijkBetaald = ?",
+      "opmerking = ?",
+    ];
+    const updateValues = [
+      winkelId === "null" ? null : winkelId,
+      winkelNaam,
+      aantal,
+      totaleKostPrijsExclBtw,
+      url,
+      leverTijd,
+      omschrijving,
+      artikelNr,
+      geplaatstDoor,
+      rqNummer,
+      goedgekeurd,
+      doorFDGeplaatst,
+      verwachteAankomst,
+      bestellingOntvangen,
+      werkelijkBetaald,
+      opmerking,
+    ];
 
-      if (isAdmin) {
-        updateFields.push(
-          "rqNummer = ?",
-          "goedgekeurdDoorCoach = ?",
-          "bestellingDoorFDGeplaatst = ?",
-          "verwachteAankomst = ?",
-          "bestellingOntvangen = ?",
-          "werkelijkBetaald = ?",
-          "opmerking = ?"
-        );
-        updateValues.push(
-          rqNummer,
-          goedgekeurdDoorCoach,
-          bestellingDoorFDGeplaatst,
-          verwachteAankomst,
-          bestellingOntvangen,
-          werkelijkBetaald,
-          opmerking
-        );
-      }
-
-      updateValues.push(geplaatstDoor);
-
-      const updateQuery = `
-        UPDATE Bestelling
-        SET ${updateFields.join(", ")}
-        WHERE id = ?
-      `;
-      db.query(updateQuery, updateValues, (err, updateResults) => {
+    const updateQuery = `
+      UPDATE Bestelling
+      SET ${updateFields.join(", ")}
+      WHERE id = ?
+    `;
+    db.query(
+      updateQuery,
+      [...updateValues, bestellingsId],
+      (err, updateResults) => {
         if (err) {
           console.error("Error updating bestelling:", err);
           res.status(500).send("Error updating bestelling");
           return;
         }
         res.status(200).send("Bestelling updated successfully");
-      });
-    } else {
-      // Maak een nieuwe bestelling
-      const insertFields = [
-        "projectId",
-        "winkelId",
-        "winkelEnkelString",
-        "aantal",
-        "totaleKostPrijsExclBtw",
-        "url",
-        "leverTijd",
-        "omschrijving",
-        "artikelNr",
-        "goedgekeurdDoorCoach",
-      ];
-      const insertValues = [
-        projID,
-        winkelId === "null" ? null : winkelId,
-        winkelNaam,
-        aantal,
-        totaleKostPrijsExclBtw,
-        url,
-        leverTijd,
-        omschrijving,
-        artikelNr,
-        0,
-      ];
-
-      if (isAdmin) {
-        insertFields.push(
-          "rqNummer",
-          "bestellingDoorFDGeplaatst",
-          "verwachteAankomst",
-          "bestellingOntvangen",
-          "werkelijkBetaald",
-          "opmerking"
-        );
-        insertValues.push(
-          rqNummer,
-          bestellingDoorFDGeplaatst,
-          verwachteAankomst,
-          bestellingOntvangen,
-          werkelijkBetaald,
-          opmerking
-        );
       }
-
-      const insertQuery = `
-        INSERT INTO Bestelling (${insertFields.join(", ")})
-        VALUES (${insertValues.map(() => "?").join(", ")})
-      `;
-      db.query(insertQuery, insertValues, (err, results) => {
-        if (err) {
-          console.error("Error creating bestelling:", err);
-          res.status(500).send("Error creating bestelling");
-          return;
-        }
-        res.status(201).send("Bestelling created successfully");
-      });
-    }
+    );
   });
 };
 
@@ -378,79 +373,5 @@ exports.delBestelling = (req, res) => {
       }
       res.status(200).send("Bestelling deleted successfully");
     });
-  });
-};
-
-// Pas een bestelling aan met beperkte rechten
-exports.pasBestellingAanRestricted = (req, res) => {
-  const {
-    bestellingsId,
-    gebruikersId,
-    wachtwoord,
-    winkelId,
-    winkelNaam,
-    aantal,
-    totaleKostPrijsExclBtw,
-    leverTijd,
-    omschrijving,
-    artikelNr,
-  } = req.params;
-
-  // Valideer de invoer
-  if (
-    !bestellingsId ||
-    !gebruikersId ||
-    !wachtwoord ||
-    !winkelNaam ||
-    !aantal ||
-    !totaleKostPrijsExclBtw ||
-    !leverTijd ||
-    !omschrijving ||
-    !artikelNr
-  ) {
-    return res.status(400).send("Alle velden zijn verplicht");
-  }
-
-  // Controleer of de gebruiker gemachtigd is om de bestelling aan te passen
-  const checkUserQuery =
-    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ?";
-  db.query(checkUserQuery, [gebruikersId, wachtwoord], (err, results) => {
-    if (err) {
-      console.error("Error checking user credentials:", err);
-      res.status(500).send("Error checking user credentials");
-      return;
-    }
-
-    if (results.length === 0) {
-      return res.status(403).send("Unauthorized: Invalid user credentials");
-    }
-
-    // Pas de bestelling aan
-    const updateQuery = `
-      UPDATE Bestelling
-      SET winkelId = ?, winkelEnkelString = ?, aantal = ?, totaleKostPrijsExclBtw = ?, leverTijd = ?, omschrijving = ?, artikelNr = ?
-      WHERE id = ? AND goedgekeurdDoorCoach IS NULL
-    `;
-    db.query(
-      updateQuery,
-      [
-        winkelId === "null" ? null : winkelId,
-        winkelNaam,
-        aantal,
-        totaleKostPrijsExclBtw,
-        leverTijd,
-        omschrijving,
-        artikelNr,
-        bestellingsId,
-      ],
-      (err, updateResults) => {
-        if (err) {
-          console.error("Error updating bestelling:", err);
-          res.status(500).send("Error updating bestelling");
-          return;
-        }
-        res.status(200).send("Bestelling updated successfully");
-      }
-    );
   });
 };
