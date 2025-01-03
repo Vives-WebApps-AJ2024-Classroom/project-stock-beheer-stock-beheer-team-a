@@ -387,3 +387,58 @@ exports.delBestelling = (req, res) => {
     });
   });
 };
+
+exports.maakBestelling = (req, res) => {
+  const {
+    projID,
+    winkelId,
+    winkelNaam,
+    aantal,
+    totaleKostPrijsExclBtw,
+    leverTijd,
+    omschrijving,
+    artikelNr,
+    geplaatstDoor,
+  } = req.params;
+  const { url } = req.body;
+
+  // Validate the input
+  if (
+    !projID ||
+    !winkelNaam ||
+    !aantal ||
+    !totaleKostPrijsExclBtw ||
+    !leverTijd ||
+    !omschrijving ||
+    !artikelNr ||
+    !geplaatstDoor ||
+    !url
+  ) {
+    return res.status(400).send("All fields are required");
+  }
+
+  const query =
+    "INSERT INTO Bestelling (projectId, winkelId, winkelEnkelString, aantal, totaleKostPrijsExclBtw, url, leverTijd, omschrijving, artikelNr, goedgekeurdDoorCoach) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";
+  db.query(
+    query,
+    [
+      projID,
+      winkelId === "null" ? null : winkelId,
+      winkelNaam,
+      aantal,
+      totaleKostPrijsExclBtw,
+      url,
+      leverTijd,
+      omschrijving,
+      artikelNr,
+    ],
+    (err, results) => {
+      if (err) {
+        console.error("Error creating bestelling:", err);
+        res.status(500).send("Error creating bestelling");
+        return;
+      }
+      res.status(201).send("Bestelling created successfully");
+    }
+  );
+};

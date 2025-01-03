@@ -158,7 +158,7 @@ exports.deleteGebruiker = (req, res) => {
       .send("ID, admin ID, and admin password are required");
   }
 
-  // Check if the admin credentials are valid 
+  // Check if the admin credentials are valid
   const checkAdminQuery =
     "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 2";
   db.query(checkAdminQuery, [adminid, adminpw], (err, results) => {
