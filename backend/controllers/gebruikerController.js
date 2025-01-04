@@ -92,7 +92,7 @@ exports.updateGebruiker = (req, res) => {
 
   // Check if the admin credentials are valid
   const checkAdminQuery =
-    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 2";
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 0";
   db.query(checkAdminQuery, [adminid, adminpw], (err, results) => {
     if (err) {
       console.error("Error checking admin credentials:", err);
@@ -160,7 +160,7 @@ exports.deleteGebruiker = (req, res) => {
 
   // Check if the admin credentials are valid
   const checkAdminQuery =
-    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 2";
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 0";
   db.query(checkAdminQuery, [adminid, adminpw], (err, results) => {
     if (err) {
       console.error("Error checking admin credentials:", err);

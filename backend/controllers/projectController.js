@@ -46,7 +46,7 @@ exports.steekGebruikerInProject = (req, res) => {
 
   // Check if the admin credentials are valid
   const checkAdminQuery =
-    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 2";
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 0";
   db.query(checkAdminQuery, [adminid, pw], (err, results) => {
     if (err) {
       console.error("Error checking admin:", err);
