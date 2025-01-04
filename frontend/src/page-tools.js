@@ -1,7 +1,7 @@
 export const apiURL = "http://localhost:3001/api/"
 
 export let CheckUserLS = () => {
-  let userArr//Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
+  let userArr//Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau, pid]
   try{
     userArr = JSON.parse(localStorage.getItem("user"))
     if(userArr.length != 4){
@@ -10,7 +10,7 @@ export let CheckUserLS = () => {
   }catch{
     console.log("foute localstorage indeling")
   }
-  return userArr || ["","",0,2]
+  return userArr || ["","",0,2,0]
 }
 
 export let getData = async (url, body=null, method="get") => {

@@ -8,7 +8,7 @@ export const Project = () => {
   const [leden, setLeden] = useState([])
   const { projectId } = useParams();
   const [bestellingen, setBestellingen] = useState([])
-  const [userArr, setUserArray] = useState(["", "", 0, 2])
+const [userArr, setUserArray] = useState(["", "", 0, 2,0])
   useEffect(() => {
     const ServerConnect = async () => {
       let user = CheckUserLS()
@@ -192,7 +192,7 @@ export const Project = () => {
     bestellingen.map((item, index) => {
       if (index != 0 && bestellingen[index - 1].id == item.id) {
 
-        return <><tr> <td>Aanmaak: {item.aanmaak}</td><td> lever tijd: {item.leverTijd}</td><td> lever adres: {item.leveringsAdres}</td><td> artikel nr: {item.artikelNr}</td><td> rq nr: {item.rqNummer}</td><td> Bestelling door financ dienst geplaatst: {item.bestellingDoorFDGeplaatst}</td><td> verwachte aankomst: {item.verwachteAankomst}</td></tr><tr><td> bestelling ontvangen: {item.bestellingOntvangen}</td><td> opmerking: {item.opmerking} </td><td><button onClick={() => { document.location = /bestelling/ + item.id }}>Aanpassen</button></td></tr></>
+        return <><tr> <td>Aanmaak: {item.aanmaak}</td><td> lever tijd: {item.leverTijd}</td><td> lever adres: {item.leveringsAdres}</td><td> artikel nr: {item.artikelNr}</td><td> rq nr: {item.rqNummer}</td><td> Bestelling door financ dienst geplaatst: {item.bestellingDoorFDGeplaatst}</td><td> verwachte aankomst: {item.verwachteAankomst}</td></tr><tr><td> bestelling ontvangen: {item.bestellingOntvangen}</td><td> opmerking: {item.opmerking} </td><td><button onClick={() => { document.location = /bestelling/ + projectId + "/" + item.id }}>Aanpassen</button></td></tr></>
       } else {
         return <TabelRij item={item} verwijderGebr={userArr[3] == 0} goedkeurGebr={userArr[3] in [0, 1]} index={index}></TabelRij>
       }
@@ -203,17 +203,6 @@ export const Project = () => {
     <div className="project-container">
       <p>Bestellingen:</p>
       <table>
-        <thead>
-          <tr>
-            <th>Omschrijving</th>
-            <th>Betaald/kostprijs<br />(excl. btw)</th>
-            <th>Ontvangen/goedgekeurd</th>
-            <th>Aantal</th>
-            <th>URL</th>
-            <th>Winkel</th>
-            <th>Bewerkingen</th>
-          </tr>
-        </thead>
         <tbody>
           {tstuf}
           {/*bestellingen.map((item, index) => (

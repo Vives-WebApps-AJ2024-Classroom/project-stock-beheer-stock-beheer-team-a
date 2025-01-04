@@ -44,7 +44,7 @@ const WelcomePage = () => {
                 setArr.push("waap soort")
                 let jsondata = await getData(apiURL + "gebruiker?email=" + emailAddress, null, "GET");
                 if(jsondata == null){ //backend verbinding gefaald
-                    jsondata = {"id":1}
+                    jsondata = {"id":1, "projectId":0}
                 }
                 setArr.push(jsondata.id)
                 if(emailAddress.endsWith('@gmail.com')) { //@vives.be
@@ -56,6 +56,7 @@ const WelcomePage = () => {
                     console.log("je bent studentje");
                     setArr.push(2)
                 }
+                setArr.push(jsondata.projectId)
                 localStorage.setItem("user",JSON.stringify(setArr))
             }
             netwerkThread()
@@ -169,6 +170,7 @@ const RouterApp = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/geenToegang" element={<GeenToegang />} />
             <Route path="/bestelling/:projectId" element={<BestellingPlaatsen />} />
+            <Route path="/bestelling/:projectId/:bid" element={<BestellingPlaatsen />} />
             <Route path="/groepsIndeling" element={<GroepsIndeling />} />
             <Route path="/logPagina" element={<LogPagina />} />
             <Route path="/projectCreatie" element={<ProjectCreatie />} />

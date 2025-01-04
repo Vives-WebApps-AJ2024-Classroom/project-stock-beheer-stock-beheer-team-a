@@ -22,14 +22,15 @@ const Navbar = () => {
                 <>
                     <Link to="/groepsIndeling">GroepsIndeling</Link>
                     <Link to="/projectCreatie">Project aanmaken</Link>
-                    <Link to="/project/:projectId">Overzicht</Link>
+                    <Link to={"/project/"+userArr[4]}>Overzicht</Link>
                     <Link to="/winkels">Winkels</Link>
-                    <Link to="/logPagina">Log pagina</Link>                
+                    <Link to="/logPagina">Log pagina</Link>
+                    <Link to={process.env.REACT_APP_PHPMYADMIN_URL}>phpMyAdmin</Link>       
                 </>
             )}
             {userArr[3] == 2 && (  
                 <>
-                    <Link to="/project/:projectId">Overzicht</Link>
+                    <Link to={"/project/"+userArr[4]}>Overzicht</Link>
                     <Link to="/bestelling/:projectId">Bestelling plaatsen</Link>
                 
                 </>
