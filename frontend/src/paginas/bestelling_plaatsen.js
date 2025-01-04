@@ -63,10 +63,18 @@ export const BestellingPlaatsen = () => {
           Aantal: aantal,
         })
         if(userArr[3] == 0){ // voor admins
-          const { rqNummer, goedgekeurDoorCoach, bestellingDoorFDGeplaatst, verwachteAankomst, bestellingOntvangen, werkelijkBetaald, opmerking, leveringsAdres } = bestaandeData
-          setFormData({... formData, 
+          const { rqNummer, goedgekeurdDoorCoach, bestellingDoorFDGeplaatst, verwachteAankomst, bestellingOntvangen, werkelijkBetaald, opmerking, leveringsAdres } = bestaandeData
+          setFormData({
+            naam: omschrijving,
+            Winkel: winkelEnkelString,
+            WinkelId: winkelId,
+            link: url,
+            productcode: artikelNr,
+            kostprijs: totaleKostPrijsExclBtw,
+            levertijd: leverTijd,
+            Aantal: aantal, 
             rqNummer: rqNummer, 
-            goedgekeurDoorCoach: goedgekeurDoorCoach, 
+            goedgekeurdDoorCoach: goedgekeurdDoorCoach, 
             bestellingDoorFDGeplaatst: bestellingDoorFDGeplaatst, 
             verwachteAankomst: verwachteAankomst, 
             bestellingOntvangen: bestellingOntvangen, 
@@ -149,7 +157,7 @@ export const BestellingPlaatsen = () => {
               className="form-control"
               name="Winkel"
               id="Winkel"
-              value={formData.Winkel || 0}
+              value={formData.WinkelId}
               onChange={handleChange}
             >
               <option value="">Selecteer winkel</option>
@@ -238,13 +246,13 @@ export const BestellingPlaatsen = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="goedgekeurDoorCoach">goedgekeurDoorCoach:</label>
+            <label htmlFor="goedgekeurdDoorCoach">goedgekeurdDoorCoach:</label>
             <input
               className="form-control"
               type="checkbox"
-              name="goedgekeurDoorCoach"
-              id="goedgekeurDoorCoach"
-              value={formData.goedgekeurDoorCoach}
+              name="goedgekeurdDoorCoach"
+              id="goedgekeurdDoorCoach"
+              value={formData.goedgekeurdDoorCoach}
               onChange={handleChange}
               min="0"
             />
