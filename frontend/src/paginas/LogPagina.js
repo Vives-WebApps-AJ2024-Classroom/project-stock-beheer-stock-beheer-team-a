@@ -12,7 +12,7 @@ Knop voor elementen op te halen.
 
 export const LogPagina = () => {
   const navigatie = useNavigate()
-  let userArr = ["","",0,2,0] //Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
+  let userArr = CheckUserLS()
   const [gebruikerz, setGebruikers] = useState([])
   const [uGeselecteerd, setUGeselecteerd] = useState(-1);
   const [bestellingen, setBestellingen] = useState([])
@@ -26,163 +26,112 @@ export const LogPagina = () => {
 
   useEffect(() => {
     const serverConnect = async () => {
-      userArr = CheckUserLS()
       if(userArr[3] != 0){//niet administrators buitenschoppen.
         navigatie("/geenToegang")
       }
 
-      //let bestel = await getData(apiURL +"getBestellingen/"+projectId)
-      let gebruikers = [
-        {
-          "id": 1,
-          "voornaam": "Alice",
-          "achternaam": "Jansen",
-          "email": "alice.jansen@example.com",
-          "niveau": 0,
-          "projectId": null,
-          "wachtwoord": "admin123"
-        },
-        {
-          "id": 2,
-          "voornaam": "Bob",
-          "achternaam": "Pieters",
-          "email": "bob.pieters@example.com",
-          "niveau": 1,
-          "projectId": 1,
-          "wachtwoord": "coach456"
-        },
-        {
-          "id": 3,
-          "voornaam": "Charlie",
-          "achternaam": "Verhoeven",
-          "email": "charlie.verhoeven@example.com",
-          "niveau": 2,
-          "projectId": 2,
-          "wachtwoord": "student789"
-        },
-        {
-          "id": 4,
-          "voornaam": "Diana",
-          "achternaam": "Mertens",
-          "email": "diana.mertens@example.com",
-          "niveau": 2,
-          "projectId": 3,
-          "wachtwoord": "student456"
-        },
-        {
-          "id": 5,
-          "voornaam": "Eve",
-          "achternaam": "De Vries",
-          "email": "eve.devries@example.com",
-          "niveau": 1,
-          "projectId": null,
-          "wachtwoord": "coach123"
-        }]
-      let projcten = [
-        {
-          "id": 1,
-          "naam": "Website Redesign",
-          "datum": "2024-01-15",
-          "spendeerbaarBedrag": 250000
-        },
-        {
-          "id": 2,
-          "naam": "Marketing Campaign",
-          "datum": "2024-02-01",
-          "spendeerbaarBedrag": 150000
-        },
-        {
-          "id": 3,
-          "naam": "Product Launch",
-          "datum": "2024-03-20",
-          "spendeerbaarBedrag": 500000
-        },
-        {
-          "id": 4,
-          "naam": "Team Building",
-          "datum": "2024-04-10",
-          "spendeerbaarBedrag": 100000
-        },
-        {
-          "id": 5,
-          "naam": "R&D Initiative",
-          "datum": "2024-05-05",
-          "spendeerbaarBedrag": 300000
-        }
-      ]
-      let bestel = [
-        {
-          "id": 1,
-          "aanmaak": "2024-12-01 10:30:00",
-          "winkelId": 12,
-          "winkelEnkelString": "bal",
-          "aantal": 5,
-          "totaleKostPrijsExclBtw": 12500,
-          "url": "https://voorbeeld.com/artikel/1",
-          "leverTijd": 3,
-          "leveringsAdres": "Straatnaam 123, 1000 Brussel",
-          "omschrijving": "Laptop voor kantoor",
-          "artikelNr": "ART12345",
-          "projectId": 1,
-          "rqNummer": 9876543210,
-          "bestellingDoorFDGeplaatst": null,
-          "verwachteAankomst": null,
-          "bestellingOntvangen": null,
-          "werkelijkBetaald": null,
-          "opmerking": "Snelle levering gevraagd",
-          "goedgekeurdDoorCoach": true,
-        },
-        {
-          "id": 2,
-          "aanmaak": "2024-12-02 14:15:00",
-          "winkelId": null,
-          "winkelEnkelString": "Kleine buurtwinkel",
-          "aantal": 2,
-          "totaleKostPrijsExclBtw": 8000,
-          "url": "https://voorbeeld.com/artikel/2",
-          "leverTijd": 7,
-          "leveringsAdres": "Kerkstraat 45, 2000 Antwerpen",
-          "omschrijving": "Bureau lamp",
-          "artikelNr": "ART67890",
-          "projectId": 1,
-          "rqNummer": null,
-          "bestellingDoorFDGeplaatst": "2024-12-01",
-          "verwachteAankomst": "2024-12-08",
-          "bestellingOntvangen": null,
-          "werkelijkBetaald": null,
-          "opmerking": "Betaal bij levering",
-          "goedgekeurdDoorCoach": false,
-        },
-        {
-          "id": 3,
-          "aanmaak": "2024-12-03 09:00:00",
-          "winkelId": 15,
-          "winkelEnkelString": "bol",
-          "aantal": 10,
-          "totaleKostPrijsExclBtw": 5000,
-          "url": "https://voorbeeld.com/artikel/3",
-          "leverTijd": 5,
-          "leveringsAdres": "Hoofdstraat 78, 3000 Leuven",
-          "omschrijving": "Notitieboekjes",
-          "artikelNr": "ART98765",
-          "projectId": 1,
-          "rqNummer": 1234567890,
-          "bestellingDoorFDGeplaatst": "2024-12-02",
-          "verwachteAankomst": "2024-12-07",
-          "bestellingOntvangen": "2024-12-08",
-          "werkelijkBetaald": 5000,
-          "opmerking": "Levering op tijd essentieel",
-          "goedgekeurdDoorCoach": true,
-        }
-      ]
+      //let bestel = 
+      let projecten = await getData(apiURL + "getProjecten",null,"GET");
+      if(projecten == null){
+          projecten = [
+              {
+                  "id": 1,
+                  "naam": "Website Redesign",
+                  "datum": "2024-01-15",
+                  "spendeerbaarBedrag": 250000
+              },
+              {
+                  "id": 2,
+                  "naam": "Marketing Campaign",
+                  "datum": "2024-02-01",
+                  "spendeerbaarBedrag": 150000
+              },
+              {
+                  "id": 3,
+                  "naam": "Product Launch",
+                  "datum": "2024-03-20",
+                  "spendeerbaarBedrag": 500000
+              },
+              {
+                  "id": 4,
+                  "naam": "Team Building",
+                  "datum": "2024-04-10",
+                  "spendeerbaarBedrag": 100000
+              },
+              {
+                  "id": 5,
+                  "naam": "R&D Initiative",
+                  "datum": "2024-05-05",
+                  "spendeerbaarBedrag": 300000
+              }
+          ];
+      }
+
+      let gebruikers = await getData(apiURL + "gebruikers",null,"GET")
+      if(gebruikers == null){
+          gebruikers = [
+              {
+                  "id": 1,
+                  "voornaam": "Alice",
+                  "achternaam": "Jansen",
+                  "email": "alice.jansen@example.com",
+                  "niveau": 0,
+                  "projectId": null,
+                  "wachtwoord": "admin123"
+              },
+              {
+                  "id": 2,
+                  "voornaam": "Bob",
+                  "achternaam": "Pieters",
+                  "email": "bob.pieters@example.com",
+                  "niveau": 1,
+                  "projectId": 1,
+                  "wachtwoord": "coach456"
+              },
+              {
+                  "id": 3,
+                  "voornaam": "Charlie",
+                  "achternaam": "Verhoeven",
+                  "email": "charlie.verhoeven@example.com",
+                  "niveau": 2,
+                  "projectId": 2,
+                  "wachtwoord": "student789"
+              },
+              {
+                  "id": 4,
+                  "voornaam": "Diana",
+                  "achternaam": "Mertens",
+                  "email": "diana.mertens@example.com",
+                  "niveau": 2,
+                  "projectId": 3,
+                  "wachtwoord": "student456"
+              },
+              {
+                  "id": 5,
+                  "voornaam": "Eve",
+                  "achternaam": "De Vries",
+                  "email": "eve.devries@example.com",
+                  "niveau": 1,
+                  "projectId": null,
+                  "wachtwoord": "coach123"
+              }
+          ];
+      }
+
       setGebruikers(gebruikers)
-      setBestellingen(bestel)
-      setProjecten(projcten)
+      setProjecten(projecten)
     }
     serverConnect()
   }, []);
+
+  const fetchNewBestellingen = async() => {
+    let data = await getData(apiURL + `getBestellingen/${pGeselecteerd}`,null,"GET")
+    setBestellingen(data)
+  }
   const updateQuerris = async () => {
-    //let resultaten = await getData(`/getQuerries/${beginDatum}/${eindDatum}/${pGeselecteerd}/${bGeselecteerd}/:${uGeselecteerd}`)
+    let resultaten = await getData(`/getQuerries/${beginDatum}/${eindDatum}/${pGeselecteerd}/${bGeselecteerd}/${uGeselecteerd}`,null,"GET")
+    setLogResultaat(resultaten || [])
+    /*
     let resultaten = [
       {
         "id": 1,
@@ -266,6 +215,7 @@ export const LogPagina = () => {
       }
     ]
     setLogResultaat(resultaten.filter(o => (o.bestellingsId == bGeselecteerd || bGeselecteerd == -1) && (o.projectId == pGeselecteerd || pGeselecteerd == -1) && (o.gebruikersId == uGeselecteerd || uGeselecteerd == -1)))
+    */
   }
 
   return (
@@ -280,7 +230,7 @@ export const LogPagina = () => {
           )}
         </select>
         <label className="label">Van welk project?</label>
-        <select value={pGeselecteerd} size={5} onChange={(e) => { setPGeselecteerd(e.target.value) }}>
+        <select value={pGeselecteerd} size={5} onChange={(e) => { setPGeselecteerd(e.target.value); fetchNewBestellingen() /* congrats react */ }}>
           <option value={-1}>(alles)</option>
           {projecten.map(proj =>
             <option key={proj.id} value={proj.id}>{proj.naam}</option>
@@ -289,7 +239,7 @@ export const LogPagina = () => {
         <label className="label">Welke bestelling?</label>
         <select value={bGeselecteerd} size={5} onChange={(e) => { setBGeselecteerd(e.target.value) }}>
           <option value={-1}>(onafhankelijk)</option>
-          {bestellingen.filter(a => a.projectId === pGeselecteerd).map(best =>
+          {bestellingen.map(best =>
             <option key={best.id} value={best.id}>{best.id}: {best.omschrijving}</option>
           )}
         </select>

@@ -23,7 +23,6 @@ export const BestellingPlaatsen = () => {
       let userArr;
       userArr = CheckUserLS();
       setProjectGroup(projectId)
-      console.log(bid)
       if(bid){
         let bestaandeData = await getData(apiURL + `getBestelling/${bid}`, null, "GET");
         if(bestaandeData == null){
@@ -118,12 +117,11 @@ export const BestellingPlaatsen = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted: ", formData);
     const submits = async () => {
       let userArr = CheckUserLS();
       let stro = `maakOfUpdateBestelling/${projectId}/${formData.WinkelId}/${formData.Winkel}/${formData.Aantal}/${formData.kostprijs}/${formData.levertijd}/${formData.naam}/${formData.productcode}/${userArr[2]}/${bid?true:false}`
       if(userArr[3] == 0){
-        await getData(stro,JSON.stringify({url:formData.link,
+        await getData(apiURL + stro,JSON.stringify({url:formData.link,
           rqNummer: formData.rqNummer,
           goedgekeurdDoorCoach: formData.goedgekeurdDoorCoach,
           bestellingDoorFDGeplaatst: formData.bestellingDoorFDGeplaatst,
@@ -135,7 +133,7 @@ export const BestellingPlaatsen = () => {
           adminPw: userArr[1],
         }),"POST")
       }else{
-        await getData(stro,JSON.stringify({url:formData.link}),"POST")
+        await getData(apiURL + stro,JSON.stringify({url:formData.link}),"POST")
       }
     }
     submits()

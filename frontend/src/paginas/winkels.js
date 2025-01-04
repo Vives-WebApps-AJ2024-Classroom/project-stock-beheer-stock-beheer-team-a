@@ -36,7 +36,6 @@ export const Winkels = () => {
     await getData(apiURL + `maakWinkel/${nw}/${nwspec}/${userArr[2]}/`+userArr[1], JSON.stringify({url: nwurl}), "POST")
   }
   const Verwijder = async(id) => {
-    console.log(id)
     await getData(apiURL + `deleteWinkel/${id}/${userArr[2]}/`+userArr[1], null, "DELETE")
     setW(w.filter(a => a.id !== id))
   }
