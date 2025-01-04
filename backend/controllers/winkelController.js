@@ -1,4 +1,5 @@
 const db = require("../db");
+const log = require("./logController")
 
 exports.getWinkels = (req, res) => {
   const query = "SELECT * FROM Winkel";
@@ -23,12 +24,12 @@ exports.maakWinkel = (req, res) => {
 
   const query =
     "INSERT INTO Winkel (naam, url, specializatie) VALUES (?, ?, ?)";
-  db.query(query, [naam, url, specializatie], (err, results) => {
+  let exe = db.query(query, [naam, url, specializatie], (err, results) => {
     if (err) {
       console.error("Error creating winkel:", err);
       res.status(500).send("Error creating winkel");
       return;
     }
     res.status(201).send("Winkel created successfully");
-  });
-};
+    log.logQuery(exe.sql, uid, 0,0)
+})}

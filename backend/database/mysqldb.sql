@@ -11,7 +11,7 @@ CREATE TABLE `stock-beheer`.`Winkel` (`id` INT NOT NULL AUTO_INCREMENT , `naam` 
 
 CREATE TABLE `stock-beheer`.`Gebruiker` (`id` INT NOT NULL AUTO_INCREMENT , `voornaam` VARCHAR(30) NOT NULL,`achternaam` VARCHAR(30) NOT NULL,`email` VARCHAR(45) NOT NULL, `niveau` Int NOT NULL,`projectId` Int, `wachtwoord` VARCHAR(30) NOT NULL , PRIMARY KEY(`id`), UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
-CREATE TABLE `stock-beheer`.`LogAanpassing` (`id` INT NOT NULL AUTO_INCREMENT , `gebruikersId` Int NOT NULL,`moment` DateTime NOT NULL,`bestellingsId` Int, `querry` VARCHAR(200) NOT NULL, `projectId` Int, PRIMARY KEY(`id`), UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+CREATE TABLE `stock-beheer`.`LogAanpassing` (`id` INT NOT NULL AUTO_INCREMENT , `gebruikersId` Int NOT NULL,`moment` DateTime NOT NULL,`bestellingsId` Int, `querry` VARCHAR(1200) NOT NULL, `projectId` Int, PRIMARY KEY(`id`), UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
 
 GRANT ALL PRIVILEGES ON `stock-beheer`.* TO 'stock'@'localhost' WITH GRANT OPTION;

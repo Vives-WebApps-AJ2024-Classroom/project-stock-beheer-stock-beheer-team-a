@@ -1,4 +1,6 @@
 const db = require("../db");
+const log = require("./logController")
+
 
 exports.getGebruikers = (req, res) => {
   const query = "SELECT * FROM Gebruiker";
@@ -67,13 +69,14 @@ exports.createGebruiker = (req, res) => {
       }
       const gebruikerId = results.insertId;
       const selectQuery = "SELECT * FROM Gebruiker WHERE id = ?";
-      db.query(selectQuery, [gebruikerId], (err, selectResults) => {
+      let exe = db.query(selectQuery, [gebruikerId], (err, selectResults) => {
         if (err) {
           console.error("Error fetching created gebruiker:", err);
           res.status(500).send("Error fetching created gebruiker");
           return;
         }
         res.status(201).json(selectResults[0]);
+        log.logQuery(exe.sql,0,0,0)
       });
     }
   );
@@ -137,13 +140,14 @@ exports.updateGebruiker = (req, res) => {
     const updateQuery = `UPDATE Gebruiker SET ${updateFields.join(
       ", "
     )} WHERE id = ?`;
-    db.query(updateQuery, updateValues, (err, updateResults) => {
+    let exe = db.query(updateQuery, updateValues, (err, updateResults) => {
       if (err) {
         console.error("Error updating gebruiker:", err);
         res.status(500).send("Error updating gebruiker");
         return;
       }
       res.status(200).send("Gebruiker updated successfully");
+      log.logQuery(exe.sql, adminid,0,0)
     });
   });
 };
@@ -174,13 +178,14 @@ exports.deleteGebruiker = (req, res) => {
 
     // Delete the gebruiker
     const deleteQuery = "DELETE FROM Gebruiker WHERE id = ?";
-    db.query(deleteQuery, [id], (err, deleteResults) => {
+    let exe = db.query(deleteQuery, [id], (err, deleteResults) => {
       if (err) {
         console.error("Error deleting gebruiker:", err);
         res.status(500).send("Error deleting gebruiker");
         return;
       }
       res.status(200).send("Gebruiker deleted successfully");
+      log.logQuery(exe.sql, adminid,0,0)
     });
   });
 };
