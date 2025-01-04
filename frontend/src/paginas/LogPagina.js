@@ -124,8 +124,8 @@ export const LogPagina = () => {
     serverConnect()
   }, []);
 
-  const fetchNewBestellingen = async() => {
-    let data = await getData(apiURL + `getBestellingen/${pGeselecteerd}`,null,"GET")
+  const fetchNewBestellingen = async(pid) => {
+    let data = await getData(apiURL + `getBestellingen/${pid}`,null,"GET")
     setBestellingen(data)
   }
   const updateQuerris = async () => {
@@ -230,7 +230,7 @@ export const LogPagina = () => {
           )}
         </select>
         <label className="label">Van welk project?</label>
-        <select value={pGeselecteerd} size={5} onChange={(e) => { setPGeselecteerd(e.target.value); fetchNewBestellingen() /* congrats react */ }}>
+        <select value={pGeselecteerd} size={5} onChange={(e) => { setPGeselecteerd(e.target.value); fetchNewBestellingen(e.target.value) /* congrats react */ }}>
           <option value={-1}>(alles)</option>
           {projecten.map(proj =>
             <option key={proj.id} value={proj.id}>{proj.naam}</option>

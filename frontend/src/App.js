@@ -18,6 +18,7 @@ import { GroepsIndeling } from "./paginas/GroepsIndeling";
 import { LogPagina } from "./paginas/LogPagina";
 import { Home } from "./paginas/Home"; // Zorg ervoor dat dit correct geïmporteerd is
 import { ProjectCreatie } from "./paginas/project_aanmaken";
+import {ProOverzicht} from "./paginas/adminVindProject"
 import "./paginas/login.css"; // Zorg dat deze stijl beschikbaar is
 import {getData, apiURL} from "./page-tools"
 
@@ -176,6 +177,7 @@ const RouterApp = () => {
             <Route path="/projectCreatie" element={<ProjectCreatie />} />
             <Route path="/project/:projectId" element={<Project />} />
             <Route path="/winkels" element={<Winkels />} />
+            <Route path="/proOverzicht" element={<ProOverzicht />} />
         </Routes>
     );
 };

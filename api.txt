@@ -63,3 +63,4 @@ DELETE:
 /logPagina                          Querry log bekijken.
 /groepsIndeling                     Instellen van wie in welke groep zit.
 /projectCreatie                     Project aanmaken.
+/projOverzicht                      Overzicht voor admins voor naar projecten te gaan.

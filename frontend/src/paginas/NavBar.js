@@ -22,9 +22,10 @@ const Navbar = () => {
                 <>
                     <Link to="/groepsIndeling">GroepsIndeling</Link>
                     <Link to="/projectCreatie">Project aanmaken</Link>
-                    <Link to={"/project/"+userArr[4]}>Overzicht</Link>
+                    {/*<Link to={"/project/"+userArr[4]}>Overzicht</Link>*/}
                     <Link to="/winkels">Winkels</Link>
                     <Link to="/logPagina">Log pagina</Link>
+                    <Link to="/proOverzicht">Project Links</Link>
                     <Link to={process.env.REACT_APP_PHPMYADMIN_URL}>phpMyAdmin</Link>       
                 </>
             )}
