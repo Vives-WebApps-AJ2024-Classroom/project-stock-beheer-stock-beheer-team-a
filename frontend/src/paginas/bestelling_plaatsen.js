@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useP, useParams } from 'react-router-dom';
-import { winkels } from "./winkels"; // Import the winkels array
+import { useNavigate, useParams } from 'react-router-dom';
 import "../styles/stylesBestelling.css"; // Link to the CSS file
 import  { CheckUserLS, getData, apiURL } from "../page-tools";
 
@@ -21,9 +20,9 @@ export const BestellingPlaatsen = () => {
   const [availableWinkels, setAvailableWinkels] = useState([]);
   useEffect(() => {
     const nwThread = async () => {
-      let userArr; // Normal format: ["username", "password", id, level]    
+      let userArr;
       userArr = CheckUserLS();
-      setProjectGroup(userArr[4])
+      setProjectGroup(projectId)
       console.log(bid)
       if(bid){
         let bestaandeData = await getData(apiURL + `getBestelling/${bid}`, null, "GET");
@@ -86,7 +85,7 @@ export const BestellingPlaatsen = () => {
       }else if(userArr[3] == 0){ // admins die er een nieuwe aanmaken
         setFormData({... formData, 
           rqNummer: 0, 
-          goedgekeurDoorCoach: null, 
+          goedgekeurdDoorCoach: null, 
           bestellingDoorFDGeplaatst: null, 
           verwachteAankomst: null, 
           bestellingOntvangen: null, 
@@ -95,9 +94,8 @@ export const BestellingPlaatsen = () => {
           leveringsAdres: "Xaverianenstraat hoofdgebouw"
         })
       }
-
-      // Fetch winkel data
-      setAvailableWinkels(winkels);//dit moet nog veranderen door een api request
+      let winkels = await getData(apiURL + `winkels`, null, "GET");
+      setAvailableWinkels(winkels);
     }
     nwThread()
   }, []);
@@ -121,7 +119,26 @@ export const BestellingPlaatsen = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form Data Submitted: ", formData);
-    // Submit logic here...
+    const submits = async () => {
+      let userArr = CheckUserLS();
+      let stro = `maakOfUpdateBestelling/${projectId}/${formData.WinkelId}/${formData.Winkel}/${formData.Aantal}/${formData.kostprijs}/${formData.levertijd}/${formData.naam}/${formData.productcode}/${userArr[2]}/${bid?true:false}`
+      if(userArr[3] == 0){
+        await getData(stro,{url:formData.link,
+          rqNummer: formData.rqNummer,
+          goedgekeurdDoorCoach: formData.goedgekeurdDoorCoach,
+          bestellingDoorFDGeplaatst: formData.bestellingDoorFDGeplaatst,
+          verwachteAankomst: formData.verwachteAankomst,
+          bestellingOntvangen: formData.bestellingOntvangen,
+          werkelijkBetaald: formData.werkelijkBetaald,
+          opmerking: formData.opmerking,
+          adminId: userArr[2],
+          adminPw: userArr[1],
+        },"POST")
+      }else{
+        await getData(stro,{url:formData.link},"POST")
+      }
+    }
+    submits()
   };
 
   return (

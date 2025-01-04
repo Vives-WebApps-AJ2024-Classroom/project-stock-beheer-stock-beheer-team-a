@@ -48,11 +48,13 @@ const WelcomePage = () => {
                 }
                 setArr.push(jsondata.id)
                 if(emailAddress.endsWith('@gmail.com')) { //@vives.be
-                    console.log(localStorage);
+                    setArr.push("adminPass")
+                    setArr.push(0)  //hardcoded admin id
                     console.log("jaja je bent admin");
                     setArr.push(0)
                 } else if (emailAddress.endsWith('@student.vives.be')) {
-                    console.log(localStorage);
+                    setArr.push("studentPass")
+                    setArr.push(1)  //hardcoded student id
                     console.log("je bent studentje");
                     setArr.push(2)
                 }

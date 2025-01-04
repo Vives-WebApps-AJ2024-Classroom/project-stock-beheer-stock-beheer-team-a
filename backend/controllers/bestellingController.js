@@ -463,6 +463,7 @@ exports.pasBestellingAanRestricted = (req, res) => {
 
 // Maak of update een bestelling
 // Maak of update een bestelling
+// Maak of update een bestelling
 exports.maakOfUpdateBestelling = (req, res) => {
   const {
     projID,
@@ -506,7 +507,7 @@ exports.maakOfUpdateBestelling = (req, res) => {
 
   // Check if the user is an admin
   const checkAdminQuery =
-    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 2";
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 0";
   db.query(checkAdminQuery, [adminId, adminPw], (err, results) => {
     if (err) {
       console.error("Error checking admin credentials:", err);
