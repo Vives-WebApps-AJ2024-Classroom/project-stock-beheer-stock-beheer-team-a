@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { CheckUserLS, getData, apiURL } from '../page-tools'
 import "../styles/stylesProject.css"; // Link naar de CSS file
 
@@ -192,7 +192,7 @@ const [userArr, setUserArray] = useState(["", "", 0, 2,0])
     bestellingen.map((item, index) => {
       if (index != 0 && bestellingen[index - 1].id == item.id) {
 
-        return <><tr> <td>Aanmaak: {item.aanmaak}</td><td> lever tijd: {item.leverTijd}</td><td> lever adres: {item.leveringsAdres}</td><td> artikel nr: {item.artikelNr}</td><td> rq nr: {item.rqNummer}</td><td> Bestelling door financ dienst geplaatst: {item.bestellingDoorFDGeplaatst}</td><td> verwachte aankomst: {item.verwachteAankomst}</td></tr><tr><td> bestelling ontvangen: {item.bestellingOntvangen}</td><td> opmerking: {item.opmerking} </td><td><button onClick={() => { document.location = /bestelling/ + projectId + "/" + item.id }}>Aanpassen</button></td></tr></>
+        return <><tr> <td>Aanmaak: {item.aanmaak}</td><td> lever tijd: {item.leverTijd}</td><td> lever adres: {item.leveringsAdres}</td><td> artikel nr: {item.artikelNr}</td><td> rq nr: {item.rqNummer}</td><td> Bestelling door financ dienst geplaatst: {item.bestellingDoorFDGeplaatst}</td><td> verwachte aankomst: {item.verwachteAankomst}</td></tr><tr><td> bestelling ontvangen: {item.bestellingOntvangen}</td><td> opmerking: {item.opmerking} </td><td><button onClick={() => { navigation(/bestelling/ + projectId + "/" + item.id) }}>Aanpassen</button></td></tr></>
       } else {
         return <TabelRij item={item} verwijderGebr={userArr[3] == 0} goedkeurGebr={userArr[3] in [0, 1]} index={index}></TabelRij>
       }

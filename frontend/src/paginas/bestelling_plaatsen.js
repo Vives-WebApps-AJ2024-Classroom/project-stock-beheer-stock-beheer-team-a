@@ -6,7 +6,6 @@ import  { CheckUserLS, getData, apiURL } from "../page-tools";
 
 // Component for placing orders
 export const BestellingPlaatsen = () => {
-  const navigatie = useNavigate()
   const {projectId, bid} = useParams()
   const [formData, setFormData] = useState({
     naam: "",
@@ -18,7 +17,6 @@ export const BestellingPlaatsen = () => {
     levertijd: "",
     Aantal: 0,
   });
-
   const [projectGroup, setProjectGroup] = useState("");
   const [availableWinkels, setAvailableWinkels] = useState([]);
   useEffect(() => {
@@ -26,9 +24,33 @@ export const BestellingPlaatsen = () => {
       let userArr; // Normal format: ["username", "password", id, level]    
       userArr = CheckUserLS();
       setProjectGroup(userArr[4])
-      
+      console.log(bid)
       if(bid){
         let bestaandeData = await getData(apiURL + `getBestelling/${bid}`, null, "GET");
+        if(bestaandeData == null){
+          bestaandeData = {
+            "id": 1,
+            "aanmaak": "2025-01-04T10:30:00",
+            "winkelId": 42,
+            "winkelEnkelString": "Speciaalzaak Online",
+            "aantal": 10,
+            "totaleKostPrijsExclBtw": 159900, // Dit is 1599,00 euro
+            "url": "https://winkel.example.com/product/12345",
+            "leverTijd": 3,
+            "leveringsAdres": "Hoofdstraat 123, 1000 AB, Amsterdam",
+            "omschrijving": "Set van 10 hoogwaardige artikelen",
+            "artikelNr": "ART12345",
+            "projectId": 7,
+            "geplaatstDoor": 101,
+            "rqNummer": 9876543210123,
+            "goedgekeurdDoorCoach": 1,
+            "bestellingDoorFDGeplaatst": "2025-01-03",
+            "verwachteAankomst": null,
+            "bestellingOntvangen": "2025-01-07",
+            "werkelijkBetaald": 162500, // Dit is 1625,00 euro
+            "opmerking": "Geleverd in perfecte staat"
+          }
+        }
         const { omschrijving, winkelEnkelString, winkelId, url, artikelNr, totaleKostPrijsExclBtw, leverTijd, aantal } = bestaandeData
         setFormData({
           naam: omschrijving,
@@ -53,6 +75,17 @@ export const BestellingPlaatsen = () => {
             leveringsAdres: leveringsAdres
           })
         }
+      }else if(userArr[3] == 0){ // admins die er een nieuwe aanmaken
+        setFormData({... formData, 
+          rqNummer: 0, 
+          goedgekeurDoorCoach: null, 
+          bestellingDoorFDGeplaatst: null, 
+          verwachteAankomst: null, 
+          bestellingOntvangen: null, 
+          werkelijkBetaald: null, 
+          opmerking: null,
+          leveringsAdres: "Xaverianenstraat hoofdgebouw"
+        })
       }
 
       // Fetch winkel data
@@ -63,10 +96,18 @@ export const BestellingPlaatsen = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    if(name === "Winkel"){
+      setFormData({
+        ...formData,
+        "Winkel": availableWinkels.find((element) => element.id == value).naam,
+        "WinkelId" : value
+      });
+    }else{
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -108,12 +149,12 @@ export const BestellingPlaatsen = () => {
               className="form-control"
               name="Winkel"
               id="Winkel"
-              value={formData.Winkel}
+              value={formData.Winkel || 0}
               onChange={handleChange}
             >
               <option value="">Selecteer winkel</option>
               {availableWinkels.map((winkel) => (
-                <option key={winkel.id} value={winkel.naam}>
+                <option key={winkel.id} value={winkel.id}>
                   {winkel.naam}
                 </option>
               ))}
@@ -182,6 +223,106 @@ export const BestellingPlaatsen = () => {
               min="0"
             />
           </div>
+          {formData["rqNummer"]? //Dit is een veld die enkel erbij komt als je admin bent.
+          <>
+          <div className="form-group">
+            <label htmlFor="rqNummer">rqNummer:</label>
+            <input
+              className="form-control"
+              type="number"
+              name="rqNummer"
+              id="rqNummer"
+              value={formData.rqNummer}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="goedgekeurDoorCoach">goedgekeurDoorCoach:</label>
+            <input
+              className="form-control"
+              type="checkbox"
+              name="goedgekeurDoorCoach"
+              id="goedgekeurDoorCoach"
+              value={formData.goedgekeurDoorCoach}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="bestellingDoorFDGeplaatst">bestellingDoorFDGeplaatst:</label>
+            <input
+              className="form-control"
+              type="Date"
+              name="bestellingDoorFDGeplaatst"
+              id="bestellingDoorFDGeplaatst"
+              value={formData.bestellingDoorFDGeplaatst}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="verwachteAankomst">verwachteAankomst:</label>
+            <input
+              className="form-control"
+              type="Date"
+              name="verwachteAankomst"
+              id="verwachteAankomst"
+              value={formData.verwachteAankomst}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="bestellingOntvangen">bestellingOntvangen:</label>
+            <input
+              className="form-control"
+              type="Date"
+              name="bestellingOntvangen"
+              id="bestellingOntvangen"
+              value={formData.bestellingOntvangen}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="werkelijkBetaald">werkelijkBetaald (cent):</label>
+            <input
+              className="form-control"
+              type="Number"
+              name="werkelijkBetaald"
+              id="werkelijkBetaald"
+              value={formData.werkelijkBetaald}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="opmerking">opmerking:</label>
+            <input
+              className="form-control"
+              type="Text"
+              name="opmerking"
+              id="opmerking"
+              value={formData.opmerking}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="leveringsAdres">leveringsAdres:</label>
+            <input
+              className="form-control"
+              type="Text"
+              name="leveringsAdres"
+              id="leveringsAdres"
+              value={formData.leveringsAdres}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+         </>
+          :<></>}
           <button className="submit-button" type="submit">Submit</button>
         </form>
       </div>
