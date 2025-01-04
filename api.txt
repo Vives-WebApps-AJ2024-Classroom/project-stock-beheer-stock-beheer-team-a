@@ -15,8 +15,9 @@ post:
     body: url   //Url in de url wordt wat moeilijk.
 /maakBestelling/:projID/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr/:geplaatstDoor
     winkelId = "null": De winkel zat niet in de lijst.
-    body: url   //Url in de url wordt wat moeilijk.
-/maakProject/:naam/:maxeuro/:uid/:pw    
+    body: url   //Url in de url wordt wat moeilijk.✅
+/maakProject/:naam/:maxeuro/:uid/:pw✅
+/maakOfUpdateBestelling/:projID/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omschrijving/:artikelNr/:geplaatstDoor/:isUpdate  //er zit nog andere shit in de body✅
 
 put:
 /keurGoed/:bestellingId/:UID/:PW //check zeker dat de uid de coach van het project van deze besetelling is.✅
@@ -39,14 +40,14 @@ gebruikers:
 GET: 
 /gebruikers             //geeft alle gebruikers✅
 /gebruikers/:id         //geeft een specifieke gebruiker✅
-/gebruiker?email=:email      //geeft een specifieke gebruiker maar dan aan de hand van email adres
+/gebruiker?email=:email      //geeft een specifieke gebruiker maar dan aan de hand van email adres ✅
 POST:
-/gebruiker/:naam/:achternaam/:rol/:email/:wachtwoord         //aanmaak van admins hier is verboden, ze moeten zelf in phpmyadmin worden aangemaakt.
+/gebruiker/:naam/:achternaam/:rol/:email/:wachtwoord         //aanmaak van admins hier is verboden, ze moeten zelf in phpmyadmin worden aangemaakt.✅
     geeft het hele gebruikers object als respons inclusief id
 PUT:
-/gebruiker/:id/:naam/:achternaam/:rol/:email/:wachtwoord/:adminid/:wachtwoord   //parameters die -1 zijn worden niet aangepast
+/gebruiker/:id/:naam/:achternaam/:rol/:email/:wachtwoord/:adminid/:wachtwoord   //parameters die -1 zijn worden niet aangepast✅
 DELETE:
-/gebruiker/:id/:adminid/:wachtwoord
+/gebruiker/:id/:adminid/:wachtwoord✅
 
 
 

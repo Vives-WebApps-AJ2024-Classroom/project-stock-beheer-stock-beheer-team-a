@@ -10,7 +10,7 @@ exports.maakProject = (req, res) => {
 
   // Check if the UID and PW are valid
   const checkUserQuery =
-    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ?";
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 0";
   db.query(checkUserQuery, [uid, pw], (err, results) => {
     if (err) {
       console.error("Error checking user:", err);
