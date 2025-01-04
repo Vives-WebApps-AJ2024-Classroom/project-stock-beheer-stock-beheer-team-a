@@ -26,7 +26,7 @@ pas (indien nodig) .env bestanden aan:\
 frontend/.env (voorbeeld):
 - REACT_APP_PHPMYADMIN_URL=http://localhost:8080
 - REACT_APP_BACKEND_URL=http://localhost:3001/api/
-- REACT_APP_CLERK_PUBLISHABLE_KEY=pk_test_c3RpcnJlZC11bmljb3JuLTQ1LmNsZXJrLmFjY291bnRzLmRldiQ (uw eigen key)
+- REACT_APP_CLERK_PUBLISHABLE_KEY=pk_test_c3RpcnJlZC11bmljb3JuLTQ1LmNsZXJrLmFjY291bnRzLmRldiQ (uw eigen key, volg : https://clerk.com/ )
 
 backend/.env (voorbeeld):
 - DB_HOST=127.0.0.1
