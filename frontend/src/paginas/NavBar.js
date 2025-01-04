@@ -26,7 +26,7 @@ const Navbar = () => {
                     <Link to="/winkels">Winkels</Link>
                     <Link to="/logPagina">Log pagina</Link>
                     <Link to="/proOverzicht">Project Links</Link>
-                    <Link to={process.env.REACT_APP_PHPMYADMIN_URL}>phpMyAdmin</Link>       
+                    <Link to={"http://" + process.env.REACT_APP_PHPMYADMIN_URL}>phpMyAdmin</Link>       
                 </>
             )}
             {userArr[3] == 2 && (  

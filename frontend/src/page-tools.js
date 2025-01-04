@@ -1,4 +1,4 @@
-export const apiURL = "http://localhost:3001/api/"
+export const apiURL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3001/api/"
 
 export let CheckUserLS = () => {
   let userArr//Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau, pid]

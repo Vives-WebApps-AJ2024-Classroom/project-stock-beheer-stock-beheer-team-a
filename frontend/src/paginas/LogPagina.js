@@ -126,7 +126,7 @@ export const LogPagina = () => {
 
   const fetchNewBestellingen = async(pid) => {
     let data = await getData(apiURL + `getBestellingen/${pid}`,null,"GET")
-    setBestellingen(data)
+    setBestellingen(data || [])
   }
   const updateQuerris = async () => {
     let resultaten = await getData(`/getQuerries/${beginDatum}/${eindDatum}/${pGeselecteerd}/${bGeselecteerd}/${uGeselecteerd}`,null,"GET")

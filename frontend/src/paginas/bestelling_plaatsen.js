@@ -94,7 +94,7 @@ export const BestellingPlaatsen = () => {
         })
       }
       let winkels = await getData(apiURL + `winkels`, null, "GET");
-      setAvailableWinkels(winkels);
+      setAvailableWinkels(winkels || []);
     }
     nwThread()
   }, []);
