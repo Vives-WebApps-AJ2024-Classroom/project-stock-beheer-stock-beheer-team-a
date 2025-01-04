@@ -41,46 +41,38 @@ exports.getGebruikerByEmail = (req, res) => {
       return;
     }
     if (results.length === 0) {
-      res.status(404).send("Gebruiker not found");
+      res.json({ exists: false});
       return;
     }
-    res.json(results[0]);
+    res.json({ exists: true, gebruiker: results[0] }); // Gebruik JSON met exists: true
   });
 };
 
 exports.createGebruiker = (req, res) => {
-  const { naam, achternaam, rol, email, wachtwoord } = req.params;
-
-  // Prevent creation of admins
-  if (rol === "2") {
-    return res.status(403).send("Creating admins is forbidden");
-  }
+  const { naam, achternaam, rol, email, wachtwoord } = req.body; // Haal data uit req.body
 
   const query =
     "INSERT INTO Gebruiker (voornaam, achternaam, email, niveau, wachtwoord) VALUES (?, ?, ?, ?, ?)";
-  db.query(
-    query,
-    [naam, achternaam, email, rol, wachtwoord],
-    (err, results) => {
+  db.query(query, [naam, achternaam, email, rol, wachtwoord], (err, results) => {
+    if (err) {
+      console.error("Error creating gebruiker:", err);
+      res.status(500).send("Error creating gebruiker");
+      return;
+    }
+
+    const gebruikerId = results.insertId;
+    const selectQuery = "SELECT * FROM Gebruiker WHERE id = ?";
+    db.query(selectQuery, [gebruikerId], (err, selectResults) => {
       if (err) {
-        console.error("Error creating gebruiker:", err);
-        res.status(500).send("Error creating gebruiker");
+        console.error("Error fetching created gebruiker:", err);
+        res.status(500).send("Error fetching created gebruiker");
         return;
       }
-      const gebruikerId = results.insertId;
-      const selectQuery = "SELECT * FROM Gebruiker WHERE id = ?";
-      let exe = db.query(selectQuery, [gebruikerId], (err, selectResults) => {
-        if (err) {
-          console.error("Error fetching created gebruiker:", err);
-          res.status(500).send("Error fetching created gebruiker");
-          return;
-        }
-        res.status(201).json(selectResults[0]);
-        log.logQuery(exe.sql,0,0,0)
-      });
-    }
-  );
+      res.status(201).json(selectResults[0]);
+    });
+  });
 };
+
 
 exports.updateGebruiker = (req, res) => {
   const { id, naam, achternaam, rol, email, wachtwoord, adminid, adminpw } =
