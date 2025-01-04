@@ -13,16 +13,20 @@ export const Winkels = () => {
         {
           id: 0,
           naam: "Bol.com",
-          url: "https://google.com",
+          url: "https://www.bol.com/be/nl/",
           specializatie: "wasmachines",
         },
         {
           id: 3,
           naam: "Bosch",
-          url: "https://google.com",
+          url: "https://www.bosch.be/nl/",
           specializatie: "wasmachines",
         },
-        { id: 1, naam: "Amazon", url: "https://bing.com", specializatie: "vijzen" },
+        { 
+          id: 1,
+          naam: "Amazon",
+          url: "https://www.amazon.com.be/?language=nl_BE",
+          specializatie: "vijzen" },
       ];
     }
     setW(winkels)
