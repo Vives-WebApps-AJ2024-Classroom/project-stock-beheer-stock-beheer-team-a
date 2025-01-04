@@ -82,7 +82,7 @@ const [userArr, setUserArray] = useState(["", "", 0, 2,0])
           }
         ]
       }
-      let gebruikers = await getData(apiURL + "/getStudenten/:projectId",null,"GET")
+      let gebruikers = await getData(apiURL + "getStudenten/"+projectId,null,"GET")
       if(gebruikers == null){
         gebruikers = [
           {
@@ -104,7 +104,7 @@ const [userArr, setUserArray] = useState(["", "", 0, 2,0])
             "wachtwoord": "sterkWachtwoord456"
           }]
       }
-      let Coach = await getData(apiURL + "/getCoach/:projectId",null,"GET")
+      let Coach = await getData(apiURL + "/getCoach/"+projectId,null,"GET")
       if(Coach == null){
         Coach = {
           "id": 3,
@@ -141,7 +141,7 @@ const [userArr, setUserArray] = useState(["", "", 0, 2,0])
   let tstuf = []
   tstuf.push(<tr><th>Omschrijving</th><th>Betaald/kostprijs<br />(excl. btw)</th><th>Ontvangen/goedgekeurd</th><th>Aantal</th><th>URL</th><th>Winkel</th><th>Bewerkingen</th></tr>)
   const delBestelling = async (id) => {
-    await getData(apiURL + `/delBestelling/${id}/${userArr[2]}/${userArr[1]}`)
+    await getData(apiURL + `delBestelling/${id}/${userArr[2]}/${userArr[1]}`,null,"DELETE")
     console.log("VOEG NOG ERROR DETECTIE IN DE RESPONSE TOE HIER!")
     setBestellingen(bestellingen.filter(a =>
       a.id !== id

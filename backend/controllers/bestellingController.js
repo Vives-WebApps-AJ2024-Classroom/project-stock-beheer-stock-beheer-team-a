@@ -623,8 +623,8 @@ exports.maakOfUpdateBestelling = (req, res) => {
       }
 
       const insertQuery = `
-        INSERT INTO Bestelling (${insertFields.join(", ")})
-        VALUES (${insertValues.map(() => "?").join(", ")})
+        INSERT INTO Bestelling (${insertFields.join(", ") + ", aanmaak, leveringsAdres, geplaatstDoor"})
+        VALUES (${insertValues.map(() => "?").join(", ")} , CURDATE(), 'Xaverianenstraat hoofdgebouw', ${geplaatstDoor})
       `;
       db.query(insertQuery, insertValues, (err, results) => {
         if (err) {
