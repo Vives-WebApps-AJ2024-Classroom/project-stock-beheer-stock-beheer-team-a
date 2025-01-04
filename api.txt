@@ -53,9 +53,12 @@ DELETE:
 
 =============================================routes van de frontend:
 /                                   Home met mss menu
+/home                               Officiele url van de home
 /login                              Mag aangepast worden
 /project/:pid                       pid = project id
 /winkels
 /geenToegang
 /bestelling/:pid(/:bid)             bid: bestellings id, als dit er is dan wordt het de bestelling aanpassen i.p.v. een nieuwe maken.
-/logPagina
+/logPagina                          Querry log bekijken.
+/groepsIndeling                     Instellen van wie in welke groep zit.
+/projectCreatie                     Project aanmaken.

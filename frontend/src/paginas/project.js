@@ -14,99 +14,107 @@ const [userArr, setUserArray] = useState(["", "", 0, 2,0])
       let user = CheckUserLS()
       setUserArray(user)
 
-      //let bestel = await getData("http://localhost:3001/api/getBestellingen/"+projectId)
-      let bestel = [
-        {
-          "id": 1,
-          "aanmaak": "2024-12-01 10:30:00",
-          "winkelId": 12,
-          "winkelEnkelString": "bal",
-          "aantal": 5,
-          "totaleKostPrijsExclBtw": 12500,
-          "url": "https://voorbeeld.com/artikel/1",
-          "leverTijd": 3,
-          "leveringsAdres": "Straatnaam 123, 1000 Brussel",
-          "omschrijving": "Laptop voor kantoor",
-          "artikelNr": "ART12345",
-          "projectId": 1,
-          "rqNummer": 9876543210,
-          "bestellingDoorFDGeplaatst": null,
-          "verwachteAankomst": null,
-          "bestellingOntvangen": null,
-          "werkelijkBetaald": null,
-          "opmerking": "Snelle levering gevraagd",
-          "goedgekeurdDoorCoach": true,
-        },
-        {
-          "id": 2,
-          "aanmaak": "2024-12-02 14:15:00",
-          "winkelId": null,
-          "winkelEnkelString": "Kleine buurtwinkel",
-          "aantal": 2,
-          "totaleKostPrijsExclBtw": 8000,
-          "url": "https://voorbeeld.com/artikel/2",
-          "leverTijd": 7,
-          "leveringsAdres": "Kerkstraat 45, 2000 Antwerpen",
-          "omschrijving": "Bureau lamp",
-          "artikelNr": "ART67890",
-          "projectId": 1,
-          "rqNummer": null,
-          "bestellingDoorFDGeplaatst": "2024-12-01",
-          "verwachteAankomst": "2024-12-08",
-          "bestellingOntvangen": null,
-          "werkelijkBetaald": null,
-          "opmerking": "Betaal bij levering",
-          "goedgekeurdDoorCoach": false,
-        },
-        {
+      let bestel = await getData(apiURL + "getBestellingen/"+projectId,null, "GET")
+      if(bestel == null){
+        bestel = [
+          {
+            "id": 1,
+            "aanmaak": "2024-12-01 10:30:00",
+            "winkelId": 12,
+            "winkelEnkelString": "bal",
+            "aantal": 5,
+            "totaleKostPrijsExclBtw": 12500,
+            "url": "https://voorbeeld.com/artikel/1",
+            "leverTijd": 3,
+            "leveringsAdres": "Straatnaam 123, 1000 Brussel",
+            "omschrijving": "Laptop voor kantoor",
+            "artikelNr": "ART12345",
+            "projectId": 1,
+            "rqNummer": 9876543210,
+            "bestellingDoorFDGeplaatst": null,
+            "verwachteAankomst": null,
+            "bestellingOntvangen": null,
+            "werkelijkBetaald": null,
+            "opmerking": "Snelle levering gevraagd",
+            "goedgekeurdDoorCoach": true,
+          },
+          {
+            "id": 2,
+            "aanmaak": "2024-12-02 14:15:00",
+            "winkelId": null,
+            "winkelEnkelString": "Kleine buurtwinkel",
+            "aantal": 2,
+            "totaleKostPrijsExclBtw": 8000,
+            "url": "https://voorbeeld.com/artikel/2",
+            "leverTijd": 7,
+            "leveringsAdres": "Kerkstraat 45, 2000 Antwerpen",
+            "omschrijving": "Bureau lamp",
+            "artikelNr": "ART67890",
+            "projectId": 1,
+            "rqNummer": null,
+            "bestellingDoorFDGeplaatst": "2024-12-01",
+            "verwachteAankomst": "2024-12-08",
+            "bestellingOntvangen": null,
+            "werkelijkBetaald": null,
+            "opmerking": "Betaal bij levering",
+            "goedgekeurdDoorCoach": false,
+          },
+          {
+            "id": 3,
+            "aanmaak": "2024-12-03 09:00:00",
+            "winkelId": 15,
+            "winkelEnkelString": "bol",
+            "aantal": 10,
+            "totaleKostPrijsExclBtw": 5000,
+            "url": "https://voorbeeld.com/artikel/3",
+            "leverTijd": 5,
+            "leveringsAdres": "Hoofdstraat 78, 3000 Leuven",
+            "omschrijving": "Notitieboekjes",
+            "artikelNr": "ART98765",
+            "projectId": 1,
+            "rqNummer": 1234567890,
+            "bestellingDoorFDGeplaatst": "2024-12-02",
+            "verwachteAankomst": "2024-12-07",
+            "bestellingOntvangen": "2024-12-08",
+            "werkelijkBetaald": 5000,
+            "opmerking": "Levering op tijd essentieel",
+            "goedgekeurdDoorCoach": true,
+          }
+        ]
+      }
+      let gebruikers = await getData(apiURL + "/getStudenten/:projectId",null,"GET")
+      if(gebruikers == null){
+        gebruikers = [
+          {
+            "id": 1,
+            "voornaam": "Sofie",
+            "achternaam": "Janssens",
+            "email": "sofie.janssens@student.example.com",
+            "niveau": 2,
+            "projectId": 1,
+            "wachtwoord": "wachtwoord123"
+          },
+          {
+            "id": 2,
+            "voornaam": "Liam",
+            "achternaam": "De Smet",
+            "email": "liam.desmet@student.example.com",
+            "niveau": 2,
+            "projectId": 1,
+            "wachtwoord": "sterkWachtwoord456"
+          }]
+      }
+      let Coach = await getData(apiURL + "/getCoach/:projectId",null,"GET")
+      if(Coach == null){
+        Coach = {
           "id": 3,
-          "aanmaak": "2024-12-03 09:00:00",
-          "winkelId": 15,
-          "winkelEnkelString": "bol",
-          "aantal": 10,
-          "totaleKostPrijsExclBtw": 5000,
-          "url": "https://voorbeeld.com/artikel/3",
-          "leverTijd": 5,
-          "leveringsAdres": "Hoofdstraat 78, 3000 Leuven",
-          "omschrijving": "Notitieboekjes",
-          "artikelNr": "ART98765",
+          "voornaam": "Emma",
+          "achternaam": "Vermeulen",
+          "email": "emma.vermeulen@coach.example.com",
+          "niveau": 1,
           "projectId": 1,
-          "rqNummer": 1234567890,
-          "bestellingDoorFDGeplaatst": "2024-12-02",
-          "verwachteAankomst": "2024-12-07",
-          "bestellingOntvangen": "2024-12-08",
-          "werkelijkBetaald": 5000,
-          "opmerking": "Levering op tijd essentieel",
-          "goedgekeurdDoorCoach": true,
+          "wachtwoord": "veiligWachtwoord789"
         }
-      ]
-      let gebruikers = [
-        {
-          "id": 1,
-          "voornaam": "Sofie",
-          "achternaam": "Janssens",
-          "email": "sofie.janssens@student.example.com",
-          "niveau": 2,
-          "projectId": 1,
-          "wachtwoord": "wachtwoord123"
-        },
-        {
-          "id": 2,
-          "voornaam": "Liam",
-          "achternaam": "De Smet",
-          "email": "liam.desmet@student.example.com",
-          "niveau": 2,
-          "projectId": 1,
-          "wachtwoord": "sterkWachtwoord456"
-        }]
-      let Coach = {
-        "id": 3,
-        "voornaam": "Emma",
-        "achternaam": "Vermeulen",
-        "email": "emma.vermeulen@coach.example.com",
-        "niveau": 1,
-        "projectId": 1,
-        "wachtwoord": "veiligWachtwoord789"
       }
       let toegang = true //Ongemachtigde gebruikers buitenschoppen.
       if(user[3] == 2){

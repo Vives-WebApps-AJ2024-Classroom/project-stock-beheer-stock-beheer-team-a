@@ -8,11 +8,9 @@ export const ProjectCreatie = () => {
     const navigate = useNavigate();
 
     useEffect(()=>{
-
         if(userArr[3] != 0){//niet administrators buitenschoppen.
-            document.location = "/geenToegang"
+            navigate("/geenToegang")
         }
-
     },[])
     const [naam, setNaam] = useState("")
     const [maxBudget, setMaxBudget] = useState(0)
@@ -25,7 +23,7 @@ export const ProjectCreatie = () => {
                 <label className="label">Max budget (€):</label>
                 <input type="number" value={maxBudget} onChange={(e) => { setMaxBudget(e.target.value) }} />
                 <button id="ButtonOpslaan" onClick={async () => {
-                    await getData(apiURL + `maakProject/${naam}/${maxBudget}/${userArr[2]}/` + userArr[1]);
+                    await getData(apiURL + `maakProject/${naam}/${maxBudget}/${userArr[2]}/` + userArr[1], null, "POST");
                 }}>Opslaan</button>
             </div>
         </div>

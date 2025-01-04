@@ -41,15 +41,13 @@ const WelcomePage = () => {
             const netwerkThread = async() => {
                 let setArr = []
                 setArr.push(username)
-                setArr.push("waap soort")
                 let jsondata = await getData(apiURL + "gebruiker?email=" + emailAddress, null, "GET");
                 if(jsondata == null){ //backend verbinding gefaald
                     jsondata = {"id":1, "projectId":0}
                 }
-                setArr.push(jsondata.id)
                 if(emailAddress.endsWith('@gmail.com')) { //@vives.be
                     setArr.push("adminPass")
-                    setArr.push(0)  //hardcoded admin id
+                    setArr.push(2)  //hardcoded admin id
                     console.log("jaja je bent admin");
                     setArr.push(0)
                 } else if (emailAddress.endsWith('@student.vives.be')) {
