@@ -5,10 +5,9 @@ const gebruikerController = require("../controllers/gebruikerController");
 router.get("/gebruikers", gebruikerController.getGebruikers);
 router.get("/gebruikers/:id", gebruikerController.getGebruikerById);
 router.get("/gebruiker", gebruikerController.getGebruikerByEmail);
-router.post(
-  "/gebruiker/:naam/:achternaam/:rol/:email/:wachtwoord",
-  gebruikerController.createGebruiker
-);
+
+router.post('/gebruiker', gebruikerController.createGebruiker);
+
 router.put(
   "/gebruiker/:id/:naam/:achternaam/:rol/:email/:wachtwoord/:adminid/:adminpw",
   gebruikerController.updateGebruiker
