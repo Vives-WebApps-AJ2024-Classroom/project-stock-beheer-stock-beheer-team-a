@@ -112,6 +112,7 @@ nav button:hover {
   height: fit-content;
   padding-top: 20px;
   padding-bottom: 20px;
+  color: black;
 }
 
 .border > * {
@@ -125,6 +126,7 @@ nav button:hover {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+
 
 .border > *:last-child {
   margin-bottom: 0;
