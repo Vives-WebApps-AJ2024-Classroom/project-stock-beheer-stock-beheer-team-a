@@ -35,6 +35,7 @@ put:
 
 delete:
 /delBestelling/:bestellingId/:uid/:pw        //kan enkel door leerlingen&coach als het nog niet goedgekeurd is of door de admin✅
+/deleteWinkel/:wid/:adminid/:pw
 
 gebruikers:
 GET: 

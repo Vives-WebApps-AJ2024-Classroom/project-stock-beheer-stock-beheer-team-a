@@ -123,7 +123,7 @@ export const BestellingPlaatsen = () => {
       let userArr = CheckUserLS();
       let stro = `maakOfUpdateBestelling/${projectId}/${formData.WinkelId}/${formData.Winkel}/${formData.Aantal}/${formData.kostprijs}/${formData.levertijd}/${formData.naam}/${formData.productcode}/${userArr[2]}/${bid?true:false}`
       if(userArr[3] == 0){
-        await getData(stro,{url:formData.link,
+        await getData(stro,JSON.stringify({url:formData.link,
           rqNummer: formData.rqNummer,
           goedgekeurdDoorCoach: formData.goedgekeurdDoorCoach,
           bestellingDoorFDGeplaatst: formData.bestellingDoorFDGeplaatst,
@@ -133,9 +133,9 @@ export const BestellingPlaatsen = () => {
           opmerking: formData.opmerking,
           adminId: userArr[2],
           adminPw: userArr[1],
-        },"POST")
+        }),"POST")
       }else{
-        await getData(stro,{url:formData.link},"POST")
+        await getData(stro,JSON.stringify({url:formData.link}),"POST")
       }
     }
     submits()

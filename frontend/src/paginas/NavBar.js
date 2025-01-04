@@ -32,6 +32,7 @@ const Navbar = () => {
                 <>
                     <Link to={"/project/"+userArr[4]}>Overzicht</Link>
                     <Link to="/bestelling/:projectId">Bestelling plaatsen</Link>
+                    <Link to="/winkels">Winkels</Link>  {/*studenten moeten ook de winkels kunnen zien */}
                 
                 </>
             )}
