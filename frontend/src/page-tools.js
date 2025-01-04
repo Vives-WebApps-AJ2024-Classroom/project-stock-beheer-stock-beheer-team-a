@@ -4,7 +4,7 @@ export let CheckUserLS = () => {
   let userArr//Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau, pid]
   try{
     userArr = JSON.parse(localStorage.getItem("user"))
-    if(userArr.length != 4){
+    if(userArr.length != 5){
       throw new Error("Session storage niet in juiste fomaat.")
     }
   }catch{

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useP, useParams } from 'react-router-dom';
 import { winkels } from "./winkels"; // Import the winkels array
 import "../styles/stylesBestelling.css"; // Link to the CSS file
 import  { CheckUserLS, getData, apiURL } from "../page-tools";
@@ -7,37 +7,58 @@ import  { CheckUserLS, getData, apiURL } from "../page-tools";
 // Component for placing orders
 export const BestellingPlaatsen = () => {
   const navigatie = useNavigate()
+  const {projectId, bid} = useParams()
   const [formData, setFormData] = useState({
     naam: "",
     Winkel: "",
+    WinkelId: 0,
     link: "",
     productcode: "",
-    kostprijs: "",
+    kostprijs: 0,
     levertijd: "",
-    Aantal: "",
+    Aantal: 0,
   });
 
   const [projectGroup, setProjectGroup] = useState("");
   const [availableWinkels, setAvailableWinkels] = useState([]);
-
   useEffect(() => {
     const nwThread = async () => {
-      let userArr; // Normal format: ["username", "password", id, level]
-      try {
-        userArr = CheckUserLS();
-        if (userArr.length !== 4) {
-          throw new Error("Session storage not in the correct format.");
+      let userArr; // Normal format: ["username", "password", id, level]    
+      userArr = CheckUserLS();
+      setProjectGroup(userArr[4])
+      
+      if(bid){
+        let bestaandeData = await getData(apiURL + `getBestelling/${bid}`, null, "GET");
+        const { omschrijving, winkelEnkelString, winkelId, url, artikelNr, totaleKostPrijsExclBtw, leverTijd, aantal } = bestaandeData
+        setFormData({
+          naam: omschrijving,
+          Winkel: winkelEnkelString,
+          WinkelId: winkelId,
+          link: url,
+          productcode: artikelNr,
+          kostprijs: totaleKostPrijsExclBtw,
+          levertijd: leverTijd,
+          Aantal: aantal,
+        })
+        if(userArr[3] == 0){ // voor admins
+          const { rqNummer, goedgekeurDoorCoach, bestellingDoorFDGeplaatst, verwachteAankomst, bestellingOntvangen, werkelijkBetaald, opmerking, leveringsAdres } = bestaandeData
+          setFormData({... formData, 
+            rqNummer: rqNummer, 
+            goedgekeurDoorCoach: goedgekeurDoorCoach, 
+            bestellingDoorFDGeplaatst: bestellingDoorFDGeplaatst, 
+            verwachteAankomst: verwachteAankomst, 
+            bestellingOntvangen: bestellingOntvangen, 
+            werkelijkBetaald: werkelijkBetaald, 
+            opmerking: opmerking,
+            leveringsAdres: leveringsAdres
+          })
         }
-        let groepNR = await getData(apiURL + `gebruiker/${userArr[2]}`, null, "GET").projectId;
-        setProjectGroup(groepNR)
-        
-      } catch {
-        navigatie("/login")
       }
-    
+
       // Fetch winkel data
       setAvailableWinkels(winkels);//dit moet nog veranderen door een api request
     }
+    nwThread()
   }, []);
 
   const handleChange = (e) => {

@@ -7,7 +7,7 @@ get:
 /winkels✅
 /getProject/:UID
 /getProjecten
-/getBestellingen
+/getBestelling/:bid
 /getQuerries/:beginDatum/:eindDatum/:projectID/:bestellingID/:gebruikerID   //alle IDs kunnen null (=-1) zijn
 
 post:
