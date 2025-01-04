@@ -1,7 +1,3 @@
-mysql:
-CREATE USER 'stock'@'localhost' IDENTIFIED WITH mysql_native_password BY '***';
-
-mariadb:
 CREATE USER 'stock'@'localhost' IDENTIFIED BY 'stock';
 
 

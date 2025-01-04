@@ -5,7 +5,7 @@ import "../styles/stylesGroepsIndeling.css"; // Ensure to import the CSS file
 
 
 export const GroepsIndeling = () => {
-    let userArr = CheckUserLS(); // Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau]
+    let userArr = CheckUserLS(); // Normaal formaat: ["gebruikers naam", "wachtwoord", id, niveau, projectId]
     const [projecteen, setProjecten] = useState([]);
     const [gebruikerz, setGebruikers] = useState([]);
     const [uGeselecteerd, setUGeselecteerd] = useState(-1);

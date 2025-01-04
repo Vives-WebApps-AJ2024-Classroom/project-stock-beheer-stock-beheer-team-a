@@ -1,3 +1,24 @@
+# Setup
+Laad volgende bestanden in op de databank:
+- backend/database/mysqldb.sql                      //credentials mogen aangepast worden
+- backend/database/voorbeeldGebruikers.sql          //deze voor authenticatie tests, huidige configuratie
+
+voorzie .env bestanden:\
+frontend/.env (voorbeeld):
+- REACT_APP_PHPMYADMIN_URL=http://localhost:8080
+- REACT_APP_BACKEND_URL=http://localhost:3001/api/
+- REACT_APP_CLERK_PUBLISHABLE_KEY=pk_test_c3RpcnJlZC11bmljb3JuLTQ1LmNsZXJrLmFjY291bnRzLmRldiQ
+backend/.env (voorbeeld):
+- DB_HOST=127.0.0.1
+- DB_USER=stock
+- DB_PASS=stock
+- DB_DTBS=stock-beheer
+- DB_PORT=3306
+
+# Huidige situatie met authenticatie
+Omdat we geen wachtwoorden van de gebruikers kunnen krijgen uit Clerk moeten we met een soort van hardcoded wachtwoord werken voor alle gebruiker, dit is niet veilig en we zijn ons daarvan bewust, moest dit project echt geïmplementeerd worden (voorzichtig voor bugs) dan zou er misschien een ander authenticatie systeem moeten voorzien worden of iets extra tussen Clerk en de site.\
+De docker compose is voorzien van standaard variabelen/configuratie maar mag je zeker aanpassen.
+
 # Documentatie voor contributers
 Wachtwoord en gebruikers id worden gebruikt als authenticatie tot de backend. Ze worden opgeslagen in session storage.<br>
 Voorbeeld code voor credentials op te vragen:<br>
