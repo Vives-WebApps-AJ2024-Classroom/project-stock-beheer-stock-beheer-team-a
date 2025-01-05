@@ -35,8 +35,10 @@ backend/.env (voorbeeld):
 - DB_DTBS=stock-beheer
 - DB_PORT=3306
 
+Voor docker moet je enkel `docker compose up` uitvoeren in in phpmyadmin dan wel weer die mysql bestanden importeren.
+
 ## Huidige situatie met authenticatie
-Omdat we geen wachtwoorden van de gebruikers kunnen krijgen uit Clerk moeten we met een soort van hardcoded wachtwoord werken voor alle gebruiker. Er wordt nu een random wachtwoord aangemaakt van 12 karakters lang. Deze wordt gehasht en bij de user in de MYSQL database gestoken. Ook hebben we ervoor gekozen dat men enkel kan inloggen met hun vives e-mailadres dus voor de student is dit "@student.vives.be" en voor de docenten "@vives.be". Aan de hand van het e-mailadres wordt het niveau (rol) toegewezen.  \
+Omdat we geen wachtwoorden van de gebruikers kunnen krijgen uit Clerk moeten we met een soort van hardcoded wachtwoord werken voor alle gebruiker. Er wordt nu een random wachtwoord aangemaakt van 12 karakters lang. Deze wordt gehasht en bij de user in de MYSQL database gestoken. Ook hebben we ervoor gekozen dat men enkel kan inloggen met hun vives e-mailadres dus voor de student is dit "@student.vives.be" en voor de docenten "@vives.be". Aan de hand van het e-mailadres wordt het niveau (rol) toegewezen, maar het geheel is gemakkelijk hackbaar en we zijn ons daarvan op de hoogte.  \
 De docker compose is voorzien van standaard variabelen/configuratie maar mag je zeker aanpassen.\
 Verder zijn er wel nog features die nog niet geïmplementeerd zijn zoals bepaalde routes in de backend.\
 Dus nog niet bruikbaar op dit moment.
