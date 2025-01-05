@@ -15,7 +15,10 @@ export let CheckUserLS = () => {
 
 export let getData = async (url, body=null, method="get") => {
   try {
-    const response = await fetch(url,{method: method, body: body})
+    const response = await fetch(url,{method: method, body: body, headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },})
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
