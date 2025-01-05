@@ -104,7 +104,7 @@ const [userArr, setUserArray] = useState(["", "", 0, 2,0])
             "wachtwoord": "sterkWachtwoord456"
           }]
       }
-      let Coach = await getData(apiURL + "/getCoach/"+projectId,null,"GET")
+      let Coach = await getData(apiURL + "getCoach/"+projectId,null,"GET")
       if(Coach == null){
         Coach = {
           "id": 3,
