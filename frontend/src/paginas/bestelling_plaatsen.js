@@ -1,57 +1,142 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
-import { winkels } from "./winkels"; // Import the winkels array
+import { useNavigate, useParams } from 'react-router-dom';
 import "../styles/stylesBestelling.css"; // Link to the CSS file
 import  { CheckUserLS, getData, apiURL } from "../page-tools";
 
 // Component for placing orders
 export const BestellingPlaatsen = () => {
-  const navigatie = useNavigate()
+  const {projectId, bid} = useParams()
   const [formData, setFormData] = useState({
     naam: "",
     Winkel: "",
+    WinkelId: 0,
     link: "",
     productcode: "",
-    kostprijs: "",
+    kostprijs: 0,
     levertijd: "",
-    Aantal: "",
+    Aantal: 0,
   });
-
   const [projectGroup, setProjectGroup] = useState("");
   const [availableWinkels, setAvailableWinkels] = useState([]);
-
   useEffect(() => {
     const nwThread = async () => {
-      let userArr; // Normal format: ["username", "password", id, level]
-      try {
-        userArr = CheckUserLS();
-        if (userArr.length !== 4) {
-          throw new Error("Session storage not in the correct format.");
+      let userArr;
+      userArr = CheckUserLS();
+      setProjectGroup(projectId)
+      if(bid){
+        let bestaandeData = await getData(apiURL + `getBestelling/${bid}`, null, "GET");
+        if(bestaandeData == null){
+          bestaandeData = {
+            "id": 1,
+            "aanmaak": "2025-01-04T10:30:00",
+            "winkelId": 42,
+            "winkelEnkelString": "Speciaalzaak Online",
+            "aantal": 10,
+            "totaleKostPrijsExclBtw": 159900, // Dit is 1599,00 euro
+            "url": "https://winkel.example.com/product/12345",
+            "leverTijd": 3,
+            "leveringsAdres": "Hoofdstraat 123, 1000 AB, Amsterdam",
+            "omschrijving": "Set van 10 hoogwaardige artikelen",
+            "artikelNr": "ART12345",
+            "projectId": 7,
+            "geplaatstDoor": 101,
+            "rqNummer": 9876543210123,
+            "goedgekeurdDoorCoach": 1,
+            "bestellingDoorFDGeplaatst": "2025-01-03",
+            "verwachteAankomst": null,
+            "bestellingOntvangen": "2025-01-07",
+            "werkelijkBetaald": 162500, // Dit is 1625,00 euro
+            "opmerking": "Geleverd in perfecte staat"
+          }
         }
-        let groepNR = await getData(apiURL + `gebruiker/${userArr[2]}`, null, "GET").projectId;
-        setProjectGroup(groepNR)
-        
-      } catch {
-        navigatie("/login")
+        const { omschrijving, winkelEnkelString, winkelId, url, artikelNr, totaleKostPrijsExclBtw, leverTijd, aantal } = bestaandeData
+        setFormData({
+          naam: omschrijving,
+          Winkel: winkelEnkelString,
+          WinkelId: winkelId,
+          link: url,
+          productcode: artikelNr,
+          kostprijs: totaleKostPrijsExclBtw,
+          levertijd: leverTijd,
+          Aantal: aantal,
+        })
+        if(userArr[3] == 0){ // voor admins
+          const { rqNummer, goedgekeurdDoorCoach, bestellingDoorFDGeplaatst, verwachteAankomst, bestellingOntvangen, werkelijkBetaald, opmerking, leveringsAdres } = bestaandeData
+          setFormData({
+            naam: omschrijving,
+            Winkel: winkelEnkelString,
+            WinkelId: winkelId,
+            link: url,
+            productcode: artikelNr,
+            kostprijs: totaleKostPrijsExclBtw,
+            levertijd: leverTijd,
+            Aantal: aantal, 
+            rqNummer: rqNummer, 
+            goedgekeurdDoorCoach: goedgekeurdDoorCoach, 
+            bestellingDoorFDGeplaatst: bestellingDoorFDGeplaatst, 
+            verwachteAankomst: verwachteAankomst, 
+            bestellingOntvangen: bestellingOntvangen, 
+            werkelijkBetaald: werkelijkBetaald, 
+            opmerking: opmerking,
+            leveringsAdres: leveringsAdres
+          })
+        }
+      }else if(userArr[3] == 0){ // admins die er een nieuwe aanmaken
+        setFormData({... formData, 
+          rqNummer: 0, 
+          goedgekeurdDoorCoach: null, 
+          bestellingDoorFDGeplaatst: null, 
+          verwachteAankomst: null, 
+          bestellingOntvangen: null, 
+          werkelijkBetaald: null, 
+          opmerking: null,
+          leveringsAdres: "Xaverianenstraat hoofdgebouw"
+        })
       }
-    
-      // Fetch winkel data
-      setAvailableWinkels(winkels);//dit moet nog veranderen door een api request
+      let winkels = await getData(apiURL + `winkels`, null, "GET");
+      setAvailableWinkels(winkels || []);
     }
+    nwThread()
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    if(name === "Winkel"){
+      setFormData({
+        ...formData,
+        "Winkel": availableWinkels.find((element) => element.id == value).naam,
+        "WinkelId" : value
+      });
+    }else{
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted: ", formData);
-    // Submit logic here...
+    const submits = async () => {
+      let userArr = CheckUserLS();
+      let stro = `maakOfUpdateBestelling/${projectId}/${formData.WinkelId}/${formData.Winkel}/${formData.Aantal}/${formData.kostprijs}/${formData.levertijd}/${formData.naam}/${formData.productcode}/${userArr[2]}/${bid?true:false}`
+      if(userArr[3] == 0){
+        await getData(apiURL + stro,JSON.stringify({url:formData.link,
+          rqNummer: formData.rqNummer,
+          goedgekeurdDoorCoach: formData.goedgekeurdDoorCoach,
+          bestellingDoorFDGeplaatst: formData.bestellingDoorFDGeplaatst,
+          verwachteAankomst: formData.verwachteAankomst,
+          bestellingOntvangen: formData.bestellingOntvangen,
+          werkelijkBetaald: formData.werkelijkBetaald,
+          opmerking: formData.opmerking,
+          adminId: userArr[2],
+          adminPw: userArr[1],
+        }),"POST")
+      }else{
+        await getData(apiURL + stro,JSON.stringify({url:formData.link}),"POST")
+      }
+    }
+    submits()
   };
 
   return (
@@ -87,12 +172,12 @@ export const BestellingPlaatsen = () => {
               className="form-control"
               name="Winkel"
               id="Winkel"
-              value={formData.Winkel}
+              value={formData.WinkelId}
               onChange={handleChange}
             >
               <option value="">Selecteer winkel</option>
               {availableWinkels.map((winkel) => (
-                <option key={winkel.id} value={winkel.naam}>
+                <option key={winkel.id} value={winkel.id}>
                   {winkel.naam}
                 </option>
               ))}
@@ -161,6 +246,106 @@ export const BestellingPlaatsen = () => {
               min="0"
             />
           </div>
+          {formData["rqNummer"]? //Dit is een veld die enkel erbij komt als je admin bent.
+          <>
+          <div className="form-group">
+            <label htmlFor="rqNummer">rqNummer:</label>
+            <input
+              className="form-control"
+              type="number"
+              name="rqNummer"
+              id="rqNummer"
+              value={formData.rqNummer}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="goedgekeurdDoorCoach">goedgekeurdDoorCoach:</label>
+            <input
+              className="form-control"
+              type="checkbox"
+              name="goedgekeurdDoorCoach"
+              id="goedgekeurdDoorCoach"
+              value={formData.goedgekeurdDoorCoach}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="bestellingDoorFDGeplaatst">bestellingDoorFDGeplaatst:</label>
+            <input
+              className="form-control"
+              type="Date"
+              name="bestellingDoorFDGeplaatst"
+              id="bestellingDoorFDGeplaatst"
+              value={formData.bestellingDoorFDGeplaatst}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="verwachteAankomst">verwachteAankomst:</label>
+            <input
+              className="form-control"
+              type="Date"
+              name="verwachteAankomst"
+              id="verwachteAankomst"
+              value={formData.verwachteAankomst}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="bestellingOntvangen">bestellingOntvangen:</label>
+            <input
+              className="form-control"
+              type="Date"
+              name="bestellingOntvangen"
+              id="bestellingOntvangen"
+              value={formData.bestellingOntvangen}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="werkelijkBetaald">werkelijkBetaald (cent):</label>
+            <input
+              className="form-control"
+              type="Number"
+              name="werkelijkBetaald"
+              id="werkelijkBetaald"
+              value={formData.werkelijkBetaald}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="opmerking">opmerking:</label>
+            <input
+              className="form-control"
+              type="Text"
+              name="opmerking"
+              id="opmerking"
+              value={formData.opmerking}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="leveringsAdres">leveringsAdres:</label>
+            <input
+              className="form-control"
+              type="Text"
+              name="leveringsAdres"
+              id="leveringsAdres"
+              value={formData.leveringsAdres}
+              onChange={handleChange}
+              min="0"
+            />
+          </div>
+         </>
+          :<></>}
           <button className="submit-button" type="submit">Submit</button>
         </form>
       </div>

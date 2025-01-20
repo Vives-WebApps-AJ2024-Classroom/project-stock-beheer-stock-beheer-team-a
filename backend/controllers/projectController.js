@@ -1,4 +1,5 @@
 const db = require("../db");
+const log = require("./logController")
 
 exports.maakProject = (req, res) => {
   const { naam, maxeuro, uid, pw } = req.params;
@@ -10,7 +11,7 @@ exports.maakProject = (req, res) => {
 
   // Check if the UID and PW are valid
   const checkUserQuery =
-    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ?";
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 0";
   db.query(checkUserQuery, [uid, pw], (err, results) => {
     if (err) {
       console.error("Error checking user:", err);
@@ -25,13 +26,14 @@ exports.maakProject = (req, res) => {
     // Create the project
     const query =
       "INSERT INTO Project (naam, spendeerbaarBedrag) VALUES (?, ?)";
-    db.query(query, [naam, maxeuro], (err, results) => {
+    let exe = db.query(query, [naam, maxeuro], (err, results) => {
       if (err) {
         console.error("Error creating project:", err);
         res.status(500).send("Error creating project");
         return;
       }
       res.status(201).send("Project created successfully");
+      log.logQuery(exe.sql, uid, 0, 0)
     });
   });
 };
@@ -46,7 +48,7 @@ exports.steekGebruikerInProject = (req, res) => {
 
   // Check if the admin credentials are valid
   const checkAdminQuery =
-    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 2";
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 0";
   db.query(checkAdminQuery, [adminid, pw], (err, results) => {
     if (err) {
       console.error("Error checking admin:", err);
@@ -60,7 +62,7 @@ exports.steekGebruikerInProject = (req, res) => {
 
     // Update the project ID of the user
     const updateQuery = "UPDATE Gebruiker SET projectId = ? WHERE id = ?";
-    db.query(
+    let exe = db.query(
       updateQuery,
       [pid === "-1" ? null : pid, uid],
       (err, updateResults) => {
@@ -70,6 +72,7 @@ exports.steekGebruikerInProject = (req, res) => {
           return;
         }
         res.status(200).send("Gebruiker updated successfully");
+        log.logQuery(exe.sql, uid, 0, pid)
       }
     );
   });

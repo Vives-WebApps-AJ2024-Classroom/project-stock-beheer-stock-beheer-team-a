@@ -1,3 +1,5 @@
+
+
 services:
   db:
     image: mysql
@@ -41,8 +43,9 @@ services:
     build: 
       context: ./frontend
       args:
-        - REACT_APP_PHPMYADMIN_URL=phpmyadmin
-        - REACT_APP_BACKEND_URL=backend:3001/api
+        - REACT_APP_PHPMYADMIN_URL=localhost:8000
+        - REACT_APP_BACKEND_URL=http://127.0.0.1:3001/api/
+        - REACT_APP_CLERK_PUBLISHABLE_KEY=pk_test_c3RpcnJlZC11bmljb3JuLTQ1LmNsZXJrLmFjY291bnRzLmRldiQ
     restart: always
     ports:
       - "3000:3000"

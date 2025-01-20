@@ -1,4 +1,6 @@
 const db = require("../db");
+const log = require("./logController")
+
 
 exports.getGebruikers = (req, res) => {
   const query = "SELECT * FROM Gebruiker";
@@ -39,45 +41,38 @@ exports.getGebruikerByEmail = (req, res) => {
       return;
     }
     if (results.length === 0) {
-      res.status(404).send("Gebruiker not found");
+      res.json({ exists: false});
       return;
     }
-    res.json(results[0]);
+    res.json({ exists: true, gebruiker: results[0] }); // Gebruik JSON met exists: true
   });
 };
 
 exports.createGebruiker = (req, res) => {
-  const { naam, achternaam, rol, email, wachtwoord } = req.params;
-
-  // Prevent creation of admins
-  if (rol === "2") {
-    return res.status(403).send("Creating admins is forbidden");
-  }
+  const { naam, achternaam, rol, email, wachtwoord } = req.body; // Haal data uit req.body
 
   const query =
     "INSERT INTO Gebruiker (voornaam, achternaam, email, niveau, wachtwoord) VALUES (?, ?, ?, ?, ?)";
-  db.query(
-    query,
-    [naam, achternaam, email, rol, wachtwoord],
-    (err, results) => {
+  db.query(query, [naam, achternaam, email, rol, wachtwoord], (err, results) => {
+    if (err) {
+      console.error("Error creating gebruiker:", err);
+      res.status(500).send("Error creating gebruiker");
+      return;
+    }
+
+    const gebruikerId = results.insertId;
+    const selectQuery = "SELECT * FROM Gebruiker WHERE id = ?";
+    db.query(selectQuery, [gebruikerId], (err, selectResults) => {
       if (err) {
-        console.error("Error creating gebruiker:", err);
-        res.status(500).send("Error creating gebruiker");
+        console.error("Error fetching created gebruiker:", err);
+        res.status(500).send("Error fetching created gebruiker");
         return;
       }
-      const gebruikerId = results.insertId;
-      const selectQuery = "SELECT * FROM Gebruiker WHERE id = ?";
-      db.query(selectQuery, [gebruikerId], (err, selectResults) => {
-        if (err) {
-          console.error("Error fetching created gebruiker:", err);
-          res.status(500).send("Error fetching created gebruiker");
-          return;
-        }
-        res.status(201).json(selectResults[0]);
-      });
-    }
-  );
+      res.status(201).json(selectResults[0]);
+    });
+  });
 };
+
 
 exports.updateGebruiker = (req, res) => {
   const { id, naam, achternaam, rol, email, wachtwoord, adminid, adminpw } =
@@ -92,7 +87,7 @@ exports.updateGebruiker = (req, res) => {
 
   // Check if the admin credentials are valid
   const checkAdminQuery =
-    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 2";
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 0";
   db.query(checkAdminQuery, [adminid, adminpw], (err, results) => {
     if (err) {
       console.error("Error checking admin credentials:", err);
@@ -137,13 +132,14 @@ exports.updateGebruiker = (req, res) => {
     const updateQuery = `UPDATE Gebruiker SET ${updateFields.join(
       ", "
     )} WHERE id = ?`;
-    db.query(updateQuery, updateValues, (err, updateResults) => {
+    let exe = db.query(updateQuery, updateValues, (err, updateResults) => {
       if (err) {
         console.error("Error updating gebruiker:", err);
         res.status(500).send("Error updating gebruiker");
         return;
       }
       res.status(200).send("Gebruiker updated successfully");
+      log.logQuery(exe.sql, adminid,0,0)
     });
   });
 };
@@ -160,7 +156,7 @@ exports.deleteGebruiker = (req, res) => {
 
   // Check if the admin credentials are valid
   const checkAdminQuery =
-    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 2";
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 0";
   db.query(checkAdminQuery, [adminid, adminpw], (err, results) => {
     if (err) {
       console.error("Error checking admin credentials:", err);
@@ -174,13 +170,14 @@ exports.deleteGebruiker = (req, res) => {
 
     // Delete the gebruiker
     const deleteQuery = "DELETE FROM Gebruiker WHERE id = ?";
-    db.query(deleteQuery, [id], (err, deleteResults) => {
+    let exe = db.query(deleteQuery, [id], (err, deleteResults) => {
       if (err) {
         console.error("Error deleting gebruiker:", err);
         res.status(500).send("Error deleting gebruiker");
         return;
       }
       res.status(200).send("Gebruiker deleted successfully");
+      log.logQuery(exe.sql, adminid,0,0)
     });
   });
 };

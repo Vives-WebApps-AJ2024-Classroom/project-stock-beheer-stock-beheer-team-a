@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { CheckUserLS, getData, apiURL } from '../page-tools'
 import "../styles/stylesProject.css"; // Link naar de CSS file
 
@@ -8,105 +8,113 @@ export const Project = () => {
   const [leden, setLeden] = useState([])
   const { projectId } = useParams();
   const [bestellingen, setBestellingen] = useState([])
-  const [userArr, setUserArray] = useState(["", "", 0, 2])
+const [userArr, setUserArray] = useState(["", "", 0, 2,0])
   useEffect(() => {
     const ServerConnect = async () => {
       let user = CheckUserLS()
       setUserArray(user)
 
-      //let bestel = await getData("http://localhost:3001/api/getBestellingen/"+projectId)
-      let bestel = [
-        {
-          "id": 1,
-          "aanmaak": "2024-12-01 10:30:00",
-          "winkelId": 12,
-          "winkelEnkelString": "bal",
-          "aantal": 5,
-          "totaleKostPrijsExclBtw": 12500,
-          "url": "https://voorbeeld.com/artikel/1",
-          "leverTijd": 3,
-          "leveringsAdres": "Straatnaam 123, 1000 Brussel",
-          "omschrijving": "Laptop voor kantoor",
-          "artikelNr": "ART12345",
-          "projectId": 1,
-          "rqNummer": 9876543210,
-          "bestellingDoorFDGeplaatst": null,
-          "verwachteAankomst": null,
-          "bestellingOntvangen": null,
-          "werkelijkBetaald": null,
-          "opmerking": "Snelle levering gevraagd",
-          "goedgekeurdDoorCoach": true,
-        },
-        {
-          "id": 2,
-          "aanmaak": "2024-12-02 14:15:00",
-          "winkelId": null,
-          "winkelEnkelString": "Kleine buurtwinkel",
-          "aantal": 2,
-          "totaleKostPrijsExclBtw": 8000,
-          "url": "https://voorbeeld.com/artikel/2",
-          "leverTijd": 7,
-          "leveringsAdres": "Kerkstraat 45, 2000 Antwerpen",
-          "omschrijving": "Bureau lamp",
-          "artikelNr": "ART67890",
-          "projectId": 1,
-          "rqNummer": null,
-          "bestellingDoorFDGeplaatst": "2024-12-01",
-          "verwachteAankomst": "2024-12-08",
-          "bestellingOntvangen": null,
-          "werkelijkBetaald": null,
-          "opmerking": "Betaal bij levering",
-          "goedgekeurdDoorCoach": false,
-        },
-        {
+      let bestel = await getData(apiURL + "getBestellingen/"+projectId,null, "GET")
+      if(bestel == null){
+        bestel = [
+          {
+            "id": 1,
+            "aanmaak": "2024-12-01 10:30:00",
+            "winkelId": 12,
+            "winkelEnkelString": "bal",
+            "aantal": 5,
+            "totaleKostPrijsExclBtw": 12500,
+            "url": "https://voorbeeld.com/artikel/1",
+            "leverTijd": 3,
+            "leveringsAdres": "Straatnaam 123, 1000 Brussel",
+            "omschrijving": "Laptop voor kantoor",
+            "artikelNr": "ART12345",
+            "projectId": 1,
+            "rqNummer": 9876543210,
+            "bestellingDoorFDGeplaatst": null,
+            "verwachteAankomst": null,
+            "bestellingOntvangen": null,
+            "werkelijkBetaald": null,
+            "opmerking": "Snelle levering gevraagd",
+            "goedgekeurdDoorCoach": true,
+          },
+          {
+            "id": 2,
+            "aanmaak": "2024-12-02 14:15:00",
+            "winkelId": null,
+            "winkelEnkelString": "Kleine buurtwinkel",
+            "aantal": 2,
+            "totaleKostPrijsExclBtw": 8000,
+            "url": "https://voorbeeld.com/artikel/2",
+            "leverTijd": 7,
+            "leveringsAdres": "Kerkstraat 45, 2000 Antwerpen",
+            "omschrijving": "Bureau lamp",
+            "artikelNr": "ART67890",
+            "projectId": 1,
+            "rqNummer": null,
+            "bestellingDoorFDGeplaatst": "2024-12-01",
+            "verwachteAankomst": "2024-12-08",
+            "bestellingOntvangen": null,
+            "werkelijkBetaald": null,
+            "opmerking": "Betaal bij levering",
+            "goedgekeurdDoorCoach": false,
+          },
+          {
+            "id": 3,
+            "aanmaak": "2024-12-03 09:00:00",
+            "winkelId": 15,
+            "winkelEnkelString": "bol",
+            "aantal": 10,
+            "totaleKostPrijsExclBtw": 5000,
+            "url": "https://voorbeeld.com/artikel/3",
+            "leverTijd": 5,
+            "leveringsAdres": "Hoofdstraat 78, 3000 Leuven",
+            "omschrijving": "Notitieboekjes",
+            "artikelNr": "ART98765",
+            "projectId": 1,
+            "rqNummer": 1234567890,
+            "bestellingDoorFDGeplaatst": "2024-12-02",
+            "verwachteAankomst": "2024-12-07",
+            "bestellingOntvangen": "2024-12-08",
+            "werkelijkBetaald": 5000,
+            "opmerking": "Levering op tijd essentieel",
+            "goedgekeurdDoorCoach": true,
+          }
+        ]
+      }
+      let gebruikers = await getData(apiURL + "getStudenten/"+projectId,null,"GET")
+      if(gebruikers == null){
+        gebruikers = [
+          {
+            "id": 1,
+            "voornaam": "Sofie",
+            "achternaam": "Janssens",
+            "email": "sofie.janssens@student.example.com",
+            "niveau": 2,
+            "projectId": 1,
+            "wachtwoord": "wachtwoord123"
+          },
+          {
+            "id": 2,
+            "voornaam": "Liam",
+            "achternaam": "De Smet",
+            "email": "liam.desmet@student.example.com",
+            "niveau": 2,
+            "projectId": 1,
+            "wachtwoord": "sterkWachtwoord456"
+          }]
+      }
+      let Coach = await getData(apiURL + "getCoach/"+projectId,null,"GET")
+      if(Coach == null){
+        Coach = {
           "id": 3,
-          "aanmaak": "2024-12-03 09:00:00",
-          "winkelId": 15,
-          "winkelEnkelString": "bol",
-          "aantal": 10,
-          "totaleKostPrijsExclBtw": 5000,
-          "url": "https://voorbeeld.com/artikel/3",
-          "leverTijd": 5,
-          "leveringsAdres": "Hoofdstraat 78, 3000 Leuven",
-          "omschrijving": "Notitieboekjes",
-          "artikelNr": "ART98765",
+          "voornaam": "Emma",
+          "achternaam": "Vermeulen",
+          "email": "emma.vermeulen@coach.example.com",
+          "niveau": 1,
           "projectId": 1,
-          "rqNummer": 1234567890,
-          "bestellingDoorFDGeplaatst": "2024-12-02",
-          "verwachteAankomst": "2024-12-07",
-          "bestellingOntvangen": "2024-12-08",
-          "werkelijkBetaald": 5000,
-          "opmerking": "Levering op tijd essentieel",
-          "goedgekeurdDoorCoach": true,
+          "wachtwoord": "veiligWachtwoord789"
         }
-      ]
-      let gebruikers = [
-        {
-          "id": 1,
-          "voornaam": "Sofie",
-          "achternaam": "Janssens",
-          "email": "sofie.janssens@student.example.com",
-          "niveau": 2,
-          "projectId": 1,
-          "wachtwoord": "wachtwoord123"
-        },
-        {
-          "id": 2,
-          "voornaam": "Liam",
-          "achternaam": "De Smet",
-          "email": "liam.desmet@student.example.com",
-          "niveau": 2,
-          "projectId": 1,
-          "wachtwoord": "sterkWachtwoord456"
-        }]
-      let Coach = {
-        "id": 3,
-        "voornaam": "Emma",
-        "achternaam": "Vermeulen",
-        "email": "emma.vermeulen@coach.example.com",
-        "niveau": 1,
-        "projectId": 1,
-        "wachtwoord": "veiligWachtwoord789"
       }
       let toegang = true //Ongemachtigde gebruikers buitenschoppen.
       if(user[3] == 2){
@@ -133,7 +141,7 @@ export const Project = () => {
   let tstuf = []
   tstuf.push(<tr><th>Omschrijving</th><th>Betaald/kostprijs<br />(excl. btw)</th><th>Ontvangen/goedgekeurd</th><th>Aantal</th><th>URL</th><th>Winkel</th><th>Bewerkingen</th></tr>)
   const delBestelling = async (id) => {
-    await getData(apiURL + `/delBestelling/${id}/${userArr[2]}/${userArr[1]}`)
+    await getData(apiURL + `delBestelling/${id}/${userArr[2]}/${userArr[1]}`,null,"DELETE")
     console.log("VOEG NOG ERROR DETECTIE IN DE RESPONSE TOE HIER!")
     setBestellingen(bestellingen.filter(a =>
       a.id !== id
@@ -192,7 +200,7 @@ export const Project = () => {
     bestellingen.map((item, index) => {
       if (index != 0 && bestellingen[index - 1].id == item.id) {
 
-        return <><tr> <td>Aanmaak: {item.aanmaak}</td><td> lever tijd: {item.leverTijd}</td><td> lever adres: {item.leveringsAdres}</td><td> artikel nr: {item.artikelNr}</td><td> rq nr: {item.rqNummer}</td><td> Bestelling door financ dienst geplaatst: {item.bestellingDoorFDGeplaatst}</td><td> verwachte aankomst: {item.verwachteAankomst}</td></tr><tr><td> bestelling ontvangen: {item.bestellingOntvangen}</td><td> opmerking: {item.opmerking} </td><td><button onClick={() => { document.location = /bestelling/ + item.id }}>Aanpassen</button></td></tr></>
+        return <><tr> <td>Aanmaak: {item.aanmaak}</td><td> lever tijd: {item.leverTijd}</td><td> lever adres: {item.leveringsAdres}</td><td> artikel nr: {item.artikelNr}</td><td> rq nr: {item.rqNummer}</td><td> Bestelling door financ dienst geplaatst: {item.bestellingDoorFDGeplaatst}</td><td> verwachte aankomst: {item.verwachteAankomst}</td></tr><tr><td> bestelling ontvangen: {item.bestellingOntvangen}</td><td> opmerking: {item.opmerking} </td><td><button onClick={() => { navigation(/bestelling/ + projectId + "/" + item.id) }}>Aanpassen</button></td></tr></>
       } else {
         return <TabelRij item={item} verwijderGebr={userArr[3] == 0} goedkeurGebr={userArr[3] in [0, 1]} index={index}></TabelRij>
       }
@@ -203,17 +211,6 @@ export const Project = () => {
     <div className="project-container">
       <p>Bestellingen:</p>
       <table>
-        <thead>
-          <tr>
-            <th>Omschrijving</th>
-            <th>Betaald/kostprijs<br />(excl. btw)</th>
-            <th>Ontvangen/goedgekeurd</th>
-            <th>Aantal</th>
-            <th>URL</th>
-            <th>Winkel</th>
-            <th>Bewerkingen</th>
-          </tr>
-        </thead>
         <tbody>
           {tstuf}
           {/*bestellingen.map((item, index) => (

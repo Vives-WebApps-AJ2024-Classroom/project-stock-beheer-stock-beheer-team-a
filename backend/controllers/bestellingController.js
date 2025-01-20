@@ -1,4 +1,5 @@
 const db = require("../db");
+const log = require("./logController")
 
 // Haal bestellingen op voor een specifiek project
 exports.getBestellingen = (req, res) => {
@@ -51,13 +52,14 @@ exports.keurGoed = (req, res) => {
     // Keur de bestelling goed
     const updateQuery =
       "UPDATE Bestelling SET goedgekeurdDoorCoach = 1 WHERE id = ?";
-    db.query(updateQuery, [bestellingId], (err, updateResults) => {
+    let exe = db.query(updateQuery, [bestellingId], (err, updateResults) => {
       if (err) {
         console.error("Error approving bestelling:", err);
         res.status(500).send("Error approving bestelling");
         return;
       }
       res.status(200).send("Bestelling approved successfully");
+      log.logQuery(exe.sql, uid, bestellingId, 0)
     });
   });
 };
@@ -99,13 +101,14 @@ exports.keurAf = (req, res) => {
     // Keur de bestelling af
     const updateQuery =
       "UPDATE Bestelling SET goedgekeurdDoorCoach = 0, opmerking = ? WHERE id = ?";
-    db.query(updateQuery, [reden, bestellingId], (err, updateResults) => {
+    let exe = db.query(updateQuery, [reden, bestellingId], (err, updateResults) => {
       if (err) {
         console.error("Error rejecting bestelling:", err);
         res.status(500).send("Error rejecting bestelling");
         return;
       }
       res.status(200).send("Bestelling rejected successfully");
+      log.logQuery(exe.sql, uid, bestellingId, 0)
     });
   });
 };
@@ -147,13 +150,14 @@ exports.ontKeur = (req, res) => {
     // Ontkeur de bestelling
     const updateQuery =
       "UPDATE Bestelling SET goedgekeurdDoorCoach = NULL WHERE id = ?";
-    db.query(updateQuery, [bestellingId], (err, updateResults) => {
+    let exe = db.query(updateQuery, [bestellingId], (err, updateResults) => {
       if (err) {
         console.error("Error unapproving bestelling:", err);
         res.status(500).send("Error unapproving bestelling");
         return;
       }
       res.status(200).send("Bestelling unapproved successfully");
+      log.logQuery(exe.sql, uid, bestellingId, 0)
     });
   });
 };
@@ -192,7 +196,7 @@ exports.maakBestelling = (req, res) => {
     INSERT INTO Bestelling (projectId, winkelId, winkelEnkelString, aantal, totaleKostPrijsExclBtw, url, leverTijd, omschrijving, artikelNr, goedgekeurdDoorCoach)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
   `;
-  db.query(
+  let exe = db.query(
     insertQuery,
     [
       projID,
@@ -212,6 +216,7 @@ exports.maakBestelling = (req, res) => {
         return;
       }
       res.status(201).send("Bestelling created successfully");
+      log.logQuery(exe.sql, geplaatstDoor, 0, projID)
     }
   );
 };
@@ -313,7 +318,7 @@ exports.pasBestellingAan = (req, res) => {
       SET ${updateFields.join(", ")}
       WHERE id = ?
     `;
-    db.query(
+    let exe = db.query(
       updateQuery,
       [...updateValues, bestellingsId],
       (err, updateResults) => {
@@ -323,6 +328,7 @@ exports.pasBestellingAan = (req, res) => {
           return;
         }
         res.status(200).send("Bestelling updated successfully");
+        log.logQuery(exe.sql, gebruikersId, bestellingsId,0)
       }
     );
   });
@@ -365,19 +371,20 @@ exports.delBestelling = (req, res) => {
 
     // Verwijder de bestelling
     const deleteQuery = "DELETE FROM Bestelling WHERE id = ?";
-    db.query(deleteQuery, [bestellingId], (err, deleteResults) => {
+    let exe = db.query(deleteQuery, [bestellingId], (err, deleteResults) => {
       if (err) {
         console.error("Error deleting bestelling:", err);
         res.status(500).send("Error deleting bestelling");
         return;
       }
       res.status(200).send("Bestelling deleted successfully");
+      log.logQuery(exe.sql, uid, bestellingId, 0)
     });
   });
 };
 
 // Pas een bestelling aan met beperkte velden
-exports.pasBestellingAanRestricted = (req, res) => {
+exports.pasBestellingAanRestricted = (req, res) => {//voorlopig geen log functionaliteit omdat deze niet wordt gebruikt.
   const {
     bestellingsId,
     gebruikersId,
@@ -463,6 +470,7 @@ exports.pasBestellingAanRestricted = (req, res) => {
 
 // Maak of update een bestelling
 // Maak of update een bestelling
+// Maak of update een bestelling
 exports.maakOfUpdateBestelling = (req, res) => {
   const {
     projID,
@@ -506,7 +514,7 @@ exports.maakOfUpdateBestelling = (req, res) => {
 
   // Check if the user is an admin
   const checkAdminQuery =
-    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 2";
+    "SELECT * FROM Gebruiker WHERE id = ? AND wachtwoord = ? AND niveau = 0";
   db.query(checkAdminQuery, [adminId, adminPw], (err, results) => {
     if (err) {
       console.error("Error checking admin credentials:", err);
@@ -567,13 +575,14 @@ exports.maakOfUpdateBestelling = (req, res) => {
         SET ${updateFields.join(", ")}
         WHERE id = ?
       `;
-      db.query(updateQuery, updateValues, (err, updateResults) => {
+      let exe = db.query(updateQuery, updateValues, (err, updateResults) => {
         if (err) {
           console.error("Error updating bestelling:", err);
           res.status(500).send("Error updating bestelling");
           return;
         }
         res.status(200).send("Bestelling updated successfully");
+        log.logQuery(exe.sql, 0, 0, projID)
       });
     } else {
       // Maak een nieuwe bestelling
@@ -622,16 +631,17 @@ exports.maakOfUpdateBestelling = (req, res) => {
       }
 
       const insertQuery = `
-        INSERT INTO Bestelling (${insertFields.join(", ")})
-        VALUES (${insertValues.map(() => "?").join(", ")})
+        INSERT INTO Bestelling (${insertFields.join(", ") + ", aanmaak, leveringsAdres, geplaatstDoor"})
+        VALUES (${insertValues.map(() => "?").join(", ")} , CURDATE(), 'Xaverianenstraat hoofdgebouw', ${geplaatstDoor})
       `;
-      db.query(insertQuery, insertValues, (err, results) => {
+      let exe = db.query(insertQuery, insertValues, (err, results) => {
         if (err) {
           console.error("Error creating bestelling:", err);
           res.status(500).send("Error creating bestelling");
           return;
         }
         res.status(201).send("Bestelling created successfully");
+        log.logQuery(exe.sql,0, 0 ,projID)
       });
     }
   });
