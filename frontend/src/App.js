@@ -43,7 +43,7 @@ const WelcomePage = () => {
                 if (jsondata == null) { // backend verbinding gefaald
                     jsondata = { "id": 1, "projectId": 0 };
                 }
-                if (emailAddress.endsWith('@vives.be')) {
+                if (emailAddress.endsWith('@gmail.com')) {
                     setArr.push("adminPass");
                     setArr.push(2);  // hardcoded admin id
                     console.log("admin");
