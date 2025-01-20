@@ -1,0 +1,52 @@
+
+
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=roet
+      - MYSQL_DATABASE=stock-beheer
+      - MYSQL_USER=stock
+      - MYSQL_PASSWORD=stock
+      - MYSQL_USER_HOST=%
+    volumes:
+      - /var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8000:80"
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+
+  backend:
+    depends_on: 
+      - db
+    build: ./backend
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      - PHPMYADMIN_URL=phpmyadmin
+      - DB_HOST=db
+      - DB_USER=stock
+      - DB_PASS=stock
+      - DB_DTBS=stock-beheer
+      - DB_PORT=3306
+
+  frontend:
+    build: 
+      context: ./frontend
+      args:
+        - REACT_APP_PHPMYADMIN_URL=localhost:8000
+        - REACT_APP_BACKEND_URL=http://127.0.0.1:3001/api/
+        - REACT_APP_CLERK_PUBLISHABLE_KEY=pk_test_c3RpcnJlZC11bmljb3JuLTQ1LmNsZXJrLmFjY291bnRzLmRldiQ
+    restart: always
+    ports:
+      - "3000:3000"
+

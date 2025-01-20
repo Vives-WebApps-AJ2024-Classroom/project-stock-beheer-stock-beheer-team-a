@@ -1,0 +1,89 @@
+!!let op!! Datums in volgend formaat: yyyy-mm-dd
+
+get:
+/getBestellingen/:projectId✅
+/getStudenten/:projectId✅
+/getCoach/:projectId✅
+/winkels✅
+<<<<<<< HEAD
+/getProject/:UID✅
+/getProjecten✅
+/getBestellingen✅
+/getQuerries/:beginDatum/:eindDatum/:projectID/:bestellingID/:gebruikerID✅   //alle IDs kunnen null (=-1) zijn
+=======
+/getProject/:UID
+/getProjecten
+/getBestelling/:bid
+/getQuerries/:beginDatum/:eindDatum/:projectID/:bestellingID/:gebruikerID   //alle IDs kunnen null (=-1) zijn
+>>>>>>> ffc8acc3572277d2d5670af7f9bd27fd36936950
+
+post:
+/maakWinkel/:Naam/:Specializatie/:UID/:PW✅
+    body: url   //Url in de url wordt wat moeilijk.
+<<<<<<< HEAD
+/maakBestelling/:projID/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr/:geplaatstDoor✅
+    winkelId = "null": De winkel zat niet in de lijst.✅
+    body: url   //Url in de url wordt wat moeilijk.✅
+/maakProject/:naam/:maxeuro/:uid/:pw    ✅
+=======
+/maakBestelling/:projID/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr/:geplaatstDoor
+    winkelId = "null": De winkel zat niet in de lijst.
+    body: url   //Url in de url wordt wat moeilijk.✅
+/maakProject/:naam/:maxeuro/:uid/:pw✅
+/maakOfUpdateBestelling/:projID/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omschrijving/:artikelNr/:geplaatstDoor/:isUpdate  //er zit nog andere shit in de body✅
+>>>>>>> ffc8acc3572277d2d5670af7f9bd27fd36936950
+
+put:
+/keurGoed/:bestellingId/:UID/:PW //check zeker dat de uid de coach van het project van deze besetelling is.✅
+/keurAf/:bestellingId/:UID/:PW/:reden //check zeker dat de uid de coach van het project van deze besetelling is.✅
+/ontKeur/:bestellingId/:UID/:PW //zet goedgekeurd veld terug op null✅
+/pasBestellingAanRestricted/:bestellingsId/:gebruikersId/:wachtwoord/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr✅
+    winkelId = "null": De winkel zat niet in de lijst.
+    body: url   //Url in de url wordt wat moeilijk.
+    Kan enkel gedaan worden door leden van het team en als het nog niet op "goedgekeurd" stond.✅
+/pasBestellingAan/:bestellingsId/:gebruikersId/:wachtwoord/:winkelId/:winkelNaam/:aantal/:totaleKostPrijsExclBtw/:leverTijd/:omscrijving/:artikelNr/:geplaatstDoor/:rqNummer/:goedgekeurd/:doorFDGeplaatst/:verwachteAankomst/:bestellingOntvangen/:werkelijkBetaald/:opmerking✅
+    winkelId = "null": De winkel zat niet in de lijst.✅
+    body: url   //Url in de url wordt wat moeilijk.✅
+    Enkel voor de Administrator ✅
+/steekGebruikerInProject/:uid/:pid/:adminid/:pw✅     //als pid gelijk is aan -1 dan mag je het project van de gebruiker op null zetten. ✅
+
+delete:
+<<<<<<< HEAD
+/delBestelling/:bestellingId/:uid/:pw✅        //kan enkel door leerlingen&coach als het nog niet goedgekeurd is of door de admin✅
+=======
+/delBestelling/:bestellingId/:uid/:pw        //kan enkel door leerlingen&coach als het nog niet goedgekeurd is of door de admin✅
+/deleteWinkel/:wid/:adminid/:pw
+>>>>>>> ffc8acc3572277d2d5670af7f9bd27fd36936950
+
+gebruikers:
+GET: 
+/gebruikers             //geeft alle gebruikers✅
+/gebruikers/:id         //geeft een specifieke gebruiker✅
+/gebruiker?email=:email      //geeft een specifieke gebruiker maar dan aan de hand van email adres ✅
+POST:
+<<<<<<< HEAD
+/gebruiker/:naam/:achternaam/:rol/:email/:wachtwoord  ✅       //aanmaak van admins hier is verboden, ze moeten zelf in phpmyadmin worden aangemaakt.
+    geeft het hele gebruikers object als respons inclusief id✅
+=======
+/gebruiker/:naam/:achternaam/:rol/:email/:wachtwoord         //aanmaak van admins hier is verboden, ze moeten zelf in phpmyadmin worden aangemaakt.✅
+    geeft het hele gebruikers object als respons inclusief id
+>>>>>>> ffc8acc3572277d2d5670af7f9bd27fd36936950
+PUT:
+/gebruiker/:id/:naam/:achternaam/:rol/:email/:wachtwoord/:adminid/:wachtwoord   //parameters die -1 zijn worden niet aangepast✅
+DELETE:
+/gebruiker/:id/:adminid/:wachtwoord✅
+
+
+
+=============================================routes van de frontend:
+/                                   Home met mss menu
+/home                               Officiele url van de home
+/login                              Mag aangepast worden
+/project/:pid                       pid = project id
+/winkels
+/geenToegang
+/bestelling/:pid(/:bid)             bid: bestellings id, als dit er is dan wordt het de bestelling aanpassen i.p.v. een nieuwe maken.
+/logPagina                          Querry log bekijken.
+/groepsIndeling                     Instellen van wie in welke groep zit.
+/projectCreatie                     Project aanmaken.
+/projOverzicht                      Overzicht voor admins voor naar projecten te gaan.
